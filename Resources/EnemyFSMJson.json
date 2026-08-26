@@ -1,0 +1,166 @@
+{
+  "InitialState": "IDLE",
+  "States": [
+    {
+      "Name": "IDLE",
+      "Tasks": [
+        {
+          "Type": "PlayAnimTask",
+          "AnimName": "MONSTER_IDLE",
+          "IsLoop": true
+        }
+      ],
+      "Transitions": [
+        {
+          "Decision": {
+            "Type": "DetectTargetDecision",
+            "DetectRadius": 3000.0
+          },
+          "TrueState": "TRACE", 
+          "FalseState": null
+        },
+        {
+          "Decision": {
+            "Type": "TimerDecision",
+            "CheckTime": 2.5
+          },
+          "TrueState": "PATROL",
+          "FalseState": "IDLE"
+        }
+      ]
+    },
+    {
+      "Name": "PATROL",
+      "Tasks": [
+        {
+          "Type": "PlayAnimTask",
+          "AnimName": "MONSTER_WALK",
+          "IsLoop": true
+        },
+        {
+          "Type": "RandomWanderTask",
+          "Speed": 150.0,
+          "PatrolRadius": 3000.0
+        }
+      ],
+      "Transitions": [
+        {
+          "Decision": {
+            "Type": "DetectTargetDecision",
+            "DetectRadius": 3000.0
+          },
+          "TrueState": "TRACE",
+          "FalseState": null
+        },
+        {
+          "Decision": {
+            "Type": "TimerDecision",
+            "CheckTime": 5.0
+          },
+          "TrueState": "IDLE",
+          "FalseState": "PATROL"
+        }
+      ]
+    },
+    {
+      "Name": "TRACE",
+      "Tasks": [
+        {
+          "Type": "PlayAnimTask",
+          "AnimName": "MONSTER_RUN",
+          "IsLoop": true
+        },
+        {
+          "Type": "MoveToTargetTask",
+          "Speed": 250.0,
+          "StoppingDistance": 80.0
+        }
+      ],
+      "Transitions": [
+      {
+        "Decision": {
+          "Type": "DetectTargetDecision",
+          "DetectRadius": 3000.0
+        },
+        "TrueState": null,
+        "FalseState": "IDLE"
+      },
+      {
+        "Decision": {
+          "Type": "DistanceDecision",
+          "TargetDist": 140.0
+        },
+        "TrueState": "ATTACK",
+        "FalseState": null
+      }
+  ] 
+    },
+    {
+      "Name": "ATTACK",
+      "Tasks": [
+      {
+        "Type": "MeleeAttackTask",
+        "mAnimNames": ["MONSTER_ATTACK", "MONSTER_ATTACK2", "MONSTER_ATTACK3"],
+        "mbIsLoop": false
+      }
+      ],
+      "Transitions": [
+        {
+          "Decision": {
+            "Type": "AnimFinishDecision"
+          },
+          "TrueState": "TRACE",
+          "FalseState": null
+        }
+      ]
+    },
+    {
+  "Name": "DAMAGE",
+  "Tasks": [
+    {
+      "Type": "PlayAnimTask",
+      "AnimName": "MONSTER_HIT",
+      "IsLoop": false 
+    }
+  ],
+  "Transitions": [
+    {
+      "Decision": {
+        "Type": "AnimFinishDecision"
+      },
+      "TrueState": "IDLE",
+      "FalseState": "DAMAGE"
+    }
+  ]
+  },
+    {
+  "Name": "DEATH",
+  "Tasks": [
+    {
+      "Type": "PlayAnimTask",
+      "AnimName": "MONSTER_DEATH",
+      "IsLoop": false 
+    }
+  ],
+  "Transitions": [
+    {
+      "Decision": {
+        "Type": "AnimFinishDecision"
+      },
+      "TrueState": "DESTROY",
+      "FalseState": "DEATH"
+    }
+  ]
+},
+{
+  "Name": "DESTROY",
+  "Tasks": [
+    {
+      "Type": "DestroyTask" 
+    }
+  ],
+  "Transitions": []
+}
+    
+  ]
+}

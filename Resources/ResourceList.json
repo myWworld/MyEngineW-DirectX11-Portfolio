@@ -1,0 +1,44 @@
+{
+  "Texture": [
+    { "key": "PISTOLTEX",  "path": "..\\Resources\\Textures\\PistolTex.jpg" },
+    { "key": "GUNTEX",     "path": "..\\Resources\\Textures\\M4Tex.png" },
+    { "key": "ALIENTEX",   "path": "..\\Resources\\Textures\\AlienTex.png" },
+    { "key": "SWORD_DIFFUSE",   "path": "..\\Resources\\Textures\\espada2_Material.015_Diffuse.png" },
+     { "key": "SWORD_NORMAL",   "path": "..\\Resources\\Textures\\Sting_Normal.png" },
+    { "key": "HPBARTEX",   "path": "..\\Resources\\Textures\\HpBar.png" },
+    { "key": "HPFRAMETEX",   "path": "..\\Resources\\Textures\\HPFrame.png" },
+    { "key": "HPFILLTEX",   "path": "..\\Resources\\Textures\\HPFill.png" }
+  ],
+  "Model": [
+    { "key": "SwordModel",  "path": "..\\Resources\\Sword.fbx", "profile": "None" },
+    { "key": "BulletModel",  "path": "..\\Resources\\Bullet.fbx", "profile": "None" },
+    { "key": "CharacterModel",  "path": "..\\Resources\\Character.fbx", "profile": "Humanoid" },
+    { "key": "MutantModel",  "path": "..\\Resources\\Mutant.fbx", "profile": "Humanoid" },
+    { "key": "AlienModel",   "path": "..\\Resources\\alien.fbx",  "profile": "Humanoid" },
+    { "key": "PistolModel",  "path": "..\\Resources\\Pistol.fbx", "profile": "None" },
+    { "key": "KatanaModel",  "path": "..\\Resources\\katanas.fbx", "profile": "None" },
+    { "key": "SwordModel",  "path": "..\\Resources\\Sword.fbx", "profile": "None" }
+  ],
+  "Animation": [
+    { "key": "Idle",        "path": "..\\Resources\\Animation\\Idle2.fbx" },
+    { "key": "PISTOLWALK",  "path": "..\\Resources\\Animation\\PistolWalk.fbx" },
+    { "key": "PISTOLIDLE",  "path": "..\\Resources\\Animation\\PistolIdle.fbx" },
+    { "key": "SWORDHIT",         "path": "..\\Resources\\Animation\\Great Sword hit.fbx" },
+    { "key": "SWORDATTACK1",         "path": "..\\Resources\\Animation\\Great Sword Slash.fbx" },
+    { "key": "SWORDATTACK2",         "path": "..\\Resources\\Animation\\Great Sword Slash2.fbx" },
+    { "key": "SWORDATTACK3",         "path": "..\\Resources\\Animation\\Great Sword Slash3.fbx" },
+    { "key": "SWORDADEATH",         "path": "..\\Resources\\Animation\\Two Handed Sword Death.fbx" },
+    { "key": "SWORDIDLE1",   "path": "..\\Resources\\Animation\\great sword idle.fbx" },
+    { "key": "SWORDWALK",   "path": "..\\Resources\\Animation\\great sword walk.fbx" },
+     { "key": "FORWARDWALK", "path": "..\\Resources\\Animation\\ForwardWalk.fbx" },
+
+    { "key": "MONSTER_HIT",         "path": "..\\Resources\\Animation\\HitReaction.fbx" },
+    { "key": "MONSTER_ATTACK",   "path": "..\\Resources\\Animation\\mutant punch.fbx" },
+    { "key": "MONSTER_ATTACK2",   "path": "..\\Resources\\Animation\\mutant attack2.fbx" },
+    { "key": "MONSTER_ATTACK3",   "path": "..\\Resources\\Animation\\mutant jump attack.fbx" },
+    { "key": "MONSTER_WALK",   "path": "..\\Resources\\Animation\\mutant walking.fbx" },
+    { "key": "MONSTER_RUN",   "path": "..\\Resources\\Animation\\mutant run.fbx" },
+    { "key": "MONSTER_IDLE",   "path": "..\\Resources\\Animation\\mutant idle.fbx" },
+    { "key": "MONSTER_DEATH",   "path": "..\\Resources\\Animation\\mutant dying.fbx" }
+  ]
+}

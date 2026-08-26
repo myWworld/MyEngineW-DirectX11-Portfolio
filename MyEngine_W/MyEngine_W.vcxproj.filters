@@ -1,0 +1,209 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClInclude Include="MELoadScene.h">
+      <Filter>Scenes</Filter>
+    </ClInclude>
+    <ClInclude Include="METoolScene.h">
+      <Filter>Scenes</Filter>
+    </ClInclude>
+    <ClInclude Include="METile.h">
+      <Filter>Contents\Map</Filter>
+    </ClInclude>
+    <ClInclude Include="MECameraScript.h">
+      <Filter>Script\Others</Filter>
+    </ClInclude>
+    <ClInclude Include="MELoadingScene.h">
+      <Filter>Scenes</Filter>
+    </ClInclude>
+    <ClInclude Include="METitleScene.h">
+      <Filter>Scenes</Filter>
+    </ClInclude>
+    <ClInclude Include="MEPlayer.h">
+      <Filter>Contents</Filter>
+    </ClInclude>
+    <ClInclude Include="MEPlayerScript.h">
+      <Filter>Script\Player</Filter>
+    </ClInclude>
+    <ClInclude Include="MEGun.h">
+      <Filter>Contents</Filter>
+    </ClInclude>
+    <ClInclude Include="MEBulletScript.h">
+      <Filter>Script</Filter>
+    </ClInclude>
+    <ClInclude Include="Bullet.h">
+      <Filter>Contents</Filter>
+    </ClInclude>
+    <ClInclude Include="MEGunScript.h">
+      <Filter>Script\Others</Filter>
+    </ClInclude>
+    <ClInclude Include="MEEnemyScript.h" />
+    <ClInclude Include="MEActorScript.h">
+      <Filter>Script\Player</Filter>
+    </ClInclude>
+    <ClInclude Include="MEWeaponScript.h" />
+    <ClInclude Include="MESwordScript.h">
+      <Filter>Script\Others</Filter>
+    </ClInclude>
+    <ClInclude Include="MEMoveToTargetTask.h">
+      <Filter>Contents\FSM\Task</Filter>
+    </ClInclude>
+    <ClInclude Include="MEPlayAnimTask.h">
+      <Filter>Contents\FSM\Task</Filter>
+    </ClInclude>
+    <ClInclude Include="MEMeleeAttackTask.h">
+      <Filter>Contents\FSM\Task</Filter>
+    </ClInclude>
+    <ClInclude Include="MEAnimFinishDecision.h">
+      <Filter>Contents\FSM\Decision</Filter>
+    </ClInclude>
+    <ClInclude Include="MEDetectTargetDecision.h">
+      <Filter>Contents\FSM\Decision</Filter>
+    </ClInclude>
+    <ClInclude Include="MEDistanceDecision.h">
+      <Filter>Contents\FSM\Decision</Filter>
+    </ClInclude>
+    <ClInclude Include="MERandomWanderTask.h">
+      <Filter>Contents\FSM\Task</Filter>
+    </ClInclude>
+    <ClInclude Include="METimerDecision.h">
+      <Filter>Contents\FSM\Decision</Filter>
+    </ClInclude>
+    <ClInclude Include="MEDestroyTask.h">
+      <Filter>Contents\FSM\Task</Filter>
+    </ClInclude>
+    <ClInclude Include="MEGauntletScript.h">
+      <Filter>Script\Others</Filter>
+    </ClInclude>
+    <ClInclude Include="MERemotePlayerScript.h">
+      <Filter>Script\Player</Filter>
+    </ClInclude>
+    <ClInclude Include="MEPlayScene.h">
+      <Filter>Script\Player</Filter>
+    </ClInclude>
+    <ClInclude Include="MERemoteMonsterScript.h">
+      <Filter>Script\Player</Filter>
+    </ClInclude>
+    <ClInclude Include="MEProjectileVisualManager.h">
+      <Filter>Script\Others</Filter>
+    </ClInclude>
+    <ClInclude Include="MENetworkProjectileScript.h">
+      <Filter>Script\Others</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="Contents">
+      <UniqueIdentifier>{945fd437-f4f2-463d-bfe2-86c567d82a8f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scenes">
+      <UniqueIdentifier>{0539cc36-b4d1-4691-a517-4f5fc77bd770}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Script">
+      <UniqueIdentifier>{2487e8b0-7a9a-4989-b70f-ed09f8743489}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Contents\Map">
+      <UniqueIdentifier>{2382fb8e-e6cd-4692-a8ce-39c6bdfae09e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Script\Others">
+      <UniqueIdentifier>{9d60996d-cdf5-4934-89a8-dd0212567add}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Script\Player">
+      <UniqueIdentifier>{033ce6d9-340d-44df-81ec-9f8555e85837}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Contents\FSM">
+      <UniqueIdentifier>{0895cbe7-1b4b-4910-a311-671567b801a8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Contents\FSM\Task">
+      <UniqueIdentifier>{89d3cfec-3004-4048-ad5f-6ca383a1a77e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Contents\FSM\Decision">
+      <UniqueIdentifier>{1ae21499-2379-4a23-9c23-470fb660419d}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="METitleScene.cpp">
+      <Filter>Scenes</Filter>
+    </ClCompile>
+    <ClCompile Include="METoolScene.cpp">
+      <Filter>Scenes</Filter>
+    </ClCompile>
+    <ClCompile Include="METile.cpp">
+      <Filter>Contents\Map</Filter>
+    </ClCompile>
+    <ClCompile Include="MECameraScript.cpp">
+      <Filter>Script\Others</Filter>
+    </ClCompile>
+    <ClCompile Include="MELoadingScene.cpp">
+      <Filter>Scenes</Filter>
+    </ClCompile>
+    <ClCompile Include="MEPlayScene.cpp" />
+    <ClCompile Include="MEPlayer.cpp">
+      <Filter>Contents</Filter>
+    </ClCompile>
+    <ClCompile Include="MEPlayerScript.cpp">
+      <Filter>Script\Player</Filter>
+    </ClCompile>
+    <ClCompile Include="MEGun.cpp">
+      <Filter>Contents</Filter>
+    </ClCompile>
+    <ClCompile Include="MEBulletScript.cpp">
+      <Filter>Script</Filter>
+    </ClCompile>
+    <ClCompile Include="Bullet.cpp">
+      <Filter>Contents</Filter>
+    </ClCompile>
+    <ClCompile Include="MEGunScript.cpp">
+      <Filter>Script\Others</Filter>
+    </ClCompile>
+    <ClCompile Include="MEEnemyScript.cpp" />
+    <ClCompile Include="MEActorScript.cpp">
+      <Filter>Script\Player</Filter>
+    </ClCompile>
+    <ClCompile Include="MEWeaponScript.cpp" />
+    <ClCompile Include="MESwordScript.cpp">
+      <Filter>Script\Others</Filter>
+    </ClCompile>
+    <ClCompile Include="MEMoveToTargetTask.cpp">
+      <Filter>Contents\FSM\Task</Filter>
+    </ClCompile>
+    <ClCompile Include="MEPlayAnimTask.cpp">
+      <Filter>Contents\FSM\Task</Filter>
+    </ClCompile>
+    <ClCompile Include="MEMeleeAttackTask.cpp">
+      <Filter>Contents\FSM\Task</Filter>
+    </ClCompile>
+    <ClCompile Include="MEAnimFinishDecision.cpp">
+      <Filter>Contents\FSM\Decision</Filter>
+    </ClCompile>
+    <ClCompile Include="MEDetectTargetDecision.cpp">
+      <Filter>Contents\FSM\Decision</Filter>
+    </ClCompile>
+    <ClCompile Include="MEDistanceDecision.cpp">
+      <Filter>Contents\FSM\Decision</Filter>
+    </ClCompile>
+    <ClCompile Include="MERandomWanderTask.cpp">
+      <Filter>Contents\FSM\Task</Filter>
+    </ClCompile>
+    <ClCompile Include="METimerDecision.cpp">
+      <Filter>Contents\FSM\Decision</Filter>
+    </ClCompile>
+    <ClCompile Include="MEDestroyTask.cpp">
+      <Filter>Contents\FSM\Task</Filter>
+    </ClCompile>
+    <ClCompile Include="MEGauntletScript.cpp">
+      <Filter>Script\Others</Filter>
+    </ClCompile>
+    <ClCompile Include="MERemotePlayerScript.cpp">
+      <Filter>Script\Player</Filter>
+    </ClCompile>
+    <ClCompile Include="MERemoteMonsterScript.cpp">
+      <Filter>Script\Player</Filter>
+    </ClCompile>
+    <ClCompile Include="MEProjectileVisualManager.cpp">
+      <Filter>Script\Others</Filter>
+    </ClCompile>
+    <ClCompile Include="MENetworkProjectileScript.cpp">
+      <Filter>Script\Others</Filter>
+    </ClCompile>
+  </ItemGroup>
+</Project>

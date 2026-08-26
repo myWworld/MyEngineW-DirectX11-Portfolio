@@ -1,0 +1,159 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup Label="Globals">
+    <MSBuildAllProjects Condition="'$(MSBuildVersion)' == '' Or '$(MSBuildVersion)' &lt; '16.0'">$(MSBuildAllProjects);$(MSBuildThisFileFullPath)</MSBuildAllProjects>
+    <HasSharedItems>true</HasSharedItems>
+    <ItemsProjectGuid>{32ed3bea-8ae4-43b1-abea-1f5adcb016bc}</ItemsProjectGuid>
+  </PropertyGroup>
+  <ItemDefinitionGroup>
+    <ClCompile>
+      <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories);$(MSBuildThisFileDirectory)</AdditionalIncludeDirectories>
+    </ClCompile>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ProjectCapability Include="SourceItemsFromImports" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="$(MSBuildThisFileDirectory)BoneMapManager.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)MEClientFSMContext.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)CommonInclude.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)ContentAndScript.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)FSMBrainCore.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)FSMFactory.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)IFSMContext.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)MEAnimation.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)MEAnimation3D.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)MEAnimator.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)MEAnimator3D.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)MEAudioClip.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)MEAudioListener.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)MEAudioSource.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)MEBlackBoard.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)MEBone.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)MEBoxCollider2D.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)MEBoxCollider3D.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)MECamera.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)MECircleCollider2D.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)MECollider.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)MECollisionManager.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)MECommand.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)MEComponent.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)MEConstantBuffer.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)MEDamageInfo.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)MEDontDestroyOnLoad.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)MEEntity.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)MEEnums.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)MEFmod.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)MEFrustumCulling.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)MEFSMBrain.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)MEFSMDecision.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)MEFSMState.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)MEFSMTask.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)MEGameObject.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)MEApplication.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)MEGraphicDevice_DX11.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)MEGraphics.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)MEIndexBuffer.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)MEInput.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)MEInputHandler.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)MEInputLayout.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)MELayer.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)MEMaterial.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)MEMath.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)MEMesh.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)MEModel.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)MEModelRenderer.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)MENetworkManager.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)MEObject.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)MEObjectPool.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)MEQuadTree.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)MERenderer.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)MEResource.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)MEResources.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)MERigidbody.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)MESceneManager.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)MEScenes.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)MEScript.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)MEShader.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)MESkeleton.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)MESpriteRenderer.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)METexture.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)METileMapRenderer.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)METime.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)METransform.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)MEUIBase.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)MEUIButton.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)MEUIHUD.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)MEUIManager.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)MEVertexBuffer.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)ObjectAndScript.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)Protocol.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)StringUtility.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="$(MSBuildThisFileDirectory)BoneMapManager.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)FSMBrainCore.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)MEAnimation.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)MEAnimation3D.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)MEAnimator.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)MEAnimator3D.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)MEAudioClip.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)MEAudioListener.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)MEAudioSource.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)MEBlackBoard.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)MEBone.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)MEBoxCollider2D.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)MEBoxCollider3D.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)MECamera.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)MECircleCollider2D.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)MEClientFSMContext.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)MECollider.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)MECollisionManager.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)MEComponent.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)MEConstantBuffer.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)MEDamageInfo.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)MEDontDestroyOnLoad.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)MEEntity.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)MEFmod.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)MEFrustumCulling.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)MEFSMBrain.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)MEFSMDecision.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)MEFSMState.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)MEFSMTask.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)MEGameObject.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)MEApplication.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)MEGraphicDevice_DX11.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)MEIndexBuffer.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)MEInput.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)MEInputHandler.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)MEInputLayout.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)MELayer.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)MEMaterial.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)MEMath.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)MEMesh.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)MEModel.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)MEModelRenderer.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)MENetworkManager.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)MEObjectPool.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)MEQuadTree.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)MERenderer.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)MEResource.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)MEResources.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)MERigidbody.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)MESceneManager.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)MEScenes.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)MEScript.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)MEShader.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)MESkeleton.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)MESpriteRenderer.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)METexture.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)METileMapRenderer.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)METime.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)METransform.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)MEUIBase.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)MEUIButton.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)MEUIHUD.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)MEUIManager.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)MEVertexBuffer.cpp" />
+  </ItemGroup>
+</Project>

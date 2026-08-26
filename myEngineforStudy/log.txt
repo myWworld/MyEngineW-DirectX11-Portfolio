@@ -1,0 +1,4 @@
+ boneWeight == 0!
+ boneWeight == 0!
+ boneWeight == 0!
+ boneWeight == 0!
