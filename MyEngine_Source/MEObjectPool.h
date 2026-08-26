@@ -8,6 +8,8 @@ namespace ME
 	class ObjectPool
 	{
 	public:
+
+
 		std::queue <T*> mPool;
 		std::function<T* ()> mInstantiateFunc;
 

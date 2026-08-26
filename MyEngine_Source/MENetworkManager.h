@@ -28,23 +28,25 @@ namespace ME
             std::lock_guard<std::mutex> lock(mSendMutex);
 
             if (!mbIsConnected.load() ||
-                mClientSocket ==
-                INVALID_SOCKET)
+                mClientSocket == INVALID_SOCKET)
             {
                 return false;
             }
 
-            packet->header.size =
-                static_cast<std::uint16_t>(sizeof(T));
+            packet->header.size = static_cast<std::uint16_t>(sizeof(T));
 
             return SendAll(reinterpret_cast<const char*>(packet), static_cast<int>(sizeof(T)));
         }
+
+        static void SetMyEntityId(EntityId entityId) { mMyEntityId = entityId; }
+        static EntityId GetMyEntityId() { return mMyEntityId; }
 
     private:
         static bool SendAll(const char* data, int size);
 
         static void RecvThread();
 
+        static void RegisterHandlers();
     private:
         static SOCKET mClientSocket;
 
@@ -59,5 +61,7 @@ namespace ME
 
         static EntityId mMyEntityId;
         static bool mbIsHost;
+
+        static std::unordered_map<ePacketType, std::function<void(const std::vector<char>&)>> mPacketHandlers;
     };
 }

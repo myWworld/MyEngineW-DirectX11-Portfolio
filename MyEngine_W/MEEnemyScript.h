@@ -84,12 +84,6 @@ namespace ME
 		void Attack();
 		void Die();
 
-		void Translate();
-
-		void directionChange(Vector3 newDir);
-
-		void randomState();
-
 	private:
 
 		Vector2 mPrevMousePos;

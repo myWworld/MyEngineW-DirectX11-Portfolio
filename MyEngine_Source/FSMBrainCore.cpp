@@ -29,8 +29,7 @@ namespace ME
 
     FSMBrainCore::~FSMBrainCore() = default;
 
-    void FSMBrainCore::Update(
-        IFSMContext& context) //여기서 받아오는 context는 서버쪽에서 만드는 지역 객체이기에 서버쪽 Update가 끝날씨 소멸하여 여기서 가리키는 것을 댕글링 포인터가 됨 
+    void FSMBrainCore::Update(IFSMContext& context) //여기서 받아오는 context는 서버쪽에서 만드는 지역 객체이기에 서버쪽 Update가 끝날씨 소멸하여 여기서 가리키는 것을 댕글링 포인터가 됨 
     {
         if (mActiveState == nullptr && mPendingState == nullptr)
         {
@@ -40,18 +39,14 @@ namespace ME
         // 이 주소는 이 함수 안에서만 보관한다.
         mCurrentContext = &context;
 
-        ContextResetGuard contextGuard
-        {
-            mCurrentContext
-        };
+        ContextResetGuard contextGuard{mCurrentContext};
 
         // Update 밖에서 요청된 상태 전환 적용
         if (mPendingState != nullptr)
         {
-            FSMState* pendingState =
-                std::exchange(mPendingState,nullptr); //SendFSMEvent같은 요청이 있었을 시 담아두 유효한기간인 update에서만 사용할 수 있도록 
+            FSMState* pendingState = std::exchange(mPendingState, nullptr); //SendFSMEvent같은 요청이 있었을 시 담아두 유효한기간인 update에서만 사용할 수 있도록 
 
-            ApplyStateChange(pendingState,context);
+            ApplyStateChange(pendingState, context);
         }
 
         if (mActiveState == nullptr)
@@ -101,10 +96,7 @@ namespace ME
 
         if (mActiveState != nullptr && mbStarted)
         {
-            mActiveState->ExitState(
-                this,
-                context
-            );
+            mActiveState->ExitState(this, context);
         }
 
         mActiveState = nextState;
@@ -164,8 +156,7 @@ namespace ME
 
     bool FSMBrainCore::SetInitialState(const std::string& name)
     {
-        FSMState* initialState =
-            FindState(name);
+        FSMState* initialState = FindState(name);
 
         if (initialState == nullptr)
             return false;

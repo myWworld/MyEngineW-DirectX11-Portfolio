@@ -4,17 +4,13 @@
 
 namespace ME
 {
-    void DestroyTask::OnEnter(
-        FSMBrainCore* brain,
-        IFSMContext& context)
+    void DestroyTask::OnEnter(FSMBrainCore* brain, IFSMContext& context)
     {
         mElapsedTime = 0.0f;
         mbDestroyRequested = false;
     }
 
-    void DestroyTask::OnExecute(
-        FSMBrainCore* brain,
-        IFSMContext& context)
+    void DestroyTask::OnExecute(FSMBrainCore* brain, IFSMContext& context)
     {
         if (mbDestroyRequested)
             return;
@@ -26,8 +22,7 @@ namespace ME
             mElapsedTime += deltaTime;
         }
 
-        if (mElapsedTime <
-            mDeathDelay)
+        if (mElapsedTime < mDeathDelay)
         {
             return;
         }

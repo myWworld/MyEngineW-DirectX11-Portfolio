@@ -26,9 +26,9 @@ namespace ME
         FSMBrainCore* GetCore();
         const FSMBrainCore* GetCore() const;
         
-        void SetCore(FSMBrainCore* core)
+        void SetCore(std::unique_ptr<FSMBrainCore> core)
         {
-            mCore = core;
+            mCore = std::move(core);
         }
 
 
@@ -39,15 +39,12 @@ namespace ME
         void ChangeState(FSMState* nextState);
         void SendFSMEvent(const std::string& eventName);
 
-        void AddState(
-            const std::string& name,
-            std::unique_ptr<FSMState> state);
+        void AddState(const std::string& name, std::unique_ptr<FSMState> state);
 
-        bool SetInitialState(
-            const std::string& name);
+        bool SetInitialState(const std::string& name);
 
     private:
-        FSMBrainCore* mCore;
+        std::unique_ptr<FSMBrainCore> mCore;
 
         std::unique_ptr<ClientFSMContext> mContext;
     };

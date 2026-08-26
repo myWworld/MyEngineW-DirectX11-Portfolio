@@ -18,7 +18,7 @@ namespace ME
         , gravity(-9.8f)
         ,curForceMode(eForceMode::Force)
 	{
-        mGravity = Vector3(0.0f, gravity * mMass, 0.0f);
+        mGravity = Vector3(0.0f, gravity, 0.0f);
 	}
 	Rigidbody::~Rigidbody()
 	{
@@ -94,6 +94,8 @@ namespace ME
         mAccelation = Vector3::Zero;
         curForceMode = eForceMode::Force;
         mVelocity = Vector3::Zero;
+
+        sumForce = sumAccel = sumImpulse = sumVelChange = Vector3::Zero;
    }
 
 

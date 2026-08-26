@@ -15,8 +15,6 @@ namespace ME
         }
 
     protected:
-        bool CheckDecision(
-            FSMBrainCore* brain,
-            IFSMContext& context) override;
+        bool CheckDecision(FSMBrainCore* brain, IFSMContext& context) override;
     };
 }

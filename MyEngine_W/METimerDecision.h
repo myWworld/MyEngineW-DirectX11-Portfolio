@@ -4,23 +4,17 @@
 
 namespace ME
 {
-    class TimerDecision final
-        : public FSMDecision
+    class TimerDecision final : public FSMDecision
     {
     public:
         TimerDecision()
             : mCheckTime(2.0f)
         {
-            BindProperty(
-                "CheckTime",
-                &mCheckTime
-            );
+            BindProperty("CheckTime", &mCheckTime);
         }
 
     protected:
-        bool CheckDecision(
-            FSMBrainCore* brain,
-            IFSMContext& context) override;
+        bool CheckDecision(FSMBrainCore* brain, IFSMContext& context) override;
 
     private:
         float mCheckTime;

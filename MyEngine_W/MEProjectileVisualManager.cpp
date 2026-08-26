@@ -20,16 +20,12 @@ namespace ME
         GameObject*>
         ProjectileVisualManager::mActiveProjectiles;
 
-    void ProjectileVisualManager::Initialize(
-        std::size_t poolSize)
+    void ProjectileVisualManager::Initialize(std::size_t poolSize)
     {
         if (mPool != nullptr)
             return;
 
-        mPool =
-            std::make_unique<
-            ObjectPool<GameObject>>(
-                poolSize,
+        mPool = std::make_unique<ObjectPool<GameObject>>(poolSize,
                 []() -> GameObject*
                 {
                     return CreateProjectile();
@@ -53,8 +49,7 @@ namespace ME
 
     GameObject* ProjectileVisualManager::CreateProjectile()
     {
-        GameObject* projectile =
-            object::Instantiate<GameObject>(enums::eLayerType::Bullet, math::Vector3::Zero);
+        GameObject* projectile = object::Instantiate<GameObject>(enums::eLayerType::Bullet, math::Vector3::Zero);
 
         if (projectile == nullptr)
             return nullptr;
@@ -105,10 +100,7 @@ namespace ME
 
         if (oldIter != mActiveProjectiles.end())
         {
-            ReturnInternal(
-                projectileId,
-                nullptr
-            );
+            ReturnInternal(projectileId, nullptr);
         }
 
         GameObject* projectile = mPool->Get();
@@ -122,22 +114,19 @@ namespace ME
         {
             transform->SetPosition(startPosition);
 
-            math::Vector3 flatDirection =
-                velocity;
+            math::Vector3 flatDirection = velocity;
 
             if (flatDirection.LengthSquared() > 0.0001f)
             {
                 flatDirection.Normalize();
 
-                const float yaw =
-                    std::atan2(flatDirection.x,flatDirection.z);
+                const float yaw = std::atan2(flatDirection.x,flatDirection.z);
 
                 transform->SetRotation(math::Quaternion::CreateFromYawPitchRoll(yaw, 0.0f,0.0f));
             }
         }
 
-        NetworkProjectileScript* script =
-            projectile->GetComponent<NetworkProjectileScript>();
+        NetworkProjectileScript* script = projectile->GetComponent<NetworkProjectileScript>();
 
         if (script == nullptr)
         {
@@ -145,12 +134,7 @@ namespace ME
             return;
         }
 
-        script->Launch(
-            projectileId,
-            ownerEntityId,
-            velocity,
-            lifeTime
-        );
+        script->Launch(projectileId, ownerEntityId, velocity, lifeTime);
 
         mActiveProjectiles[projectileId] = projectile;
     }
@@ -164,34 +148,24 @@ namespace ME
         // 벽/플레이어/몬스터 피격 이펙트를
         // 추가할 수 있음
 
-        ReturnInternal(
-            projectileId,
-            &endPosition
-        );
+        ReturnInternal(projectileId, &endPosition);
     }
 
     void ProjectileVisualManager::ReturnByLifetime(ProjectileId projectileId)
     {
-        ReturnInternal(
-            projectileId,
-            nullptr
-        );
+        ReturnInternal(projectileId, nullptr);
     }
 
-    void ProjectileVisualManager::ReturnInternal(
-            ProjectileId projectileId,
-            const math::Vector3* endPosition)
+    void ProjectileVisualManager::ReturnInternal(ProjectileId projectileId, const math::Vector3* endPosition)
     {
-        auto iter =
-            mActiveProjectiles.find(projectileId);
+        auto iter = mActiveProjectiles.find(projectileId);
 
         if (iter == mActiveProjectiles.end())
         {
             return;
         }
 
-        GameObject* projectile =
-            iter->second;
+        GameObject* projectile = iter->second;
 
         // 먼저 맵에서 제거
         mActiveProjectiles.erase(iter);
@@ -201,15 +175,11 @@ namespace ME
 
         if (endPosition != nullptr)
         {
-            Transform* transform =
-                projectile
-                ->GetComponent<Transform>();
+            Transform* transform = projectile ->GetComponent<Transform>();
 
             if (transform != nullptr)
             {
-                transform->SetPosition(
-                    *endPosition
-                );
+                transform->SetPosition(*endPosition);
             }
         }
 

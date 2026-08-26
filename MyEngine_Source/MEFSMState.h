@@ -25,11 +25,9 @@ namespace ME
             FSMState* trueState,
             FSMState* falseState = nullptr);
 
-        FSMTransition(
-            FSMTransition&& other) noexcept;
+        FSMTransition(FSMTransition&& other) noexcept;
 
-        FSMTransition& operator=(
-            FSMTransition&& other) noexcept;
+        FSMTransition& operator=(FSMTransition&& other) noexcept;
 
         FSMTransition(const FSMTransition&) = delete;
         FSMTransition& operator=(const FSMTransition&) = delete;

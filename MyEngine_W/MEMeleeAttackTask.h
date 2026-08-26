@@ -19,13 +19,9 @@ namespace ME
         }
 
     protected:
-        void OnEnter(
-            FSMBrainCore* brain,
-            IFSMContext& context) override;
+        void OnEnter(FSMBrainCore* brain, IFSMContext& context) override;
 
-        void OnExecute(
-            FSMBrainCore* brain,
-            IFSMContext& context) override;
+        void OnExecute(FSMBrainCore* brain, IFSMContext& context) override;
 
     private:
         std::vector<std::string> mAnimNames;

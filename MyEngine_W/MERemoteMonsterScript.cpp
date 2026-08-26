@@ -28,8 +28,7 @@ namespace ME
         CacheComponents();
         CacheBones();
 
-        if (!mbPlayingAction ||
-            mAnimator == nullptr)
+        if (!mbPlayingAction || mAnimator == nullptr)
         {
             return;
         }
@@ -37,8 +36,7 @@ namespace ME
         if (!mAnimator->IsAnimationComplete())
             return;
 
-        if (mCurrentRemoteState ==
-            eMonsterState::DEATH)
+        if (mCurrentRemoteState == eMonsterState::DEATH)
         {
             return;
         }
@@ -139,20 +137,14 @@ namespace ME
         if (mTransform == nullptr)
             return;
 
-        mTransform->SetPosition(
-            x,
-            y,
-            z
-        );
+        mTransform->SetPosition( x,y,z);
 
         Vector3 rotation =
             mTransform->GetRotation();
 
         rotation.y = yaw;
 
-        mTransform->SetRotation(
-            rotation
-        );
+        mTransform->SetRotation(rotation);
     }
 
     void RemoteMonsterScript::ApplyState(
@@ -251,32 +243,22 @@ namespace ME
         switch (mCurrentRemoteState)
         {
         case eMonsterState::IDLE:
-            mAnimator->PlayAnimation(
-                L"MONSTER_IDLE",
-                true
-            );
+            mAnimator->PlayAnimation(L"MONSTER_IDLE", true);
             break;
 
         case eMonsterState::WALK:
-            mAnimator->PlayAnimation(
-                L"MONSTER_WALK",
-                true
-            );
+            mAnimator->PlayAnimation(L"MONSTER_WALK", true);
             break;
 
         case eMonsterState::RUN:
-            mAnimator->PlayAnimation(
-                L"MONSTER_RUN",
-                true
-            );
+            mAnimator->PlayAnimation(L"MONSTER_RUN", true);
             break;
 
         default:
             return;
         }
 
-        mLastPlayedState =
-            mCurrentRemoteState;
+        mLastPlayedState = mCurrentRemoteState;
 
         mbHasPlayedState = true;
     }
@@ -290,34 +272,24 @@ namespace ME
 
         if (isDead)
         {
-            ApplyState(
-                eMonsterState::DEATH,
-                true
-            );
+            ApplyState(eMonsterState::DEATH, true);
 
             return;
         }
 
-        ApplyState(
-            eMonsterState::HIT,
-            true
-        );
+        ApplyState(eMonsterState::HIT, true);
     }
 
     void RemoteMonsterScript::CacheComponents()
     {
         if (mAnimator == nullptr)
         {
-            mAnimator =
-                GetOwner()
-                ->GetComponent<Animator3D>();
+            mAnimator =GetOwner()->GetComponent<Animator3D>();
         }
 
         if (mTransform == nullptr)
         {
-            mTransform =
-                GetOwner()
-                ->GetComponent<Transform>();
+            mTransform = GetOwner() ->GetComponent<Transform>();
         }
     }
 
@@ -328,22 +300,19 @@ namespace ME
         if (mAnimator == nullptr)
             return;
 
-        Skeleton* skeleton =
-            mAnimator->GetSkeletonPtr();
+        Skeleton* skeleton = mAnimator->GetSkeletonPtr();
 
         if (skeleton == nullptr)
             return;
 
         if (mLeftHandBone == nullptr)
         {
-            mLeftHandBone =
-                skeleton->GetLeftHandTransform();
+            mLeftHandBone = skeleton->GetLeftHandTransform();
         }
 
         if (mRightHandBone == nullptr)
         {
-            mRightHandBone =
-                skeleton->GetRightHandTransform();
+            mRightHandBone = skeleton->GetRightHandTransform();
         }
     }
 

@@ -165,8 +165,7 @@ namespace ME
   
             math::Vector3 direction =  GetAimDirection();
 
-            if (direction.LengthSquared() >
-                0.0001f)
+            if (direction.LengthSquared() > 0.0001f)
             {
                 direction.Normalize();
             }
@@ -348,8 +347,7 @@ namespace ME
         while (yawDelta < -180.0f)
             yawDelta += 360.0f;
 
-        bool rotationChanged =
-            std::abs(yawDelta) > 0.5f;
+        bool rotationChanged = std::abs(yawDelta) > 0.5f;
 
         if (!mHasSentTransform ||
             positionChanged ||
@@ -426,10 +424,7 @@ namespace ME
             (mAnimator->GetActiveAnimation() == nullptr ||
                 mAnimator->GetActiveAnimation()->GetName() != L"SWORDHIT"))
         {
-            mAnimator->PlayAnimation(
-                L"SWORDHIT",
-                false
-            );
+            mAnimator->PlayAnimation(L"SWORDHIT", false);
         }
     }
 

@@ -14,16 +14,11 @@ namespace ME
             bIsLoop = true;
 
             BindProperty("Speed", &mSpeed);
-            BindProperty(
-                "StoppingDistance",
-                &mStoppingDistance
-            );
+            BindProperty("StoppingDistance",&mStoppingDistance);
         }
 
     protected:
-        void OnExecute(
-            FSMBrainCore* brain,
-            IFSMContext& context) override;
+        void OnExecute(FSMBrainCore* brain, IFSMContext& context) override;
 
     private:
         float mSpeed;

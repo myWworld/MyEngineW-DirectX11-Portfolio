@@ -28,6 +28,11 @@ namespace ME
 		virtual void OnDeath() = 0;
 		virtual void DamageProcess(DamageInfo info) = 0;
 
+		virtual void ApplyServerDamage(
+			float remainingHp,
+			bool isDead,
+			const Vector3& hitPosition) = 0;
+
 		Bone* GetHeadBone() { return mHeadBone; }
 
 		bool IsUsingWeapon() { return mbHoldingWeapon; }
@@ -48,6 +53,8 @@ namespace ME
 		}
 
 		virtual void AttachActiveWeapon(WeaponScript* weapon);
+
+
 
 		float GetHP() { return mHp; }
 		void SetHP(float damage);

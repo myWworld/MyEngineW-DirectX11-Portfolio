@@ -30,8 +30,7 @@ namespace ME
 
         virtual ~FSMDecision() = default;
 
-        void LoadFromJson(
-            const nlohmann::json& json)
+        void LoadFromJson(const nlohmann::json& json)
         {
             for (auto& [key, setter] : mProperties)
             {
@@ -42,9 +41,7 @@ namespace ME
             }
         }
 
-        eDecisionResult Decision(
-            FSMBrainCore* brain,
-            IFSMContext& context)
+        eDecisionResult Decision(FSMBrainCore* brain, IFSMContext& context)
         {
             mEvaluationTimer += (std::max)(0.0f, context.GetDeltaTime());
 
@@ -54,7 +51,15 @@ namespace ME
                 return eDecisionResult::Pending;
             }
 
-            mEvaluationTimer = 0.0f;
+            //소모한 목표 시간(mCheckInterval)만큼만 빼주어 잔여 시간을 보존
+             if (mCheckInterval > 0.0f)
+             {
+                 mEvaluationTimer -= mCheckInterval;
+             }
+             else
+             {
+                 mEvaluationTimer = 0.0f;
+             }
 
             return CheckDecision(brain, context)
                 ? eDecisionResult::True
@@ -72,9 +77,7 @@ namespace ME
         }
 
     protected:
-        virtual bool CheckDecision(
-            FSMBrainCore* brain,
-            IFSMContext& context) = 0;
+        virtual bool CheckDecision(FSMBrainCore* brain, IFSMContext& context) = 0;
 
         template <typename T>
         void BindProperty(
@@ -89,10 +92,7 @@ namespace ME
         }
 
     private:
-        std::unordered_map<
-            std::string,
-            std::function<void(const nlohmann::json&)>>
-            mProperties;
+        std::unordered_map<std::string, std::function<void(const nlohmann::json&)>> mProperties;
 
         float mEvaluationTimer;
         float mCheckInterval;

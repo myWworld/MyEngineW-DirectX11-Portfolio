@@ -40,8 +40,7 @@ struct ProjectileHitResult
     // 선분 시작점 0.0 ~ 끝점 1.0
     float hitT = 1.0f;
 
-    eServerHitKind kind =
-        eServerHitKind::None;
+    eServerHitKind kind = eServerHitKind::None;
 
     EntityId entityId = 0;
 
@@ -112,14 +111,11 @@ struct ServerMonster
 {
     EntityId entityId = 0;
 
-    eModelType modelType =
-        eModelType::Mutant;
+    eModelType modelType = eModelType::Mutant;
 
-    eWeaponType weaponType =
-        eWeaponType::Gauntlet;
+    eWeaponType weaponType = eWeaponType::Gauntlet;
 
-    eMonsterState state =
-        eMonsterState::IDLE;
+    eMonsterState state = eMonsterState::IDLE;
 
     ServerVec3 position;
     float yaw = 0.0f;

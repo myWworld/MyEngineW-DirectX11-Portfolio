@@ -9,12 +9,10 @@ namespace ME
     class GameObject;
     class Transform;
 
-    class ClientFSMContext final
-        : public IFSMContext
+    class ClientFSMContext final : public IFSMContext
     {
     public:
-        explicit ClientFSMContext(
-            GameObject* owner);
+        explicit ClientFSMContext(GameObject* owner);
 
         void SetDeltaTime(float deltaTime);
 

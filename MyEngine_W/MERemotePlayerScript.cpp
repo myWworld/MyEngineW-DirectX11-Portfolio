@@ -115,9 +115,7 @@ namespace ME
 
 
     void RemotePlayerScript::ApplyAttack(
-        eWeaponType weaponType,
-        std::uint8_t attackIndex,
-        const Vector3& direction)
+        eWeaponType weaponType, std::uint8_t attackIndex, const Vector3& direction)
     {
         // IDLE/WALK는 같은 상태면 계속 PlayAnimation 호출하지 않기.
         // 계속 호출하면 애니메이션이 매 프레임 첫 프레임으로 리셋될 수 있음.
@@ -128,7 +126,6 @@ namespace ME
             {
 
                 case 0:
-
                     mAnimator->PlayAnimation(L"SWORDATTACK1", false);
                     break;
 
@@ -158,9 +155,7 @@ namespace ME
     
     }
 
-    void RemotePlayerScript::RegisterWeapon(
-        eWeaponType type,
-        WeaponScript* weapon)
+    void RemotePlayerScript::RegisterWeapon(eWeaponType type, WeaponScript* weapon)
     {
         if (weapon == nullptr)
             return;
@@ -170,8 +165,7 @@ namespace ME
         weapon->WeaponOnOff(false);
     }
 
-    void RemotePlayerScript::ApplyWeaponChange(
-        eWeaponType weaponType)
+    void RemotePlayerScript::ApplyWeaponChange(eWeaponType weaponType)
     {
         auto iter = mWeaponMap.find(weaponType);
 
@@ -262,20 +256,14 @@ namespace ME
 
         if (mEquippedWeapon)
         {
-            mEquippedWeapon
-                ->SetIsAttackEnd(true);
+            mEquippedWeapon->SetIsAttackEnd(true);
         }
 
         if (mAnimator &&
-            (mAnimator->GetActiveAnimation() ==
-                nullptr ||
-                mAnimator->GetActiveAnimation()
-                ->GetName() != L"SWORDHIT"))
+            (mAnimator->GetActiveAnimation() == nullptr 
+                || mAnimator->GetActiveAnimation() ->GetName() != L"SWORDHIT"))
         {
-            mAnimator->PlayAnimation(
-                L"SWORDHIT",
-                false
-            );
+            mAnimator->PlayAnimation(L"SWORDHIT", false);
         }
     }
   

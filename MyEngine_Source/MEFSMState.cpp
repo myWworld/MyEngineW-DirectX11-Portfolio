@@ -19,16 +19,14 @@ namespace ME
     {
     }
 
-    FSMTransition::FSMTransition(
-        FSMTransition&& other) noexcept
+    FSMTransition::FSMTransition(FSMTransition&& other) noexcept
         : Decision(std::move(other.Decision))
         , TrueState(other.TrueState)
         , FalseState(other.FalseState)
     {
     }
 
-    FSMTransition& FSMTransition::operator=(
-        FSMTransition&& other) noexcept
+    FSMTransition& FSMTransition::operator=(FSMTransition&& other) noexcept
     {
         if (this == &other)
             return *this;
@@ -43,9 +41,7 @@ namespace ME
     FSMState::FSMState() = default;
     FSMState::~FSMState() = default;
 
-    void FSMState::EnterState(
-        FSMBrainCore* brain,
-        IFSMContext& context)
+    void FSMState::EnterState(FSMBrainCore* brain, IFSMContext& context)
     {
         for (auto& transition : mTransitions)
         {
@@ -61,9 +57,7 @@ namespace ME
         }
     }
 
-    void FSMState::ExitState(
-        FSMBrainCore* brain,
-        IFSMContext& context)
+    void FSMState::ExitState(FSMBrainCore* brain, IFSMContext& context)
     {
         for (const auto& task : mTasks)
         {
@@ -71,9 +65,7 @@ namespace ME
         }
     }
 
-    void FSMState::UpdateTask(
-        FSMBrainCore* brain,
-        IFSMContext& context)
+    void FSMState::UpdateTask(FSMBrainCore* brain, IFSMContext& context)
     {
         for (const auto& task : mTasks)
         {
@@ -81,9 +73,7 @@ namespace ME
         }
     }
 
-    void FSMState::CheckDecision(
-        FSMBrainCore* brain,
-        IFSMContext& context)
+    void FSMState::CheckDecision(FSMBrainCore* brain, IFSMContext& context)
     {
         for (const auto& transition : mTransitions)
         {
@@ -91,10 +81,7 @@ namespace ME
                 continue;
 
             const eDecisionResult result =
-                transition.Decision->Decision(
-                    brain,
-                    context
-                );
+                transition.Decision->Decision(brain, context);
 
             if (result == eDecisionResult::True &&
                 transition.TrueState != nullptr)
@@ -122,15 +109,10 @@ namespace ME
         if (!decision)
             return;
 
-        mTransitions.emplace_back(
-            std::move(decision),
-            trueState,
-            falseState
-        );
+        mTransitions.emplace_back(std::move(decision), trueState, falseState);
     }
 
-    void FSMState::AddTask(
-        std::unique_ptr<FSMTask> task)
+    void FSMState::AddTask(std::unique_ptr<FSMTask> task)
     {
         if (task)
         {
@@ -138,8 +120,7 @@ namespace ME
         }
     }
 
-    void FSMState::SetStateName(
-        const std::string& name)
+    void FSMState::SetStateName(const std::string& name)
     {
         mStateName = name;
     }

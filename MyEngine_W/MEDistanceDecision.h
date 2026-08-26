@@ -11,16 +11,11 @@ namespace ME
         DistanceDecision()
             : mTargetDist(100.0f)
         {
-            BindProperty(
-                "TargetDist",
-                &mTargetDist
-            );
+            BindProperty("TargetDist",&mTargetDist);
         }
 
     protected:
-        bool CheckDecision(
-            FSMBrainCore* brain,
-            IFSMContext& context) override;
+        bool CheckDecision(FSMBrainCore* brain, IFSMContext& context) override;
 
     private:
         float mTargetDist;

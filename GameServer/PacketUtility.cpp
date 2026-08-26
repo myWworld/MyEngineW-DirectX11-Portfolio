@@ -7,7 +7,7 @@ std::atomic<EntityId> g_nextEntityId{ 1 };
 
 bool SendAll(SOCKET socket, const char* data, int size)
 {
-	int totalSent = 0;
+	int totalSent = 0;//지금 까지 보낸 크기
 
 	while (totalSent < size)
 	{
@@ -22,7 +22,7 @@ bool SendAll(SOCKET socket, const char* data, int size)
 	return true;
 }
 
-void SendRawToEntity(EntityId targetId, const void* data, std::uint16_t size)
+void SendRawToEntity(EntityId targetId, const void* data, std::uint16_t size)//지정한 소켓으로 보냄
 {
 	SOCKET targetSocket = INVALID_SOCKET;
 
@@ -42,14 +42,10 @@ void SendRawToEntity(EntityId targetId, const void* data, std::uint16_t size)
 
 	std::lock_guard<std::mutex> sendLock(g_sendMutex);
 
-	SendAll(
-		targetSocket,
-		static_cast<const char*>(data),
-		static_cast<int>(size)
-	);
+	SendAll(targetSocket, static_cast<const char*>(data), static_cast<int>(size));
 }
 
-void BroadcastRawExcept(EntityId exceptId, const void* data, std::uint16_t size)
+void BroadcastRawExcept(EntityId exceptId, const void* data, std::uint16_t size)//0일 경우 해당되는 id없으므로 브로드 캐스트, 지정한 id제외 서버에 있을 경우 다 보냄
 {
 	std::vector<SOCKET> targetSockets;
 
@@ -82,7 +78,7 @@ void BroadcastRawExcept(EntityId exceptId, const void* data, std::uint16_t size)
 	}
 }
 
-void MarkSessionEntered(EntityId entityId, bool entered)
+void MarkSessionEntered(EntityId entityId, bool entered)//실제로 서버 월드에 들어갔을때나 나갈떄
 {
 	std::lock_guard<std::mutex> lock(g_sessionMutex);
 
@@ -91,7 +87,7 @@ void MarkSessionEntered(EntityId entityId, bool entered)
 	g_sessions[entityId].entered = entered;
 }
 
-void AddSession(EntityId entityId, SOCKET socket)
+void AddSession(EntityId entityId, SOCKET socket)//클라이언트 세션 등록
 {
 	std::lock_guard<std::mutex> lock(g_sessionMutex);
 

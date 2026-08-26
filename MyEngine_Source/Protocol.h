@@ -271,7 +271,7 @@ struct Pkt_S_MonsterSpawn
 {
     PacketHeader header;
 
-    EntityId entityId;
+    EntityId entityId; //∏ÛΩ∫≈Õ id
 
     eModelType modelType;
     eWeaponType weaponType;

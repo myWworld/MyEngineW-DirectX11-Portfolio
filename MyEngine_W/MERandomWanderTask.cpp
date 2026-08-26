@@ -4,21 +4,14 @@
 
 namespace ME
 {
-    void RandomWanderTask::OnEnter(
-        FSMBrainCore* brain,
-        IFSMContext& context)
+    void RandomWanderTask::OnEnter(FSMBrainCore* brain, IFSMContext& context)
     {
-        context.SelectRandomPatrolTarget(
-            mPatrolRadius
-        );
+        context.SelectRandomPatrolTarget(mPatrolRadius);
     }
 
-    void RandomWanderTask::OnExecute(
-        FSMBrainCore* brain,
-        IFSMContext& context)
+    void RandomWanderTask::OnExecute(FSMBrainCore* brain, IFSMContext& context)
     {
-        const bool moving =
-            context.MoveToPatrolTarget(
+        const bool moving = context.MoveToPatrolTarget(
                 mSpeed,
                 mStoppingDistance
             );

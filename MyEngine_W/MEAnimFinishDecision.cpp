@@ -4,9 +4,7 @@
 
 namespace ME
 {
-    bool AnimFinishDecision::CheckDecision(
-        FSMBrainCore* brain,
-        IFSMContext& context)
+    bool AnimFinishDecision::CheckDecision(FSMBrainCore* brain, IFSMContext& context)
     {
         return context.IsAnimationFinished();
     }

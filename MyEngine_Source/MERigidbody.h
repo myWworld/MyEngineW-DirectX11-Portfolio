@@ -29,7 +29,6 @@ namespace ME
 		void SetMass(float mass) {
 			
 			mMass = mass; 
-			mGravity = Vector3(0.0f, gravity * mMass, 0.0f);
 		}
 		void AddForce(Vector3 force) { sumAccel += force; }
 

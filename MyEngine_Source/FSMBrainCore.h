@@ -24,9 +24,7 @@ namespace ME
         void ChangeState(FSMState* nextState);
         void SendFSMEvent(const std::string& eventName);
 
-        void AddState(
-            const std::string& name,
-            std::unique_ptr<FSMState> state);
+        void AddState(const std::string& name, std::unique_ptr<FSMState> state);
 
         bool SetInitialState(const std::string& name);
 
@@ -42,9 +40,7 @@ namespace ME
 
     private:
         // 반드시 유효한 Context를 전달받은 상태에서만 호출 context가 먼저 사라지는 문제발생
-        void ApplyStateChange(
-            FSMState* nextState,
-            IFSMContext& context);
+        void ApplyStateChange(FSMState* nextState, IFSMContext& context);
 
     private:
         std::unordered_map<std::string, std::unique_ptr<FSMState>> mStates;

@@ -24,8 +24,7 @@ namespace ME
 
         virtual ~FSMTask() = default;
 
-        void LoadFromJson(
-            const nlohmann::json& json)
+        void LoadFromJson(const nlohmann::json& json)
         {
             for (auto& [key, setter] : mProperties)
             {
@@ -36,17 +35,13 @@ namespace ME
             }
         }
 
-        void Enter(
-            FSMBrainCore* brain,
-            IFSMContext& context)
+        void Enter(FSMBrainCore* brain, IFSMContext& context)
         {
             bIsFinished = false;
             OnEnter(brain, context);
         }
 
-        void Execute(
-            FSMBrainCore* brain,
-            IFSMContext& context)
+        void Execute(FSMBrainCore* brain, IFSMContext& context)
         {
             if (bIsFinished)
                 return;
@@ -59,34 +54,24 @@ namespace ME
             }
         }
 
-        void Exit(
-            FSMBrainCore* brain,
-            IFSMContext& context)
+        void Exit(FSMBrainCore* brain, IFSMContext& context)
         {
             OnExit(brain, context);
         }
 
     protected:
-        virtual void OnEnter(
-            FSMBrainCore* brain,
-            IFSMContext& context)
+        virtual void OnEnter( FSMBrainCore* brain, IFSMContext& context)
         {
         }
 
-        virtual void OnExecute(
-            FSMBrainCore* brain,
-            IFSMContext& context) = 0;
+        virtual void OnExecute(FSMBrainCore* brain, IFSMContext& context) = 0;
 
-        virtual void OnExit(
-            FSMBrainCore* brain,
-            IFSMContext& context)
+        virtual void OnExit(FSMBrainCore* brain, IFSMContext& context)
         {
         }
 
         template <typename T>
-        void BindProperty(
-            const std::string& name,
-            T* member)
+        void BindProperty(const std::string& name, T* member)
         {
             mProperties[name] =
                 [member](const nlohmann::json& value)
@@ -100,9 +85,6 @@ namespace ME
         bool bIsLoop;
 
     private:
-        std::unordered_map<
-            std::string,
-            std::function<void(const nlohmann::json&)>>
-            mProperties;
+        std::unordered_map<std::string, std::function<void(const nlohmann::json&)>>mProperties;
     };
 }

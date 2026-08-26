@@ -4,14 +4,11 @@
 
 namespace ME
 {
-    bool TimerDecision::CheckDecision(
-        FSMBrainCore* brain,
-        IFSMContext& context)
+    bool TimerDecision::CheckDecision(FSMBrainCore* brain, IFSMContext& context)
     {
         if (brain == nullptr)
             return false;
 
-        return brain->GetStateElapsedTime()
-            >= mCheckTime;
+        return brain->GetStateElapsedTime() >= mCheckTime;
     }
 }

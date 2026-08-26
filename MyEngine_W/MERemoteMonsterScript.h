@@ -13,8 +13,7 @@ namespace ME
     class Transform;
     class WeaponScript;
 
-    class RemoteMonsterScript
-        : public ActorScript
+    class RemoteMonsterScript : public ActorScript
     {
     public:
         RemoteMonsterScript();
@@ -42,21 +41,14 @@ namespace ME
 
         Vector3 GetAimDirection() override;
 
-        void SetLeftWeapon(
-            WeaponScript* weapon);
+        void SetLeftWeapon(WeaponScript* weapon);
 
-        void SetRightWeapon(
-            WeaponScript* weapon);
+        void SetRightWeapon(WeaponScript* weapon);
 
-        void ApplyMove(
-            float x,
-            float y,
-            float z,
-            float yaw);
 
-        void ApplyState(
-            eMonsterState state,
-            bool forced = false);
+        void ApplyMove(float x, float y, float z, float yaw);
+
+        void ApplyState(eMonsterState state, bool forced = false);
 
         void ApplyAttack(
             std::uint8_t attackIndex,
@@ -65,7 +57,7 @@ namespace ME
         void ApplyServerDamage(
             float remainingHp,
             bool isDead,
-            const Vector3& hitPosition);
+            const Vector3& hitPosition) override;
 
     private:
         void CacheComponents();
@@ -82,14 +74,11 @@ namespace ME
         WeaponScript* mLeftWeapon = nullptr;
         WeaponScript* mRightWeapon = nullptr;
 
-        eMonsterState mCurrentRemoteState =
-            eMonsterState::IDLE;
+        eMonsterState mCurrentRemoteState = eMonsterState::IDLE;
 
-        eMonsterState mLastPlayedState =
-            eMonsterState::IDLE;
+        eMonsterState mLastPlayedState = eMonsterState::IDLE;
 
-        Vector3 mAttackDirection =
-            Vector3::Forward;
+        Vector3 mAttackDirection = Vector3::Forward;
 
         bool mbPlayingAction = false;
         bool mbHasPlayedState = false;

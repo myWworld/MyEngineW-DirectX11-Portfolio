@@ -11,16 +11,11 @@ namespace ME
         DetectTargetDecision()
             : mDetectRadius(50.0f)
         {
-            BindProperty(
-                "DetectRadius",
-                &mDetectRadius
-            );
+            BindProperty("DetectRadius", &mDetectRadius);
         }
 
     protected:
-        bool CheckDecision(
-            FSMBrainCore* brain,
-            IFSMContext& context) override;
+        bool CheckDecision(FSMBrainCore* brain, IFSMContext& context) override;
 
     private:
         float mDetectRadius;

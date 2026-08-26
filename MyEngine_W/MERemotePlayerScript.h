@@ -37,32 +37,23 @@ namespace ME
         Bone* GetWeaponSocketBoneRight() override;
         Vector3 GetAimDirection() override;
 
-        void RegisterWeapon(
-            eWeaponType type,
-            WeaponScript* weapon);
+        void RegisterWeapon(eWeaponType type, WeaponScript* weapon);
 
-        void ApplyMove(
-            float x,
-            float y,
-            float z,
-            float yaw);
+        void ApplyMove(float x, float y, float z, float yaw);
 
-        void ApplyState(
-            ePlayerState state,
-            bool forced = false);
+        void ApplyState(ePlayerState state, bool forced = false);
 
         void ApplyAttack(
             eWeaponType weaponType,
             std::uint8_t attackIndex,
             const Vector3& direction);
 
-        void ApplyWeaponChange(
-            eWeaponType weaponType);
+        void ApplyWeaponChange(eWeaponType weaponType);
 
         void ApplyServerDamage(
             float remainingHp,
             bool isDead,
-            const Vector3& hitPosition);
+            const Vector3& hitPosition) override;
 
 
     private:

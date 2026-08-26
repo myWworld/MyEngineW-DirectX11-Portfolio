@@ -5,9 +5,7 @@
 
 namespace ME
 {
-    void MoveToTargetTask::OnExecute(
-        FSMBrainCore* brain,
-        IFSMContext& context)
+    void MoveToTargetTask::OnExecute(FSMBrainCore* brain, IFSMContext& context)
     {
         if (!context.HasTarget())
         {

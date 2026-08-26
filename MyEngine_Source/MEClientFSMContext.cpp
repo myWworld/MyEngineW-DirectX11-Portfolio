@@ -46,8 +46,7 @@ namespace ME
     {
         CacheComponents();
 
-        Scene* scene =
-            SceneManager::GetActiveScene();
+        Scene* scene = SceneManager::GetActiveScene();
 
         if (scene == nullptr || mOwnerTransform == nullptr)
         {
@@ -55,8 +54,7 @@ namespace ME
             return false;
         }
 
-        Layer* playerLayer =
-            scene->GetLayer(enums::eLayerType::Player);
+        Layer* playerLayer = scene->GetLayer(enums::eLayerType::Player);
 
         if (playerLayer == nullptr)
         {
@@ -64,22 +62,18 @@ namespace ME
             return false;
         }
 
-        const auto& players =
-            playerLayer->GetGameObject();
+        const auto& players = playerLayer->GetGameObject();
 
-        const math::Vector3 ownerPosition =
-            mOwnerTransform->GetPosition();
+        const math::Vector3 ownerPosition = mOwnerTransform->GetPosition();
 
-        float nearestDistanceSquared =
-            radius * radius;
+        float nearestDistanceSquared = radius * radius;
 
         Transform* nearestTarget = nullptr;
 
         for (GameObject* player : players)
         {
             if (player == nullptr ||
-                player == mOwner ||
-                !player->IsActive())
+                player == mOwner || !player->IsActive())
             {
                 continue;
             }
@@ -90,8 +84,7 @@ namespace ME
             if (transform == nullptr)
                 continue;
 
-            const float distanceSquared =
-                math::Vector3::DistanceSquared( ownerPosition,transform->GetPosition());
+            const float distanceSquared = math::Vector3::DistanceSquared(ownerPosition,transform->GetPosition());
 
             if (distanceSquared > nearestDistanceSquared)
             {
@@ -127,8 +120,7 @@ namespace ME
         );
     }
 
-    void ClientFSMContext::SelectRandomPatrolTarget(
-        float radius)
+    void ClientFSMContext::SelectRandomPatrolTarget(float radius)
     {
         CacheComponents();
 
@@ -137,8 +129,7 @@ namespace ME
 
         if (!mbHasPatrolOrigin)
         {
-            mPatrolOrigin =
-                mOwnerTransform->GetPosition();
+            mPatrolOrigin = mOwnerTransform->GetPosition();
 
             mbHasPatrolOrigin = true;
         }
@@ -147,12 +138,7 @@ namespace ME
             distribution(-radius, radius);
 
         mPatrolTarget =
-            mPatrolOrigin +
-            math::Vector3(
-                distribution(GetRandomEngine()),
-                0.0f,
-                distribution(GetRandomEngine())
-            );
+            mPatrolOrigin + math::Vector3(distribution(GetRandomEngine()), 0.0f, distribution(GetRandomEngine()));
     }
 
     bool ClientFSMContext::MoveToPatrolTarget(
@@ -193,17 +179,14 @@ namespace ME
 
         const std::wstring wideName(
             animationName.begin(),
-            animationName.end()
-        );
+            animationName.end());
 
-        auto* targetAnimation =
-            mAnimator->FindAnimation(wideName);
+        auto* targetAnimation = mAnimator->FindAnimation(wideName);
 
         if (targetAnimation == nullptr)
             return;
 
-        if (mAnimator->GetActiveAnimation()
-            != targetAnimation)
+        if (mAnimator->GetActiveAnimation() != targetAnimation)
         {
             mAnimator->PlayAnimation(wideName, loop);
         }
@@ -220,11 +203,9 @@ namespace ME
         if (animationNames.empty())
             return;
 
-        std::uniform_int_distribution<std::size_t>
-            distribution(0, animationNames.size() - 1);
+        std::uniform_int_distribution<std::size_t> distribution(0, animationNames.size() - 1);
 
-        const std::string& animationName =
-            animationNames[distribution(GetRandomEngine())];
+        const std::string& animationName = animationNames[distribution(GetRandomEngine())];
 
         PlayAnimation(animationName, false);
     }
@@ -265,11 +246,9 @@ namespace ME
         if (mOwnerTransform == nullptr)
             return false;
 
-        math::Vector3 currentPosition =
-            mOwnerTransform->GetPosition();
+        math::Vector3 currentPosition = mOwnerTransform->GetPosition();
 
-        math::Vector3 direction =
-            targetPosition - currentPosition;
+        math::Vector3 direction = targetPosition - currentPosition;
 
         direction.y = 0.0f;
 
@@ -285,14 +264,9 @@ namespace ME
 
         direction.Normalize();
 
-        const float yaw =
-            std::atan2(
-                direction.x,
-                direction.z
-            ) * RadToDegree + 180.0f;
+        const float yaw = std::atan2(direction.x, direction.z) * RadToDegree + 180.0f;
 
-        math::Vector3 rotation =
-            mOwnerTransform->GetRotation();
+        math::Vector3 rotation = mOwnerTransform->GetRotation();
 
         rotation.y = yaw;
 

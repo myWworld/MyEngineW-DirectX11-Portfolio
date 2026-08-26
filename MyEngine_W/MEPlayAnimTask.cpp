@@ -4,19 +4,12 @@
 
 namespace ME
 {
-    void PlayAnimTask::OnEnter(
-        FSMBrainCore* brain,
-        IFSMContext& context)
+    void PlayAnimTask::OnEnter(FSMBrainCore* brain, IFSMContext& context)
     {
-        context.PlayAnimation(
-            mAnimName,
-            mbIsLoop
-        );
+        context.PlayAnimation(mAnimName, mbIsAnimLoop);
     }
 
-    void PlayAnimTask::OnExecute(
-        FSMBrainCore* brain,
-        IFSMContext& context)
+    void PlayAnimTask::OnExecute(FSMBrainCore* brain, IFSMContext& context)
     {
         // 애니메이션 변경은 상태 진입 시 한 번만 실행
     }

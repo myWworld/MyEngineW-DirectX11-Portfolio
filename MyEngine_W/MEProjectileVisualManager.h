@@ -41,9 +41,7 @@ namespace ME
     private:
         static GameObject* CreateProjectile();
 
-        static void ReturnInternal(
-            ProjectileId projectileId,
-            const math::Vector3* endPosition);
+        static void ReturnInternal(ProjectileId projectileId, const math::Vector3* endPosition);
 
     private:
         static std::unique_ptr<ObjectPool<GameObject>> mPool;

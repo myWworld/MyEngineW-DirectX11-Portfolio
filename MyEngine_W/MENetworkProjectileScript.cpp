@@ -27,14 +27,12 @@ namespace ME
         if (!mbLaunched)
             return;
 
-        Transform* transform =
-            GetOwner()->GetComponent<Transform>();
+        Transform* transform = GetOwner()->GetComponent<Transform>();
 
         if (transform == nullptr)
             return;
 
-        math::Vector3 position =
-            transform->GetPosition();
+        math::Vector3 position = transform->GetPosition();
 
         position += mVelocity * Time::DeltaTime();
 

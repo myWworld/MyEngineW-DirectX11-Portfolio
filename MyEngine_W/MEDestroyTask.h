@@ -13,14 +13,9 @@ namespace ME
         }
     protected:
 
-        void OnEnter(
-            FSMBrainCore* brain,
-            IFSMContext& context) override;
+        void OnEnter(FSMBrainCore* brain, IFSMContext& context) override;
 
-        void OnExecute(
-            FSMBrainCore* brain,
-            IFSMContext& context) override;
-
+        void OnExecute(FSMBrainCore* brain, IFSMContext& context) override;
     private:
 
         float mElapsedTime = 0.0f;

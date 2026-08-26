@@ -11,30 +11,20 @@ namespace ME
     public:
         PlayAnimTask()
             : mAnimName()
-            , mbIsLoop(false)
+            , mbIsAnimLoop(false)
         {
-            BindProperty(
-                "AnimName",
-                &mAnimName
-            );
+            BindProperty("AnimName", &mAnimName);
 
-            BindProperty(
-                "IsLoop",
-                &mbIsLoop
-            );
+            BindProperty("IsLoop", &mbIsAnimLoop);
         }
 
     protected:
-        void OnEnter(
-            FSMBrainCore* brain,
-            IFSMContext& context) override;
+        void OnEnter(FSMBrainCore* brain, IFSMContext& context) override;
 
-        void OnExecute(
-            FSMBrainCore* brain,
-            IFSMContext& context) override;
+        void OnExecute(FSMBrainCore* brain, IFSMContext& context) override;
 
     private:
         std::string mAnimName;
-        bool mbIsLoop;
+        bool mbIsAnimLoop;
     };
 }

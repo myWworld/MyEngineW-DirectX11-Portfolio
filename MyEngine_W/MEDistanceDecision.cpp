@@ -4,14 +4,11 @@
 
 namespace ME
 {
-    bool DistanceDecision::CheckDecision(
-        FSMBrainCore* brain,
-        IFSMContext& context)
+    bool DistanceDecision::CheckDecision(FSMBrainCore* brain, IFSMContext& context)
     {
         if (!context.HasTarget())
             return false;
 
-        return context.GetTargetDistanceSquared()
-            <= mTargetDist * mTargetDist;
+        return context.GetTargetDistanceSquared() <= mTargetDist * mTargetDist;
     }
 }

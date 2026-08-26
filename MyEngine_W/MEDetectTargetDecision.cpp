@@ -4,12 +4,8 @@
 
 namespace ME
 {
-    bool DetectTargetDecision::CheckDecision(
-        FSMBrainCore* brain,
-        IFSMContext& context)
+    bool DetectTargetDecision::CheckDecision(FSMBrainCore* brain, IFSMContext& context)
     {
-        return context.DetectTarget(
-            mDetectRadius
-        );
+        return context.DetectTarget(mDetectRadius);
     }
 }

@@ -40,7 +40,8 @@
         {
           "Type": "RandomWanderTask",
           "Speed": 150.0,
-          "PatrolRadius": 3000.0
+          "PatrolRadius": 3000.0,
+          "StoppingDistance": 80.0
         }
       ],
       "Transitions": [

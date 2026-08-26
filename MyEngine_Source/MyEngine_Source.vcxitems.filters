@@ -191,6 +191,9 @@
     <ClCompile Include="$(MSBuildThisFileDirectory)MEClientFSMContext.cpp">
       <Filter>Component\FSM</Filter>
     </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)MEClientPacketHandler.cpp">
+      <Filter>NetWork</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="$(MSBuildThisFileDirectory)CommonInclude.h">
@@ -413,6 +416,9 @@
     </ClInclude>
     <ClInclude Include="$(MSBuildThisFileDirectory)MEClientFSMContext.h">
       <Filter>Component\FSM</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)MEClientPacketHandler.h">
+      <Filter>NetWork</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

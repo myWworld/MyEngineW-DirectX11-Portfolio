@@ -15,6 +15,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="$(MSBuildThisFileDirectory)BoneMapManager.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)MEClientPacketHandler.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)MEClientFSMContext.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)CommonInclude.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)ContentAndScript.h" />
@@ -92,6 +93,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="$(MSBuildThisFileDirectory)BoneMapManager.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)MEClientPacketHandler.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)FSMBrainCore.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)MEAnimation.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)MEAnimation3D.cpp" />

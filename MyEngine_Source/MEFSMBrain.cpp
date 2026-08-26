@@ -7,8 +7,7 @@
 namespace ME
 {
     FSMBrain::FSMBrain()
-        : Component(
-            enums::eComponentType::FSMBrain)
+        : Component(enums::eComponentType::FSMBrain)
     {
     }
 
@@ -16,8 +15,7 @@ namespace ME
 
     void FSMBrain::Initialize()
     {
-        mContext =
-            std::make_unique<ClientFSMContext>(GetOwner());
+        mContext = std::make_unique<ClientFSMContext>(GetOwner());
     }
 
     void FSMBrain::Update()
@@ -45,12 +43,12 @@ namespace ME
 
     FSMBrainCore* FSMBrain::GetCore()
     {
-        return mCore;
+        return mCore.get();
     }
 
     const FSMBrainCore* FSMBrain::GetCore() const
     {
-        return mCore;
+        return mCore.get();
     }
 
     BlackBoard* FSMBrain::GetBlackboard()
@@ -85,8 +83,7 @@ namespace ME
         );
     }
 
-    bool FSMBrain::SetInitialState(
-        const std::string& name)
+    bool FSMBrain::SetInitialState(const std::string& name)
     {
         return mCore->SetInitialState(name);
     }
