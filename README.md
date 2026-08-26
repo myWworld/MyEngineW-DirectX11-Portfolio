@@ -303,7 +303,7 @@ Context 포인터를 `Update()` 실행 중에만 유효하게 유지하고, 외�
 ## 디렉터리 구조
 
 ```text
-MyEngineW-DirectX11/
+MyEngineW-DirectX11-Portfolio/
 ├─ MyEngine_Source/          # 공용 엔진 코어와 프로토콜
 │  ├─ Rendering / Resource
 │  ├─ Scene / GameObject / Component
@@ -324,9 +324,8 @@ MyEngineW-DirectX11/
 │  └─ ServerWorld
 │
 ├─ Shaders_SOURCE/           # HLSL Shader
-├─ Resources/                # Model / Texture / JSON Data
+├─ Resources/                #  JSON Data
 ├─ myEngineforStudy/         # Win32 클라이언트 Entry
-├─ External/                 # 외부 라이브러리
 └─ myEngineforStudyDX.sln
 ```
 
