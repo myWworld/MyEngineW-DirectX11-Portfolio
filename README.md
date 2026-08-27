@@ -57,7 +57,7 @@
 | AI | JSON 상태 그래프 기반 FSM, Client/Server Context 분리 |
 | Collision | Layer Matrix, QuadTree Broad Phase, Collider Enter/Stay/Exit |
 | Networking | C_/S_ 패킷 분리, EntityId/ProjectileId, SendAll, TCP 스트림 프레이밍 |
-| Game Server | 세션 관리, WorldCommand Queue, 고정 Tick ServerWorld |
+| Game Server | 세션 관리, WorldCommand Queue, 60Hz 고정 Tick ServerWorld 오케스트레이터, Player/Combat/Monster 시스템 분리, ServerWorldState와 Replicator |
 | Combat Authority | 서버 투사체 이동, Sweep 충돌, 근접 공격 판정, HP 및 사망 확정 |
 | Client Replication | RemotePlayer/RemoteMonster, 애니메이션·이동·무기·총알 시각화 동기화 |
 
@@ -69,23 +69,56 @@
 flowchart LR
     subgraph Client["Client"]
         Input["Input / Weapon"]
-        ClientNet["NetworkManager\nRecv Thread + Packet Queue"]
+        ClientRecv["NetworkManager Recv Thread\nTCP Framing"]
+        PacketQueue["Packet Queue"]
+        ClientDispatch["NetworkManager::Update\nType Dispatch"]
+        ClientHandler["ClientPacketHandler\nScene Apply"]
         Presentation["RemotePlayer / RemoteMonster\nProjectileVisualManager"]
+
+        ClientRecv --> PacketQueue
+        PacketQueue --> ClientDispatch
+        ClientDispatch --> ClientHandler
+        ClientHandler --> Presentation
     end
 
     subgraph Server["Dedicated Game Server"]
-        Session["ClientSession\nRecv Thread"]
+        Accept["Server Main / Accept Loop\nClientSession + EntityId"]
+        SessionRecv["Per-Client Recv Thread\nFraming + Decode"]
         Command["WorldCommand Queue"]
-        World["ServerWorld Fixed Tick"]
-        Simulation["Player / Monster FSM\nProjectile / Collision / Damage"]
+
+        subgraph World["ServerWorld 60Hz Single Thread"]
+            Orchestrator["ServerWorld\nCommand + Tick Order"]
+            State["ServerWorldState"]
+            Player["ServerPlayerSystem"]
+            Combat["ServerCombatSystem"]
+            Monster["ServerMonsterSystem"]
+            Replicator["ServerWorldReplicator"]
+            Math["ServerMath"]
+
+            Orchestrator --> Player
+            Orchestrator --> Combat
+            Orchestrator --> Monster
+            Player --> State
+            Combat --> State
+            Monster --> State
+            Combat --> Math
+            Monster --> Math
+            Player --> Replicator
+            Combat --> Replicator
+            Monster --> Replicator
+            Combat -. "Damage Callback" .-> Monster
+        end
+
+        PacketUtility["PacketUtility\nSendAll / Broadcast"]
+
+        Accept --> SessionRecv
+        SessionRecv --> Command
+        Command --> Orchestrator
+        Replicator --> PacketUtility
     end
 
-    Input -->|"C_* Request"| Session
-    Session --> Command
-    Command --> World
-    World --> Simulation
-    Simulation -->|"S_* Authoritative Result"| ClientNet
-    ClientNet --> Presentation
+    Input -->|"C_* Request"| SessionRecv
+    PacketUtility -->|"S_* Authoritative Result"| ClientRecv
 ```
 
 ### 책임 분리
@@ -156,11 +189,13 @@ IDLE → PATROL → TRACE → ATTACK
                      ↘ DAMAGE / DEATH
 ```
 
-FSM 실행 코어는 `IFSMContext`를 통해 엔진 오브젝트와 서버 월드에 대한 의존성을 분리했습니다.
+FSM 실행 코어는 `IFSMContext`를 통해 엔진 오브젝트와 서버 월드 구현에 대한 의존성을 분리했습니다.
 
 - Client Context: Transform, Animator3D, Scene 기반 행동
-- Server Context: ServerMonster, ServerPlayer, ServerWorld 기반 행동
+- Server Context: 현재 `ServerMonster`와 `ServerMonsterSystem`의 제한된 서비스 API 기반 행동
+- `ServerMonsterFSMContext`는 한 번의 서버 Tick에서만 유효한 지역 실행 환경
 - 몬스터마다 독립적인 FSM runtime 상태 보유
+- Update 외부 이벤트는 Pending State로 저장한 뒤 다음 유효한 Context에서 적용
 
 ---
 
@@ -222,16 +257,20 @@ TCP는 패킷 경계를 보장하지 않으므로 `recv()` 한 번을 패킷 하
 ### 스레드 구조
 
 ```text
-Client Recv Thread
-  → Packet Queue
-  → Main Thread에서 Scene 반영
+Server Main / Accept Loop
+  → ClientSession 등록·EntityId 발급
 
-Server Client Thread
-  → Packet Decode
+Per-Client Recv Thread
+  → TCP Framing·Packet Decode
   → WorldCommand Queue
-  → ServerWorld 단일 스레드가 월드 상태 수정
-```
 
+ServerWorld 60Hz Single Thread
+  → Command 소비
+  → Player / Combat / Monster System 순차 실행
+  → ServerWorldState 수정
+  → ServerWorldReplicator로 결과 전송
+```
+월드 상태의 수정 주체는 하나의 서버 스레드로 유지하되, ServerWorld 자체는 Queue와 실행 순서만 조율합니다. 플레이어·전투·몬스터·복제·충돌 계산은 각 전용 시스템으로 분리했습니다.
 월드 상태를 하나의 서버 스레드가 소유하도록 하여 플레이어, 몬스터, 투사체에 대한 복잡한 다중 mutex 사용을 줄였습니다.
 
 ---
