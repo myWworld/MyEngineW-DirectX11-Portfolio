@@ -23,7 +23,7 @@ namespace ME
 		SetPos(Vector2(255, 120));
 		SetSize(Vector2(70,20));
 
-		mTexture = Resources::Find<graphics::Texture>(L"STARTBUTTON").get();
+		mTexture = Resources::Find<graphics::Texture>(L"STARTBUTTON");
 
 		mOnClick = std::bind(&UIButton::ButtonClick, this);
 
@@ -73,10 +73,6 @@ namespace ME
 	}
 	void UIButton::ButtonClick()
 	{
-		if (SceneManager::GetActiveScene()->GetName() == L"TitleScene")
-		{
-		
-		}
 		
 	}
 }

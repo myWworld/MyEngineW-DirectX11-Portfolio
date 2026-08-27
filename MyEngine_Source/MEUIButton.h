@@ -23,7 +23,7 @@ namespace ME
 		virtual void ButtonClick();
 
 	private:
-		graphics::Texture* mTexture;
+		std::shared_ptr<graphics::Texture> mTexture;
 
 		Event mOnClick;
 		

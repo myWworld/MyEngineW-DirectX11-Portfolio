@@ -30,7 +30,7 @@ namespace ME
 
 		// 메뉴/팝업처럼 타입당 하나만 써도 되는 UI.
 		static std::unordered_map<enums::eUIType, UIBase*> mUIs;
-		static std::stack<UIBase*> mUIBases;
+		static std::vector<UIBase*> mUIBases;
 		static std::queue<enums::eUIType> mRequestUIQueue;
 
 		// HP Bar처럼 같은 타입이 여러 개 존재할 수 있는 UI.

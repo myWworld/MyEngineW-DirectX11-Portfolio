@@ -6,6 +6,9 @@
 
 namespace ME
 {
+	class Material;
+	class Mesh;
+
 	class UIHUD :public UIBase
 	{
 	public:
@@ -22,7 +25,12 @@ namespace ME
 		void OnClear()override;
 
 	private:
-		graphics::Texture* mTexture;
+		std::shared_ptr<graphics::Texture> mTexture;
+
+		std::shared_ptr<Material> mMaterial;
+		std::shared_ptr<Mesh> mMesh;
+		std::shared_ptr<graphics::Texture> mHpFillTex;
+		std::shared_ptr<graphics::Texture> mHpFrameTex;
 	};
 
 }

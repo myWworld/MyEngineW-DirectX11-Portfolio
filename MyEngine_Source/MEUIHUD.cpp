@@ -14,6 +14,10 @@ namespace ME
 	ME::UIHUD::UIHUD()
 		:UIBase(enums::eUIType::HpBar)
 		, mTexture(nullptr)
+		, mMaterial(nullptr)
+		, mMesh(nullptr)
+		, mHpFillTex(nullptr)
+		, mHpFrameTex(nullptr)
 	{
 	}
 
@@ -27,7 +31,12 @@ namespace ME
 		SetSize(Vector2(3.f, 3.0f));
 
 
-		mTexture = Resources::Find<graphics::Texture>(L"HPBAR").get();
+		mTexture = Resources::Find<graphics::Texture>(L"HPBAR");
+
+		mMaterial = Resources::Find<Material>(L"SpriteMaterial");
+		mMesh = Resources::Find<Mesh>(L"RectMesh");
+		mHpFillTex = Resources::Find<graphics::Texture>(L"HPFILLTEX");
+		mHpFrameTex = Resources::Find<graphics::Texture>(L"HPFRAMETEX");
 	}
 
 	void ME::UIHUD::OnActive()
@@ -53,11 +62,8 @@ namespace ME
 		if (owner == nullptr) return;
 
 
-		std::shared_ptr<Material> material = Resources::Find<Material>(L"SpriteMaterial");
-		std::shared_ptr<Mesh> mesh = Resources::Find<Mesh>(L"RectMesh");
 
-
-		if (material == nullptr || mesh == nullptr) return;
+		if (mMaterial == nullptr || mMesh == nullptr) return;
 
 		ActorScript* actor = owner->GetComponent<ActorScript>();
 
@@ -140,23 +146,20 @@ namespace ME
 		UICB uiData = {};
 
 
-		std::shared_ptr<graphics::Texture> hpFillTex = Resources::Find<graphics::Texture>(L"HPFILLTEX");
-		if (hpFillTex)
+		if (mHpFillTex)
 		{
 			uiData.hpRatio = hpRatio; // 체력 비율만큼만 그림
 			cb->SetData(&uiData);
 			cb->Bind(graphics::eShaderStage::PS);
 
-			material->SetSpriteTexture(hpFillTex);
-			material->Bind();
-			mesh->Bind();
+			mMaterial->SetSpriteTexture(mHpFillTex);
+			mMaterial->Bind();
+			mMesh->Bind();
 
-			graphics::GetDevice()->DrawIndexed(mesh->GetIndexCount(), 0, 0);
+			graphics::GetDevice()->DrawIndexed(mMesh->GetIndexCount(), 0, 0);
 		}
 
-
-		std::shared_ptr<graphics::Texture> hpFrameTex = Resources::Find<graphics::Texture>(L"HPFRAMETEX");
-		if (hpFrameTex)
+		if (mHpFrameTex)
 		{
 			//Vector3 framePos = worldPos - (camForward * 0.1f);
 			//uiTransform.SetPosition(framePos);
@@ -167,11 +170,11 @@ namespace ME
 			cb->SetData(&uiData);
 			cb->Bind(graphics::eShaderStage::PS);
 
-			material->SetSpriteTexture(hpFrameTex);
-			material->Bind();
+			mMaterial->SetSpriteTexture(mHpFrameTex);
+			mMaterial->Bind();
 
 
-			graphics::GetDevice()->DrawIndexed(mesh->GetIndexCount(), 0, 0);
+			graphics::GetDevice()->DrawIndexed(mMesh->GetIndexCount(), 0, 0);
 		}
 
 	}

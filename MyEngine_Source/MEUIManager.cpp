@@ -6,7 +6,7 @@
 namespace ME
 {
 	std::unordered_map<enums::eUIType, UIBase*> UIManager::mUIs = {};
-	std::stack<UIBase*> UIManager::mUIBases = {};
+	std::vector<UIBase*> UIManager::mUIBases = {};
 	std::queue<enums::eUIType> UIManager::mRequestUIQueue = {};
 	std::unordered_map<enums::eUIType, std::vector<std::unique_ptr<UIBase>>> UIManager::mAttachedUIs = {};
 	UIBase* UIManager::mActiveUI = nullptr;
@@ -14,8 +14,7 @@ namespace ME
 	void UIManager::Initailize()
 	{
 		// HP Bar는 액터마다 여러 개 생기는 UI이므로 mUIs에 싱글 인스턴스로 넣지 않는다.
-		UIButton* button = new UIButton();
-		mUIs.insert({ enums::eUIType::Button, button });
+
 	}
 
 	UIBase* UIManager::CreateUIInstance(enums::eUIType type)
@@ -100,13 +99,9 @@ namespace ME
 
 	void UIManager::Render()
 	{
-		std::stack<UIBase*> uiBases = mUIBases;
-
-		while (!uiBases.empty())
+		// 밑(Bottom)부터 위(Top)로 차례대로 그려서 Z-Order 역전 방지
+		for (UIBase* uiBase : mUIBases)
 		{
-			UIBase* uiBase = uiBases.top();
-			uiBases.pop();
-
 			if (uiBase)
 			{
 				uiBase->Render();
@@ -127,13 +122,20 @@ namespace ME
 
 	void UIManager::OnLoad(enums::eUIType type)
 	{
-		std::unordered_map<enums::eUIType, UIBase*>::iterator iter
-			= mUIs.find(type);
+		auto iter = mUIs.find(type);
 
 		if (iter == mUIs.end())
 		{
-			OnFail();
-			return;
+			UIBase* newUI = CreateUIInstance(type);
+
+			if (newUI == nullptr)
+			{
+				OnFail();
+				return;
+			}
+
+			mUIs.insert({ type, newUI });
+			iter = mUIs.find(type);
 		}
 
 		OnComplete(iter->second);
@@ -141,16 +143,12 @@ namespace ME
 
 	void UIManager::Update()
 	{
-		std::stack<UIBase*> uiBases = mUIBases;
-
-		while (!uiBases.empty())
+		// 가장 위(Top)에 있는 UI가 입력을 먼저 처리하도록 뒤에서부터 순회
+		for (auto it = mUIBases.rbegin(); it != mUIBases.rend(); ++it)
 		{
-			UIBase* uiBase = uiBases.top();
-			uiBases.pop();
-
-			if (uiBase)
+			if (*it)
 			{
-				uiBase->Update();
+				(*it)->Update();
 			}
 		}
 
@@ -165,7 +163,8 @@ namespace ME
 			}
 		}
 
-		if (mRequestUIQueue.size() > 0)
+		// 큐에 쌓인 요청을 한 프레임에 전부 처리
+		while (!mRequestUIQueue.empty())
 		{
 			enums::eUIType requestUI = mRequestUIQueue.front();
 			mRequestUIQueue.pop();
@@ -175,16 +174,11 @@ namespace ME
 	}
 	void UIManager::LateUpdate()
 	{
-		std::stack<UIBase*> uiBases = mUIBases;
-
-		while (!uiBases.empty())
+		for (auto it = mUIBases.rbegin(); it != mUIBases.rend(); ++it)
 		{
-			UIBase* uiBase = uiBases.top();
-			uiBases.pop();
-
-			if (uiBase)
+			if (*it)
 			{
-				uiBase->LateUpdate();
+				(*it)->LateUpdate();
 			}
 		}
 
@@ -212,13 +206,9 @@ namespace ME
 
 		if (addUI->IsFullScreen())
 		{
-			std::stack<UIBase*> uiBases = mUIBases;
-
-			while (!uiBases.empty())
+			// 복사 오버헤드 없이 순회하며 InActive 처리
+			for (UIBase* uiBase : mUIBases)
 			{
-				UIBase* uiBase = uiBases.top();
-				uiBases.pop();
-
 				if (uiBase)
 				{
 					uiBase->InActive();
@@ -226,7 +216,7 @@ namespace ME
 			}
 		}
 
-		mUIBases.push(addUI);
+		mUIBases.push_back(addUI);
 		mActiveUI = nullptr;
 
 	}
@@ -249,10 +239,7 @@ namespace ME
 		}
 		mAttachedUIs.clear();
 
-		while (!mUIBases.empty())
-		{
-			mUIBases.pop();
-		}
+		mUIBases.clear();
 
 		for (auto iter : mUIs)
 		{
@@ -269,49 +256,36 @@ namespace ME
 
 	void UIManager::Pop(enums::eUIType type)
 	{
-		if (mUIBases.size() <= 0)
+		if (mUIBases.empty())
 			return;
 
-		std::stack<UIBase*> tempStack;
-
-		UIBase* uibase = nullptr;
-
-		while (mUIBases.size() > 0)
+		// vector를 스택처럼 다루기 위해 뒤에서부터 검색
+		for (auto it = mUIBases.rbegin(); it != mUIBases.rend(); ++it)
 		{
-			uibase = mUIBases.top();
-			mUIBases.pop();
-
-			if (uibase->GetType() != type)
+			if ((*it)->GetType() == type)
 			{
-				tempStack.push(uibase);
-				continue;
-			}
+				UIBase* targetUI = *it;
 
-			if (uibase->IsFullScreen())
-			{
-				std::stack<UIBase*> uiBases = mUIBases;
+				// 역방향 반복자를 정방향 반복자로 변환 (erase를 위해)
+				auto eraseIt = std::prev(it.base());
 
-				while (!uiBases.empty())
+				if (targetUI->IsFullScreen())
 				{
-					UIBase* uiBase = uiBases.top();
-					uiBases.pop();
-
-					if (uiBase)
+					// 전체화면 창이 꺼지는 경우, 그 바로 아래(밑)에 있는 유효한 UI를 찾아 켠다.
+					for (auto belowIt = std::make_reverse_iterator(eraseIt); belowIt != mUIBases.rend(); ++belowIt)
 					{
-						uiBase->Active();
-						break;
+						if (*belowIt)
+						{
+							(*belowIt)->Active();
+							break;
+						}
 					}
 				}
+
+				targetUI->UIClear();
+				mUIBases.erase(eraseIt); // 임시 스택 없이 깔끔하게 중간/끝 요소 삭제
+				return;
 			}
-
-			uibase->UIClear();
-		}
-
-		while (tempStack.size() > 0)
-		{
-			uibase = tempStack.top();
-			tempStack.pop();
-			mUIBases.push(uibase);
 		}
 	}
 

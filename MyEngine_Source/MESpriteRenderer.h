@@ -19,16 +19,16 @@ namespace ME
 		void LateUpdate()  override;
 		void Render()  override;
 
-		void SetSprite(graphics::Texture* sprite) { mTextures = sprite; }
-		void SetMaterial(Material* material) { mMaterial = material; }
+		void SetSprite(std::shared_ptr<graphics::Texture> sprite) { mTextures = sprite; }
+		void SetMaterial(std::shared_ptr<Material> material) { mMaterial = material; }
 
 	private:
 
 
 
-		graphics::Texture* mTextures;
-		Material* mMaterial;
-		Mesh* mMesh;
+		std::shared_ptr<graphics::Texture> mTextures;
+		std::shared_ptr<Material> mMaterial;
+		std::shared_ptr<Mesh> mMesh;
 
 	};
 

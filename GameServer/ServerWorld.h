@@ -1,59 +1,51 @@
 #pragma once
-#include "../MyEngine_Source/FSMBrainCore.h"
-#include "MEServerMonsterFSMContext.h"
 
-#include "PacketUtility.h"
-#include "ServerTypes.h"
-#include <memory>
-#include <random>
-#include <string>
-#include <vector>
+#include "ServerCombatSystem.h"
+#include "ServerMonsterSystem.h"
+#include "ServerPlayerSystem.h"
+#include "ServerWorldReplicator.h"
+#include "ServerWorldState.h"
 
 #include <atomic>
-#include <cstdint>
-#include <functional>
 #include <mutex>
 #include <queue>
-#include <unordered_map>
 
-class ServerMonsterFSMContext;
+// 서버 월드의 단일 스레드 실행 순서와 Command Queue만 조율한다.
+// 플레이어/전투/몬스터/복제/충돌 세부 구현은 각 시스템에 위임한다.
 class ServerWorld
 {
-    friend class ServerMonsterFSMContext;
-
 public:
     using SendToCallback =
-        std::function<void(
-            EntityId targetId,
-            const void* packetData,
-            std::uint16_t packetSize)>;
+        ServerWorldReplicator::SendToCallback;
 
     using BroadcastExceptCallback =
-        std::function<void(
-            EntityId exceptId,
-            const void* packetData,
-            std::uint16_t packetSize)>;
+        ServerWorldReplicator::BroadcastExceptCallback;
 
     using MarkEnteredCallback =
-        std::function<void(
-            EntityId entityId,
-            bool entered)>;
+        ServerWorldReplicator::MarkEnteredCallback;
 
     using AllocateEntityIdCallback =
-        std::function<EntityId()>;
+        ServerMonsterSystem::AllocateEntityIdCallback;
+
 public:
-    ServerWorld() = default;
+    ServerWorld();
     ~ServerWorld() = default;
+
+    ServerWorld(const ServerWorld&) = delete;
+    ServerWorld& operator=(const ServerWorld&) = delete;
 
     void SetNetworkCallbacks(
         SendToCallback sendTo,
         BroadcastExceptCallback broadcastExcept,
         MarkEnteredCallback markEntered);
 
-    void SetAllocateEntityIdCallback(AllocateEntityIdCallback allocator);
+    void SetAllocateEntityIdCallback(
+        AllocateEntityIdCallback allocator);
 
     void EnqueueCommand(WorldCommand command);
 
+    // 기존 공개 API 호환을 위해 유지한다.
+    // 실제 월드 상태 변경이므로 월드 스레드에서 호출하는 것을 전제로 한다.
     void EnsureWorldInitialization();
 
     void Run();
@@ -67,37 +59,6 @@ public:
         bool broadcast);
 
 private:
-
-    template <typename T>
-    void SendTo(EntityId targetId, const T& packet)
-    {
-        if (!mSendToCallback)
-            return;
-
-        mSendToCallback(
-            targetId,
-            &packet,
-            packet.header.size
-        );
-    }
-
-    void SendMonsterSnapshotTo(EntityId targetPlayerId);
-
-
-
-    template <typename T>
-    void BroadcastExcept(EntityId exceptId, const T& packet)
-    {
-        if (!mBroadcastExceptCallback)
-            return;
-
-        mBroadcastExceptCallback(
-            exceptId,
-            &packet,
-            packet.header.size
-        );
-    }
-
     void ProcessCommands();
     void Tick(float deltaTime);
 
@@ -108,148 +69,17 @@ private:
     void HandleCommand(const WeaponChangeCommand& command);
     void HandleCommand(const AttackCommand& command);
 
-
-  
-
-    void UpdateMonsters(float deltaTime);
-
-    void UpdateProjectiles(float deltaTime);
-
-    void SpawnProjectile(
-        const ServerPlayer& player,
-        const AttackCommand& command);
-
-    void EndProjectile(
-        ProjectileId projectileId,
-        eProjectileEndReason reason,
-        EntityId hitEntityId,
-        const ServerVec3& endPosition);
-
-
-
-    void UpdatePlayerMeleeAttacks(float deltaTime);
-
-    bool BeginPlayerMeleeAttack(
-        ServerPlayer& player,
-        const AttackCommand& command);
-
-    void ResolvePlayerMeleeAttack(
-        const ServerPlayer& attacker,
-        const ServerMeleeAttack& attack);
-
-    void ResolveMonsterMeleeAttack(
-        ServerMonster& monster);
-
-    bool FindClosestProjectileHit(
-        const ServerProjectile& projectile,
-        const ServerVec3& start,
-        const ServerVec3& end,
-        ProjectileHitResult& outHit) const;
-
-    void BroadcastProjectileEnd(
-        const ServerProjectile& projectile,
-        const ProjectileHitResult& hit,
-        eProjectileEndReason reason);
-
-    void ApplyServerDamage(
-        eDamageCause cause,
-        EntityId attackerId,
-        EntityId victimId,
-        ProjectileId projectileId,
-        float damage,
-        const ServerVec3& hitPosition);
-
-    bool IsValidProjectileOrigin(
-        const ServerPlayer& player,
-        const ServerVec3& origin) const;
-
-    ServerAabb MakePlayerAabb(
-        const ServerPlayer& player) const;
-
-    ServerAabb MakeMonsterAabb(
-        const ServerMonster& monster) const;
-
-
-    EntityId FindClosestAlivePlayer(
-        const ServerVec3& position,
-        float maxDistance) const;
-
-    ServerPlayer* FindAlivePlayer(
-        EntityId entityId);
-
-    const ServerPlayer* FindAlivePlayer(
-        EntityId entityId) const;
-
-    float DistanceSquaredXZ(
-        const ServerVec3& lhs,
-        const ServerVec3& rhs) const;
-
-    void SelectRandomPatrolTarget(
-        ServerMonster& monster,
-        float radius);
-
-    bool MoveMonsterToward(
-        ServerMonster& monster,
-        const ServerVec3& target,
-        float speed,
-        float stoppingDistance,
-        float deltaTime);
-
-    void ApplyMonsterAnimation(
-        ServerMonster& monster,
-        const std::string& animationName,
-        bool loop);
-
-    void BeginMonsterMeleeAttack(
-        ServerMonster& monster,
-        const std::vector<std::string>& animationNames);
-
-    const AnimationActionMeta* FindMonsterAnimationMeta(const std::string& animationName) const;
-
-    float GetMonsterAnimationDuration(
-        const std::string& animationName) const;
-
-    void FlushMonsterReplication(
-        float deltaTime);
-
-    void DespawnRequestedMonsters();
-
-    void InitializeMonsterAnimationMeta();
-
 private:
-
-
-    std::unordered_map<EntityId,std::unique_ptr<ME::FSMBrainCore>>  mMonsterBrains;
-
-    std::unordered_map<std::string,AnimationActionMeta> mMonsterAnimationMeta;
-
-    std::mt19937 mRandomEngine
-    {
-        std::random_device{}()
-    };
-
-
-    // �� ���� ServerWorld �����常 ����
-    std::unordered_map<EntityId, ServerPlayer> mPlayers;
-    std::unordered_map<EntityId, ServerMonster> mMonsters;
+    // 선언 순서가 생성 순서다. 모든 시스템은 동일한 월드 상태를 참조한다.
+    ServerWorldState mState;
+    ServerWorldReplicator mReplicator;
+    ServerPlayerSystem mPlayerSystem;
+    ServerCombatSystem mCombatSystem;
+    ServerMonsterSystem mMonsterSystem;
 
     std::queue<WorldCommand> mCommandQueue;
     std::mutex mCommandMutex;
 
     std::atomic<bool> mbRunning = false;
-
-    SendToCallback mSendToCallback;
-    BroadcastExceptCallback mBroadcastExceptCallback;
-    MarkEnteredCallback mMarkEnteredCallback;
-    AllocateEntityIdCallback  mAllocateEntityIdCallback;
-
     std::atomic<bool> mbInitialized = false;
-
-    std::unordered_map<ProjectileId, ServerProjectile> mProjectiles;
-    ProjectileId mNextProjectileId = 1;
-
-    bool mbFriendlyFire = false;
-
-    // �� ��, ��� ���� ���� Proxy Collider
-    std::vector<ServerStaticCollider> mStaticWorldColliders;
 };

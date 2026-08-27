@@ -3,13 +3,14 @@
 #include "../MyEngine_Source/IFSMContext.h"
 #include "ServerTypes.h"
 
-class ServerWorld;
+class ServerMonsterSystem;
 
+// FSM Core는 ServerWorld 전체가 아니라 몬스터 시스템의 좁은 API만 사용한다.
 class ServerMonsterFSMContext final : public ME::IFSMContext
 {
 public:
     ServerMonsterFSMContext(
-        ServerWorld& world,
+        ServerMonsterSystem& monsterSystem,
         ServerMonster& monster,
         float deltaTime);
 
@@ -19,8 +20,7 @@ public:
     bool HasTarget() const override;
     float GetTargetDistanceSquared() const override;
 
-    void SelectRandomPatrolTarget(
-        float radius) override;
+    void SelectRandomPatrolTarget(float radius) override;
 
     bool MoveToPatrolTarget(
         float speed,
@@ -42,10 +42,7 @@ public:
     void DestroyOwner() override;
 
 private:
-    ServerWorld& mWorld;
+    ServerMonsterSystem& mMonsterSystem;
     ServerMonster& mMonster;
-
-    float mDeltaTime;
+    float mDeltaTime = 0.0f;
 };
-
-

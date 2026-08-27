@@ -1,14 +1,15 @@
 #include "MEServerMonsterFSMContext.h"
 
-#include "ServerWorld.h"
+#include "ServerMath.h"
+#include "ServerMonsterSystem.h"
 
 #include <limits>
 
 ServerMonsterFSMContext::ServerMonsterFSMContext(
-    ServerWorld& world,
+    ServerMonsterSystem& monsterSystem,
     ServerMonster& monster,
     float deltaTime)
-    : mWorld(world)
+    : mMonsterSystem(monsterSystem)
     , mMonster(monster)
     , mDeltaTime(deltaTime)
 {
@@ -21,39 +22,42 @@ float ServerMonsterFSMContext::GetDeltaTime() const
 
 bool ServerMonsterFSMContext::DetectTarget(float radius)
 {
-    const EntityId targetId = mWorld.FindClosestAlivePlayer(mMonster.position, radius);
+    const EntityId targetId =
+        mMonsterSystem.FindClosestAlivePlayer(
+            mMonster.position,
+            radius);
 
     mMonster.targetPlayerId = targetId;
-
     return targetId != 0;
 }
 
 bool ServerMonsterFSMContext::HasTarget() const
 {
-    return mWorld.FindAlivePlayer(mMonster.targetPlayerId) != nullptr;
+    return mMonsterSystem.FindAlivePlayer(
+        mMonster.targetPlayerId) != nullptr;
 }
 
 float ServerMonsterFSMContext::GetTargetDistanceSquared() const
 {
-    const ServerPlayer* target = mWorld.FindAlivePlayer(mMonster.targetPlayerId);
+    const ServerPlayer* target =
+        mMonsterSystem.FindAlivePlayer(
+            mMonster.targetPlayerId);
 
     if (target == nullptr)
     {
         return (std::numeric_limits<float>::max)();
     }
 
-    return mWorld.DistanceSquaredXZ(
+    return ServerMath::DistanceSquaredXZ(
         mMonster.position,
-        target->position
-    );
+        target->position);
 }
 
 void ServerMonsterFSMContext::SelectRandomPatrolTarget(float radius)
 {
-    mWorld.SelectRandomPatrolTarget(
+    mMonsterSystem.SelectRandomPatrolTarget(
         mMonster,
-        radius
-    );
+        radius);
 }
 
 bool ServerMonsterFSMContext::MoveToPatrolTarget(
@@ -63,20 +67,21 @@ bool ServerMonsterFSMContext::MoveToPatrolTarget(
     if (!mMonster.hasPatrolTarget)
         return false;
 
-    return mWorld.MoveMonsterToward(
+    return mMonsterSystem.MoveMonsterToward(
         mMonster,
         mMonster.patrolTarget,
         speed,
         stoppingDistance,
-        mDeltaTime
-    );
+        mDeltaTime);
 }
 
 bool ServerMonsterFSMContext::MoveToTarget(
     float speed,
     float stoppingDistance)
 {
-    const ServerPlayer* target = mWorld.FindAlivePlayer(mMonster.targetPlayerId);
+    const ServerPlayer* target =
+        mMonsterSystem.FindAlivePlayer(
+            mMonster.targetPlayerId);
 
     if (target == nullptr)
     {
@@ -84,23 +89,22 @@ bool ServerMonsterFSMContext::MoveToTarget(
         return false;
     }
 
-    return mWorld.MoveMonsterToward(
+    return mMonsterSystem.MoveMonsterToward(
         mMonster,
         target->position,
         speed,
         stoppingDistance,
-        mDeltaTime
-    );
+        mDeltaTime);
 }
 
 void ServerMonsterFSMContext::PlayAnimation(
-    const std::string& animationName, bool loop)
+    const std::string& animationName,
+    bool loop)
 {
-    mWorld.ApplyMonsterAnimation(
+    mMonsterSystem.ApplyMonsterAnimation(
         mMonster,
         animationName,
-        loop
-    );
+        loop);
 }
 
 bool ServerMonsterFSMContext::IsAnimationFinished() const
@@ -108,13 +112,16 @@ bool ServerMonsterFSMContext::IsAnimationFinished() const
     if (mMonster.actionDuration <= 0.0f)
         return true;
 
-    return mMonster.actionElapsedTime >= mMonster.actionDuration;
+    return mMonster.actionElapsedTime >=
+        mMonster.actionDuration;
 }
 
 void ServerMonsterFSMContext::BeginMeleeAttack(
     const std::vector<std::string>& animationNames)
 {
-    mWorld.BeginMonsterMeleeAttack(mMonster, animationNames);
+    mMonsterSystem.BeginMonsterMeleeAttack(
+        mMonster,
+        animationNames);
 }
 
 void ServerMonsterFSMContext::DestroyOwner()

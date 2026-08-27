@@ -73,7 +73,9 @@ namespace ME
             {
                 Transform* tr = mOwner->GetComponent<Transform >();
                 Vector3 pos = tr->GetPosition();
-                SetPos(Vector2(pos.x, pos.y));
+
+                Vector2 screenPos = WolrdPosToScreenPos(pos);
+                SetPos(screenPos);
 
 
             }

@@ -6,26 +6,55 @@
       <Extensions>cpp;c;cc;cxx;c++;cppm;ixx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
     </Filter>
     <Filter Include="유틸리티">
-      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <UniqueIdentifier>{93995380-89BD-4B04-88EB-625FBE52EBFB}</UniqueIdentifier>
       <Extensions>h;hh;hpp;hxx;h++;hm;inl;inc;ipp;xsd</Extensions>
     </Filter>
     <Filter Include="ServerWorld">
-      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
-      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+      <UniqueIdentifier>{67DA6AB6-F800-4C08-8B7A-83BB121AAD01}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ServerWorld\Core">
+      <UniqueIdentifier>{883BDAC8-AE52-4A31-91E2-5E739C8D6A01}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ServerWorld\Systems">
+      <UniqueIdentifier>{B2CF8327-9B3A-4AC6-84C1-4A3EDC06B202}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ServerWorld\Monster FSM">
+      <UniqueIdentifier>{45D23B2A-DFA9-43F8-A17F-852F8C363D03}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ServerWorld\Replication">
+      <UniqueIdentifier>{C8D64F41-42BC-4985-9E33-BFB5D0DE5204}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ServerWorld\Collision Math">
+      <UniqueIdentifier>{0B96E90B-BEC4-4AE4-A611-75A2E6B4B305}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
       <Filter>Server Main</Filter>
     </ClCompile>
-    <ClCompile Include="ServerWorld.cpp">
-      <Filter>ServerWorld</Filter>
-    </ClCompile>
     <ClCompile Include="PacketUtility.cpp">
       <Filter>유틸리티</Filter>
     </ClCompile>
+    <ClCompile Include="ServerWorld.cpp">
+      <Filter>ServerWorld\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="ServerMath.cpp">
+      <Filter>ServerWorld\Collision Math</Filter>
+    </ClCompile>
+    <ClCompile Include="ServerWorldReplicator.cpp">
+      <Filter>ServerWorld\Replication</Filter>
+    </ClCompile>
+    <ClCompile Include="ServerPlayerSystem.cpp">
+      <Filter>ServerWorld\Systems</Filter>
+    </ClCompile>
+    <ClCompile Include="ServerCombatSystem.cpp">
+      <Filter>ServerWorld\Systems</Filter>
+    </ClCompile>
+    <ClCompile Include="ServerMonsterSystem.cpp">
+      <Filter>ServerWorld\Systems</Filter>
+    </ClCompile>
     <ClCompile Include="MEServerMonsterFSMContext.cpp">
-      <Filter>유틸리티</Filter>
+      <Filter>ServerWorld\Monster FSM</Filter>
     </ClCompile>
     <ClCompile Include="..\MyEngine_Source\FSMBrainCore.cpp">
       <Filter>Server Main</Filter>
@@ -65,17 +94,35 @@
     <ClInclude Include="PacketUtility.h">
       <Filter>유틸리티</Filter>
     </ClInclude>
-    <ClInclude Include="ServerWorld.h">
-      <Filter>ServerWorld</Filter>
-    </ClInclude>
-    <ClInclude Include="MEServerMonsterFSMContext.h">
-      <Filter>유틸리티</Filter>
-    </ClInclude>
     <ClInclude Include="ServerTypes.h">
       <Filter>유틸리티</Filter>
     </ClInclude>
     <ClInclude Include="VideoLog.h">
       <Filter>유틸리티</Filter>
+    </ClInclude>
+    <ClInclude Include="ServerWorld.h">
+      <Filter>ServerWorld\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="ServerWorldState.h">
+      <Filter>ServerWorld\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="ServerMath.h">
+      <Filter>ServerWorld\Collision Math</Filter>
+    </ClInclude>
+    <ClInclude Include="ServerWorldReplicator.h">
+      <Filter>ServerWorld\Replication</Filter>
+    </ClInclude>
+    <ClInclude Include="ServerPlayerSystem.h">
+      <Filter>ServerWorld\Systems</Filter>
+    </ClInclude>
+    <ClInclude Include="ServerCombatSystem.h">
+      <Filter>ServerWorld\Systems</Filter>
+    </ClInclude>
+    <ClInclude Include="ServerMonsterSystem.h">
+      <Filter>ServerWorld\Systems</Filter>
+    </ClInclude>
+    <ClInclude Include="MEServerMonsterFSMContext.h">
+      <Filter>ServerWorld\Monster FSM</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
