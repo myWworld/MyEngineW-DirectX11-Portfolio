@@ -5,7 +5,7 @@
 
 #include <functional>
 
-// 플레이어 공격, 근접 공격 타이밍, 투사체, 충돌 결과와 데미지를 담당한다.
+// 플레이어 공격, 근접 공격 타이밍, 투사체, 충돌 결과와 데미지를 담당
 class ServerCombatSystem
 {
 public:
@@ -13,9 +13,7 @@ public:
         std::function<void(EntityId monsterId, bool isDead)>;
 
 public:
-    ServerCombatSystem(
-        ServerWorldState& state,
-        ServerWorldReplicator& replicator);
+    ServerCombatSystem(ServerWorldState& state, ServerWorldReplicator& replicator);
 
     void SetMonsterDamageCallback(MonsterDamageCallback callback);
 
@@ -29,13 +27,9 @@ public:
 private:
     void UpdatePlayerMeleeAttacks(float deltaTime);
 
-    bool BeginPlayerMeleeAttack(
-        ServerPlayer& player,
-        const AttackCommand& command);
+    bool BeginPlayerMeleeAttack(ServerPlayer& player, const AttackCommand& command);
 
-    void ResolvePlayerMeleeAttack(
-        const ServerPlayer& attacker,
-        const ServerMeleeAttack& attack);
+    void ResolvePlayerMeleeAttack(const ServerPlayer& attacker, const ServerMeleeAttack& attack);
 
     void SpawnProjectile(
         const ServerPlayer& player,
@@ -47,9 +41,7 @@ private:
         const ServerVec3& end,
         ProjectileHitResult& outHit) const;
 
-    bool IsValidProjectileOrigin(
-        const ServerPlayer& player,
-        const ServerVec3& origin) const;
+    bool IsValidProjectileOrigin(const ServerPlayer& player,  const ServerVec3& origin) const;
 
     ServerPlayer* FindAlivePlayer(EntityId entityId);
 

@@ -24,8 +24,7 @@ ServerMonsterSystem::ServerMonsterSystem(
 
 ServerMonsterSystem::~ServerMonsterSystem() = default;
 
-void ServerMonsterSystem::SetAllocateEntityIdCallback(
-    AllocateEntityIdCallback allocator)
+void ServerMonsterSystem::SetAllocateEntityIdCallback(AllocateEntityIdCallback allocator)
 {
     mAllocateEntityIdCallback = std::move(allocator);
 }
@@ -39,9 +38,7 @@ EntityId ServerMonsterSystem::SpawnMonster(
 {
     if (!mAllocateEntityIdCallback)
     {
-        std::cout
-            << "[World] EntityId allocator가 없습니다."
-            << '\n';
+        std::cout << "[World] EntityId allocator가 없습니다." << '\n';
         return 0;
     }
 
@@ -61,24 +58,18 @@ EntityId ServerMonsterSystem::SpawnMonster(
     monster.hp = monster.maxHp;
     monster.alive = true;
 
-    auto [iter, inserted] =
-        mState.monsters.emplace(monsterId, monster);
+    auto [iter, inserted] = mState.monsters.emplace(monsterId, monster);
 
     if (!inserted)
         return 0;
 
     auto brain = std::make_unique<ME::FSMBrainCore>();
 
-    const bool fsmLoaded = ME::FSMFactory::MakeFSMWithJsonFile(
-        brain.get(),
-        "..\\Resources\\EnemyFSMJson.json");
+    const bool fsmLoaded = ME::FSMFactory::MakeFSMWithJsonFile(brain.get(), "..\\Resources\\EnemyFSMJson.json"); //fsm 등록
 
     if (!fsmLoaded)
     {
-        std::cout
-            << "[World] 몬스터 FSM 로딩 실패 id: "
-            << monsterId
-            << '\n';
+        std::cout << "[World] 몬스터 FSM 로딩 실패 id: " << monsterId << '\n';
 
         mState.monsters.erase(monsterId);
         return 0;
@@ -95,37 +86,24 @@ EntityId ServerMonsterSystem::SpawnMonster(
     }
 
     std::cout
-        << "[World] 몬스터 생성 id: "
-        << monsterId
-        << " / 위치: "
-        << position.x
-        << ", "
-        << position.y
-        << ", "
-        << position.z
-        << '\n';
+        << "[World] 몬스터 생성 id: " << monsterId << " / 위치: "
+        << position.x << ", " << position.y << ", " << position.z << '\n';
 
     return monsterId;
 }
 
-void ServerMonsterSystem::TickActions(
-    float deltaTime,
-    ServerCombatSystem& combatSystem)
+void ServerMonsterSystem::TickActions(float deltaTime, ServerCombatSystem& combatSystem)
 {
     for (auto& [monsterId, monster] : mState.monsters)
     {
-        (void)monsterId;
 
         if (monster.actionDuration <= 0.0f)
             continue;
 
         monster.actionElapsedTime =
-            (std::min)(
-                monster.actionElapsedTime + deltaTime,
-                monster.actionDuration);
+            (std::min)(monster.actionElapsedTime + deltaTime, monster.actionDuration);
 
-        const float normalizedTime =
-            monster.actionElapsedTime / monster.actionDuration;
+        const float normalizedTime =monster.actionElapsedTime / monster.actionDuration;
 
         if (monster.alive &&
             monster.actionIsAttack &&
@@ -147,53 +125,37 @@ void ServerMonsterSystem::TickAI(float deltaTime)
         if (brainIter == mBrains.end())
             continue;
 
-        // 이번 Tick에만 유효한 Context다.
-        ServerMonsterFSMContext context(
-            *this,
-            monster,
-            deltaTime);
+        // 이번 Tick에만 유효한 Context
+        ServerMonsterFSMContext context( *this, monster,deltaTime);
 
         if (!monster.alive &&
             monster.state != eMonsterState::DEATH)
         {
-            // Update 바깥에서 발생한 이벤트는 FSM Core의 pending 전환으로 들어간다.
+            // Update 바깥에서 발생한 이벤트는 FSM Core의 pending 전환으로 들어감
             brainIter->second->SendFSMEvent("DEATH");
         }
 
-        const std::string beforeState =
-            brainIter->second->GetActiveStateName();
+        const std::string beforeState = brainIter->second->GetActiveStateName();
 
         brainIter->second->Update(context);
 
-        const std::string afterState =
-            brainIter->second->GetActiveStateName();
+        const std::string afterState = brainIter->second->GetActiveStateName();
 
         if (beforeState != afterState)
         {
-            VideoLog::Print(
-                "[FSM] Monster=",
-                monsterId,
-                " | ",
-                beforeState,
-                " -> ",
-                afterState,
-                " | Target=",
-                monster.targetPlayerId);
+            VideoLog::Print("[FSM] Monster=", monsterId, " | ", beforeState, " -> ", afterState, " | Target=", monster.targetPlayerId);
         }
     }
 }
 
-void ServerMonsterSystem::NotifyDamage(
-    EntityId monsterId,
-    bool isDead)
+void ServerMonsterSystem::NotifyDamage(EntityId monsterId,bool isDead)
 {
     auto brainIter = mBrains.find(monsterId);
 
     if (brainIter == mBrains.end())
         return;
 
-    brainIter->second->SendFSMEvent(
-        isDead ? "DEATH" : "DAMAGE");
+    brainIter->second->SendFSMEvent(isDead ? "DEATH" : "DAMAGE");
 }
 
 void ServerMonsterSystem::DespawnRequestedMonsters()
@@ -216,9 +178,7 @@ void ServerMonsterSystem::DespawnRequestedMonsters()
     }
 }
 
-EntityId ServerMonsterSystem::FindClosestAlivePlayer(
-    const ServerVec3& position,
-    float maxDistance) const
+EntityId ServerMonsterSystem::FindClosestAlivePlayer(const ServerVec3& position, float maxDistance) const
 {
     EntityId closestId = 0;
     float closestDistanceSquared = maxDistance * maxDistance;
@@ -228,10 +188,7 @@ EntityId ServerMonsterSystem::FindClosestAlivePlayer(
         if (!player.alive)
             continue;
 
-        const float distanceSquared =
-            ServerMath::DistanceSquaredXZ(
-                position,
-                player.position);
+        const float distanceSquared = ServerMath::DistanceSquaredXZ(position, player.position);
 
         if (distanceSquared > closestDistanceSquared)
             continue;
@@ -243,8 +200,7 @@ EntityId ServerMonsterSystem::FindClosestAlivePlayer(
     return closestId;
 }
 
-const ServerPlayer* ServerMonsterSystem::FindAlivePlayer(
-    EntityId entityId) const
+const ServerPlayer* ServerMonsterSystem::FindAlivePlayer(EntityId entityId) const
 {
     auto iter = mState.players.find(entityId);
 
@@ -254,18 +210,14 @@ const ServerPlayer* ServerMonsterSystem::FindAlivePlayer(
     return &iter->second;
 }
 
-void ServerMonsterSystem::SelectRandomPatrolTarget(
-    ServerMonster& monster,
-    float radius)
+void ServerMonsterSystem::SelectRandomPatrolTarget(ServerMonster& monster, float radius)
 {
     if (!monster.hasPatrolTarget)
     {
         monster.patrolOrigin = monster.position;
     }
 
-    std::uniform_real_distribution<float> distribution(
-        -radius,
-        radius);
+    std::uniform_real_distribution<float> distribution(-radius, radius);
 
     monster.patrolTarget =
     {
@@ -357,8 +309,7 @@ void ServerMonsterSystem::ApplyMonsterAnimation(
         return;
     }
 
-    const AnimationActionMeta* animationMeta =
-        FindAnimationMeta(animationName);
+    const AnimationActionMeta* animationMeta =FindAnimationMeta(animationName);
 
     if (animationMeta == nullptr ||
         animationMeta->duration <= 0.0f)
@@ -373,37 +324,28 @@ void ServerMonsterSystem::ApplyMonsterAnimation(
     }
 
     // DAMAGE/DEATH도 AnimFinishDecision이 정상적으로 기다리도록
-    // 단일 메타데이터 테이블에서 지속시간을 설정한다.
+    // 단일 메타데이터 테이블에서 지속시간을 설정
     monster.actionDuration = animationMeta->duration;
-    monster.attackHitNormalizedTime =
-        animationMeta->hitNormalizedTime;
+    monster.attackHitNormalizedTime = animationMeta->hitNormalizedTime;
 }
 
-void ServerMonsterSystem::BeginMonsterMeleeAttack(
-    ServerMonster& monster,
-    const std::vector<std::string>& animationNames)
+void ServerMonsterSystem::BeginMonsterMeleeAttack(ServerMonster& monster, const std::vector<std::string>& animationNames)
 {
     if (animationNames.empty())
         return;
 
-    const ServerPlayer* target =
-        FindAlivePlayer(monster.targetPlayerId);
+    const ServerPlayer* target =  FindAlivePlayer(monster.targetPlayerId);
 
     if (target == nullptr)
         return;
 
-    std::uniform_int_distribution<std::size_t> distribution(
-        0,
-        animationNames.size() - 1);
+    std::uniform_int_distribution<std::size_t> distribution( 0, animationNames.size() - 1);
 
-    const std::size_t selectedIndex =
-        distribution(mRandomEngine);
+    const std::size_t selectedIndex = distribution(mRandomEngine);
 
-    const std::string& animationName =
-        animationNames[selectedIndex];
+    const std::string& animationName = animationNames[selectedIndex];
 
-    const AnimationActionMeta* animationMeta =
-        FindAnimationMeta(animationName);
+    const AnimationActionMeta* animationMeta = FindAnimationMeta(animationName);
 
     if (animationMeta == nullptr ||
         animationMeta->duration <= 0.0f)
@@ -415,15 +357,13 @@ void ServerMonsterSystem::BeginMonsterMeleeAttack(
         return;
     }
 
-    monster.attackIndex =
-        static_cast<std::uint8_t>(selectedIndex);
+    monster.attackIndex = static_cast<std::uint8_t>(selectedIndex);
 
     monster.attackTargetId = target->entityId;
     monster.currentActionAnimation = animationName;
     monster.actionElapsedTime = 0.0f;
     monster.actionDuration = animationMeta->duration;
-    monster.attackHitNormalizedTime =
-        animationMeta->hitNormalizedTime;
+    monster.attackHitNormalizedTime = animationMeta->hitNormalizedTime;
     monster.actionIsAttack = true;
     monster.attackHitProcessed = false;
 
@@ -444,13 +384,11 @@ void ServerMonsterSystem::BeginMonsterMeleeAttack(
     float dirY = target->position.y - monster.position.y;
     float dirZ = target->position.z - monster.position.z;
 
-    const float lengthSquared =
-        dirX * dirX + dirY * dirY + dirZ * dirZ;
+    const float lengthSquared =  dirX * dirX + dirY * dirY + dirZ * dirZ;
 
     if (lengthSquared > 0.0001f)
     {
-        const float inverseLength =
-            1.0f / std::sqrt(lengthSquared);
+        const float inverseLength = 1.0f / std::sqrt(lengthSquared);
 
         dirX *= inverseLength;
         dirY *= inverseLength;
@@ -467,12 +405,11 @@ void ServerMonsterSystem::BeginMonsterMeleeAttack(
     monster.attackEventPending = true;
 
     // S_MONSTER_STATE와 S_MONSTER_ATTACK으로 공격 애니메이션이
-    // 중복 재생되지 않도록 공격 이벤트만 복제한다.
+    // 중복 재생되지 않도록 공격 이벤트만 복제
     monster.stateDirty = false;
 }
 
-const AnimationActionMeta* ServerMonsterSystem::FindAnimationMeta(
-    const std::string& animationName) const
+const AnimationActionMeta* ServerMonsterSystem::FindAnimationMeta(const std::string& animationName) const
 {
     auto iter = mAnimationMeta.find(animationName);
 
@@ -484,7 +421,7 @@ const AnimationActionMeta* ServerMonsterSystem::FindAnimationMeta(
 
 void ServerMonsterSystem::InitializeAnimationMeta()
 {
-    // 서버 판정용 duration과 hit normalized time의 단일 소스다.
+    // 서버 판정용 duration과 hit normalized time의 단일 소스
     mAnimationMeta["MONSTER_ATTACK"] = { 1.1f, 0.1f };
     mAnimationMeta["MONSTER_ATTACK2"] = { 4.63f, 0.25f };
     mAnimationMeta["MONSTER_ATTACK3"] = { 3.7f, 0.45f };

@@ -20,9 +20,7 @@ namespace
         float cooldown = 0.45f;
     };
 
-    bool IsValidAttackIndex(
-        eWeaponType weaponType,
-        std::uint8_t attackIndex)
+    bool IsValidAttackIndex(eWeaponType weaponType, std::uint8_t attackIndex)
     {
         switch (weaponType)
         {
@@ -37,9 +35,7 @@ namespace
         }
     }
 
-    bool GetSwordAttackConfig(
-        std::uint8_t attackIndex,
-        SwordAttackConfig& outConfig)
+    bool GetSwordAttackConfig(std::uint8_t attackIndex, SwordAttackConfig& outConfig)
     {
         switch (attackIndex)
         {
@@ -86,15 +82,13 @@ namespace
 }
 
 ServerCombatSystem::ServerCombatSystem(
-    ServerWorldState& state,
-    ServerWorldReplicator& replicator)
+    ServerWorldState& state, ServerWorldReplicator& replicator)
     : mState(state)
     , mReplicator(replicator)
 {
 }
 
-void ServerCombatSystem::SetMonsterDamageCallback(
-    MonsterDamageCallback callback)
+void ServerCombatSystem::SetMonsterDamageCallback(MonsterDamageCallback callback)
 {
     mMonsterDamageCallback = std::move(callback);
 }
@@ -152,7 +146,7 @@ void ServerCombatSystem::Handle(const AttackCommand& command)
         "[COMMAND] Processed | Type=Attack | Entity=",
         player.entityId);
 
-    // 다른 클라이언트에서 공격 애니메이션을 재생한다.
+    // 다른 클라이언트에서 공격 애니메이션을 재생
     mReplicator.BroadcastPlayerAttack(player, normalizedCommand);
 }
 
@@ -160,9 +154,8 @@ void ServerCombatSystem::TickPlayerCombat(float deltaTime)
 {
     for (auto& [playerId, player] : mState.players)
     {
-        (void)playerId;
-        player.attackCooldown =
-            (std::max)(0.0f, player.attackCooldown - deltaTime);
+  
+        player.attackCooldown =  (std::max)(0.0f, player.attackCooldown - deltaTime);
     }
 
     UpdatePlayerMeleeAttacks(deltaTime);
@@ -189,8 +182,7 @@ void ServerCombatSystem::TickProjectiles(float deltaTime)
         {
             projectile.position = hit.hitPosition;
 
-            eProjectileEndReason endReason =
-                eProjectileEndReason::HitWorld;
+            eProjectileEndReason endReason = eProjectileEndReason::HitWorld;
 
             if (hit.kind == eServerHitKind::Player)
             {
@@ -201,18 +193,9 @@ void ServerCombatSystem::TickProjectiles(float deltaTime)
                 endReason = eProjectileEndReason::HitMonster;
             }
 
-            VideoLog::Print(
-                "[PROJECTILE] Hit | Id=",
-                projectile.projectileId,
-                " | Target=",
-                hit.entityId,
-                " | HitT=",
-                hit.hitT);
+            VideoLog::Print("[PROJECTILE] Hit | Id=", projectile.projectileId, " | Target=", hit.entityId, " | HitT=", hit.hitT);
 
-            mReplicator.BroadcastProjectileEnd(
-                projectile,
-                hit,
-                endReason);
+            mReplicator.BroadcastProjectileEnd(projectile, hit, endReason);
 
             if (hit.kind == eServerHitKind::Player ||
                 hit.kind == eServerHitKind::Monster)
@@ -238,10 +221,7 @@ void ServerCombatSystem::TickProjectiles(float deltaTime)
             ProjectileHitResult expired = {};
             expired.hitPosition = projectile.position;
 
-            mReplicator.BroadcastProjectileEnd(
-                projectile,
-                expired,
-                eProjectileEndReason::Expired);
+            mReplicator.BroadcastProjectileEnd(projectile, expired, eProjectileEndReason::Expired);
 
             removeProjectiles.push_back(projectileId);
         }
@@ -257,7 +237,6 @@ void ServerCombatSystem::UpdatePlayerMeleeAttacks(float deltaTime)
 {
     for (auto& [playerId, player] : mState.players)
     {
-        (void)playerId;
         ServerMeleeAttack& attack = player.meleeAttack;
 
         if (!player.alive || !attack.active)
@@ -266,9 +245,7 @@ void ServerCombatSystem::UpdatePlayerMeleeAttacks(float deltaTime)
         attack.elapsedTime += deltaTime;
 
         const float normalizedTime =
-            attack.duration > 0.0f
-            ? attack.elapsedTime / attack.duration
-            : 1.0f;
+            attack.duration > 0.0f ? attack.elapsedTime / attack.duration : 1.0f;
 
         if (!attack.hitProcessed &&
             normalizedTime >= attack.hitNormalizedTime)
@@ -284,9 +261,7 @@ void ServerCombatSystem::UpdatePlayerMeleeAttacks(float deltaTime)
     }
 }
 
-bool ServerCombatSystem::BeginPlayerMeleeAttack(
-    ServerPlayer& player,
-    const AttackCommand& command)
+bool ServerCombatSystem::BeginPlayerMeleeAttack(ServerPlayer& player, const AttackCommand& command)
 {
     SwordAttackConfig config = {};
 
@@ -316,17 +291,13 @@ bool ServerCombatSystem::BeginPlayerMeleeAttack(
     return true;
 }
 
-void ServerCombatSystem::ResolvePlayerMeleeAttack(
-    const ServerPlayer& attacker,
-    const ServerMeleeAttack& attack)
+void ServerCombatSystem::ResolvePlayerMeleeAttack(const ServerPlayer& attacker, const ServerMeleeAttack& attack)
 {
-    // 몸 중심보다 조금 위에서 검 Sweep을 시작한다.
+    // 몸 중심보다 조금 위에서 검 Sweep을 시작
     ServerVec3 start = attacker.position;
     start.y += 80.0f;
 
-    const ServerVec3 end = ServerMath::Add(
-        start,
-        ServerMath::Multiply(attack.direction, attack.reach));
+    const ServerVec3 end = ServerMath::Add(start, ServerMath::Multiply(attack.direction, attack.reach));
 
     for (const auto& [monsterId, monster] : mState.monsters)
     {
@@ -484,9 +455,7 @@ void ServerCombatSystem::SpawnProjectile(
     projectile.damage = 5.0f;
     projectile.remainingLife = BulletLifeTime;
 
-    mState.projectiles.emplace(
-        projectile.projectileId,
-        projectile);
+    mState.projectiles.emplace(projectile.projectileId, projectile);
 
     VideoLog::Print(
         "[PROJECTILE] Spawn | Id=",
@@ -507,9 +476,7 @@ bool ServerCombatSystem::FindClosestProjectileHit(
     float closestT = 1.0f;
 
     const auto testTarget =
-        [&](const ServerAabb& box,
-            eServerHitKind kind,
-            EntityId entityId)
+        [&](const ServerAabb& box, eServerHitKind kind, EntityId entityId)
         {
             float hitT = 0.0f;
 
@@ -531,26 +498,19 @@ bool ServerCombatSystem::FindClosestProjectileHit(
             outHit.hitT = hitT;
             outHit.kind = kind;
             outHit.entityId = entityId;
-            outHit.hitPosition =
-                ServerMath::PointOnSegment(start, end, hitT);
+            outHit.hitPosition = ServerMath::PointOnSegment(start, end, hitT);
         };
 
-    for (const ServerStaticCollider& collider :
-        mState.staticWorldColliders)
+    for (const ServerStaticCollider& collider : mState.staticWorldColliders)
     {
-        testTarget(
-            collider.bounds,
-            eServerHitKind::World,
-            0);
+        testTarget(collider.bounds, eServerHitKind::World, 0);
     }
 
     const bool ownerIsPlayer =
-        mState.players.find(projectile.ownerEntityId) !=
-        mState.players.end();
+        mState.players.find(projectile.ownerEntityId) != mState.players.end();
 
     const bool ownerIsMonster =
-        mState.monsters.find(projectile.ownerEntityId) !=
-        mState.monsters.end();
+        mState.monsters.find(projectile.ownerEntityId) !=  mState.monsters.end();
 
     if (ownerIsPlayer)
     {
@@ -559,10 +519,7 @@ bool ServerCombatSystem::FindClosestProjectileHit(
             if (!monster.alive)
                 continue;
 
-            testTarget(
-                ServerMath::MakeMonsterAabb(monster),
-                eServerHitKind::Monster,
-                monsterId);
+            testTarget(ServerMath::MakeMonsterAabb(monster), eServerHitKind::Monster, monsterId);
         }
 
         if (mState.friendlyFire)
@@ -575,10 +532,7 @@ bool ServerCombatSystem::FindClosestProjectileHit(
                     continue;
                 }
 
-                testTarget(
-                    ServerMath::MakePlayerAabb(player),
-                    eServerHitKind::Player,
-                    playerId);
+                testTarget(ServerMath::MakePlayerAabb(player), eServerHitKind::Player, playerId);
             }
         }
     }
@@ -589,10 +543,7 @@ bool ServerCombatSystem::FindClosestProjectileHit(
             if (!player.alive)
                 continue;
 
-            testTarget(
-                ServerMath::MakePlayerAabb(player),
-                eServerHitKind::Player,
-                playerId);
+            testTarget(ServerMath::MakePlayerAabb(player), eServerHitKind::Player, playerId);
         }
     }
 

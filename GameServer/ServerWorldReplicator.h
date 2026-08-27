@@ -6,26 +6,18 @@
 #include <functional>
 
 // 게임 규칙 코드가 패킷 구조체와 전송 세부사항을 직접 다루지 않도록
-// 서버 월드의 모든 복제 패킷 생성을 한곳에 모은다.
+// 서버 월드의 모든 복제 패킷 생성을 한곳에 모음
 class ServerWorldReplicator
 {
 public:
     using SendToCallback =
-        std::function<void(
-            EntityId targetId,
-            const void* packetData,
-            std::uint16_t packetSize)>;
+        std::function<void(EntityId targetId, const void* packetData, std::uint16_t packetSize)>;
 
     using BroadcastExceptCallback =
-        std::function<void(
-            EntityId exceptId,
-            const void* packetData,
-            std::uint16_t packetSize)>;
+        std::function<void(EntityId exceptId, const void* packetData, std::uint16_t packetSize)>;
 
     using MarkEnteredCallback =
-        std::function<void(
-            EntityId entityId,
-            bool entered)>;
+        std::function<void(EntityId entityId, bool entered)>;
 
 public:
     void SetCallbacks(
@@ -35,9 +27,7 @@ public:
 
     void MarkEntered(EntityId entityId, bool entered);
 
-    void SendInitialSnapshot(
-        EntityId targetPlayerId,
-        const ServerWorldState& state);
+    void SendInitialSnapshot(EntityId targetPlayerId, const ServerWorldState& state);
 
     void BroadcastPlayerEntered(const ServerPlayer& player);
     void BroadcastPlayerLeft(EntityId entityId);
@@ -45,9 +35,7 @@ public:
     void BroadcastPlayerState(const ServerPlayer& player);
     void BroadcastPlayerWeapon(const ServerPlayer& player);
 
-    void BroadcastPlayerAttack(
-        const ServerPlayer& player,
-        const AttackCommand& command);
+    void BroadcastPlayerAttack(const ServerPlayer& player, const AttackCommand& command);
 
     void BroadcastProjectileSpawn(const ServerProjectile& projectile);
 
@@ -69,9 +57,7 @@ public:
     void BroadcastMonsterSpawn(const ServerMonster& monster);
     void BroadcastMonsterDespawn(EntityId entityId);
 
-    void FlushMonsterReplication(
-        ServerWorldState& state,
-        float deltaTime);
+    void FlushMonsterReplication(ServerWorldState& state, float deltaTime);
 
 private:
     template <typename T>
@@ -80,10 +66,7 @@ private:
         if (!mSendToCallback)
             return;
 
-        mSendToCallback(
-            targetId,
-            &packet,
-            packet.header.size);
+        mSendToCallback(targetId, &packet, packet.header.size);
     }
 
     template <typename T>
@@ -92,10 +75,7 @@ private:
         if (!mBroadcastExceptCallback)
             return;
 
-        mBroadcastExceptCallback(
-            exceptId,
-            &packet,
-            packet.header.size);
+        mBroadcastExceptCallback(exceptId, &packet, packet.header.size);
     }
 
 private:

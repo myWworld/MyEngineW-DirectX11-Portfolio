@@ -5,8 +5,8 @@
 #include <unordered_map>
 #include <vector>
 
-// 서버 월드의 권위 상태를 한곳에 보관한다.
-// 실제 수정은 기존과 동일하게 ServerWorld 단일 스레드에서만 수행한다.
+// 서버 월드의 권위 상태를 한곳에 보관
+// 실제 수정은  ServerWorld 단일 스레드에서만 수행
 struct ServerWorldState
 {
     std::unordered_map<EntityId, ServerPlayer> players;

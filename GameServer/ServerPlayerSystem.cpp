@@ -21,9 +21,7 @@ namespace
     }
 }
 
-ServerPlayerSystem::ServerPlayerSystem(
-    ServerWorldState& state,
-    ServerWorldReplicator& replicator)
+ServerPlayerSystem::ServerPlayerSystem(ServerWorldState& state, ServerWorldReplicator& replicator)
     : mState(state)
     , mReplicator(replicator)
 {
@@ -56,25 +54,15 @@ void ServerPlayerSystem::Handle(const EnterCommand& command)
     newPlayer.position = command.position;
     newPlayer.yaw = command.yaw;
 
-    // 현재 월드 상태를 먼저 전송한 뒤 새 플레이어를 등록한다.
-    // 따라서 본인에 대한 S_ENTER가 스냅샷에 중복 포함되지 않는다.
+    // 현재 월드 상태를 먼저 전송한 뒤 새 플레이어를 등록한
+    // 따라서 본인에 대한 S_ENTER가 스냅샷에 중복 포함되지 않는다
     mReplicator.SendInitialSnapshot(newPlayer.entityId, mState);
 
-    VideoLog::Print(
-        "[SNAPSHOT] To=",
-        newPlayer.entityId,
-        " | ExistingPlayers=",
-        mState.players.size(),
-        " | Monsters=",
-        mState.monsters.size());
+    VideoLog::Print("[SNAPSHOT] To=", newPlayer.entityId, " | ExistingPlayers=", mState.players.size(), " | Monsters=", mState.monsters.size());
 
     mState.players.emplace(newPlayer.entityId, newPlayer);
 
-    VideoLog::Print(
-        "[WORLD] Player Enter | Id=",
-        newPlayer.entityId,
-        " | TotalPlayers=",
-        mState.players.size());
+    VideoLog::Print("[WORLD] Player Enter | Id=", newPlayer.entityId, " | TotalPlayers=", mState.players.size());
 
     mReplicator.MarkEntered(newPlayer.entityId, true);
     mReplicator.BroadcastPlayerEntered(newPlayer);
@@ -90,7 +78,7 @@ void ServerPlayerSystem::Handle(const LeaveCommand& command)
     mState.players.erase(iter);
 
     // main.cpp에서도 연결 종료 직전에 false를 설정하지만,
-    // 월드 레벨 Leave 경로만 사용되는 경우도 안전하게 처리한다.
+    // 월드 레벨 Leave 경로만 사용되는 경우도 안전하게 처리함
     mReplicator.MarkEntered(command.entityId, false);
     mReplicator.BroadcastPlayerLeft(command.entityId);
 
@@ -129,8 +117,7 @@ void ServerPlayerSystem::Handle(const MoveCommand& command)
 void ServerPlayerSystem::Handle(const StateCommand& command)
 {
     // HIT/DEATH는 서버 데미지 판정에서만 확정한다.
-    if (command.state != ePlayerState::IDLE &&
-        command.state != ePlayerState::WALK)
+    if (command.state != ePlayerState::IDLE && command.state != ePlayerState::WALK)
     {
         return;
     }

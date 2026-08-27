@@ -10,7 +10,7 @@ ServerWorld::ServerWorld()
     , mMonsterSystem(mState, mReplicator)
 {
     // CombatSystem이 Monster FSM runtime의 내부 구조를 알지 않도록
-    // 데미지 결과만 콜백으로 전달한다.
+    // 데미지 결과만 콜백으로 전달
     mCombatSystem.SetMonsterDamageCallback(
         [this](EntityId monsterId, bool isDead)
         {
@@ -29,11 +29,9 @@ void ServerWorld::SetNetworkCallbacks(
         std::move(markEntered));
 }
 
-void ServerWorld::SetAllocateEntityIdCallback(
-    AllocateEntityIdCallback allocator)
+void ServerWorld::SetAllocateEntityIdCallback( AllocateEntityIdCallback allocator)
 {
-    mMonsterSystem.SetAllocateEntityIdCallback(
-        std::move(allocator));
+    mMonsterSystem.SetAllocateEntityIdCallback(std::move(allocator));
 }
 
 void ServerWorld::EnqueueCommand(WorldCommand command)
@@ -49,14 +47,9 @@ void ServerWorld::EnsureWorldInitialization()
     if (!mbInitialized.compare_exchange_strong(expected, true))
         return;
 
-    // 기존 코드와 같은 시점에 초기 몬스터를 생성한다.
-    // 첫 플레이어의 EntityId가 배정된 뒤 C_ENTER 처리 중 실행된다.
-    SpawnMonster(
-        eModelType::Mutant,
-        eWeaponType::Gauntlet,
-        { 1500.0f, 0.0f, 0.0f },
-        0.0f,
-        true);
+    // 기존 코드와 같은 시점에 초기 몬스터를 생성
+    // 첫 플레이어의 EntityId가 배정된 뒤 C_ENTER 처리 중 실행
+    SpawnMonster(eModelType::Mutant, eWeaponType::Gauntlet, { 1500.0f, 0.0f, 0.0f },0.0f,true);
 }
 
 void ServerWorld::Run()
@@ -115,8 +108,7 @@ void ServerWorld::ProcessCommands()
 
     while (!localCommands.empty())
     {
-        WorldCommand command =
-            std::move(localCommands.front());
+        WorldCommand command = std::move(localCommands.front());
 
         localCommands.pop();
 
@@ -134,16 +126,13 @@ void ServerWorld::Tick(float deltaTime)
     // 기존 ServerWorld::Tick의 실행 순서를 그대로 유지한다.
     mCombatSystem.TickPlayerCombat(deltaTime);
 
-    mMonsterSystem.TickActions(
-        deltaTime,
-        mCombatSystem);
+    mMonsterSystem.TickActions(deltaTime, mCombatSystem);
 
     mMonsterSystem.TickAI(deltaTime);
     mCombatSystem.TickProjectiles(deltaTime);
 
     mReplicator.FlushMonsterReplication(
-        mState,
-        deltaTime);
+        mState, deltaTime);
 
     mMonsterSystem.DespawnRequestedMonsters();
 }

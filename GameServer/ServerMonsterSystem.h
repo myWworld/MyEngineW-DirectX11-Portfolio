@@ -17,7 +17,7 @@ namespace ME
 
 class ServerCombatSystem;
 
-// 몬스터 생성/삭제, FSM runtime, 이동, 순찰, 애니메이션 Action을 담당한다.
+// 몬스터 생성/삭제, FSM runtime, 이동, 순찰, 애니메이션 Action을 담당
 class ServerMonsterSystem
 {
 public:
@@ -51,16 +51,12 @@ public:
     void NotifyDamage(EntityId monsterId, bool isDead);
     void DespawnRequestedMonsters();
 
-    // 아래 메서드는 MEServerMonsterFSMContext가 사용하는 좁은 서비스 API다.
-    EntityId FindClosestAlivePlayer(
-        const ServerVec3& position,
-        float maxDistance) const;
+    // 아래 메서드는 MEServerMonsterFSMContext가 사용
+    EntityId FindClosestAlivePlayer(const ServerVec3& position, float maxDistance) const;
 
     const ServerPlayer* FindAlivePlayer(EntityId entityId) const;
 
-    void SelectRandomPatrolTarget(
-        ServerMonster& monster,
-        float radius);
+    void SelectRandomPatrolTarget(ServerMonster& monster, float radius);
 
     bool MoveMonsterToward(
         ServerMonster& monster,
@@ -74,13 +70,10 @@ public:
         const std::string& animationName,
         bool loop);
 
-    void BeginMonsterMeleeAttack(
-        ServerMonster& monster,
-        const std::vector<std::string>& animationNames);
+    void BeginMonsterMeleeAttack(ServerMonster& monster, const std::vector<std::string>& animationNames);
 
 private:
-    const AnimationActionMeta* FindAnimationMeta(
-        const std::string& animationName) const;
+    const AnimationActionMeta* FindAnimationMeta(const std::string& animationName) const;
 
     void InitializeAnimationMeta();
 
@@ -88,13 +81,9 @@ private:
     ServerWorldState& mState;
     ServerWorldReplicator& mReplicator;
 
-    std::unordered_map<
-        EntityId,
-        std::unique_ptr<ME::FSMBrainCore>> mBrains;
+    std::unordered_map<EntityId, std::unique_ptr<ME::FSMBrainCore>> mBrains;
 
-    std::unordered_map<
-        std::string,
-        AnimationActionMeta> mAnimationMeta;
+    std::unordered_map<std::string,AnimationActionMeta> mAnimationMeta;
 
     std::mt19937 mRandomEngine
     {

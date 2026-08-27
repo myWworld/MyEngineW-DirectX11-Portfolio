@@ -57,9 +57,7 @@ namespace
         return packet;
     }
 
-    Pkt_S_Attack MakeAttackPacket(
-        const ServerPlayer& player,
-        const AttackCommand& command)
+    Pkt_S_Attack MakeAttackPacket(const ServerPlayer& player, const AttackCommand& command)
     {
         Pkt_S_Attack packet = {};
         packet.header.type = ePacketType::S_ATTACK;
@@ -172,19 +170,15 @@ void ServerWorldReplicator::MarkEntered(EntityId entityId, bool entered)
     }
 }
 
-void ServerWorldReplicator::SendInitialSnapshot(
-    EntityId targetPlayerId,
-    const ServerWorldState& state)
+void ServerWorldReplicator::SendInitialSnapshot(EntityId targetPlayerId, const ServerWorldState& state)
 {
     for (const auto& [existingId, existingPlayer] : state.players)
     {
-        (void)existingId;
         SendTo(targetPlayerId, MakeEnterPacket(existingPlayer));
     }
 
     for (const auto& [monsterId, monster] : state.monsters)
     {
-        (void)monsterId;
 
         if (!monster.alive)
             continue;
@@ -225,8 +219,7 @@ void ServerWorldReplicator::BroadcastPlayerAttack(
     BroadcastExcept(player.entityId, MakeAttackPacket(player, command));
 }
 
-void ServerWorldReplicator::BroadcastProjectileSpawn(
-    const ServerProjectile& projectile)
+void ServerWorldReplicator::BroadcastProjectileSpawn(const ServerProjectile& projectile)
 {
     Pkt_S_ProjectileSpawn packet = {};
     packet.header.type = ePacketType::S_PROJECTILE_SPAWN;
@@ -300,15 +293,12 @@ void ServerWorldReplicator::BroadcastMonsterDespawn(EntityId entityId)
     BroadcastExcept(0, MakeMonsterDespawnPacket(entityId));
 }
 
-void ServerWorldReplicator::FlushMonsterReplication(
-    ServerWorldState& state,
-    float deltaTime)
+void ServerWorldReplicator::FlushMonsterReplication(ServerWorldState& state, float deltaTime)
 {
     constexpr float MoveSendInterval = 1.0f / 20.0f;
 
     for (auto& [monsterId, monster] : state.monsters)
     {
-        (void)monsterId;
         monster.moveReplicationTimer += deltaTime;
 
         if (monster.stateDirty)

@@ -10,8 +10,8 @@
 #include <mutex>
 #include <queue>
 
-// 서버 월드의 단일 스레드 실행 순서와 Command Queue만 조율한다.
-// 플레이어/전투/몬스터/복제/충돌 세부 구현은 각 시스템에 위임한다.
+// 서버 월드의 단일 스레드 실행 순서와 Command Queue만 조율
+// 플레이어/전투/몬스터/복제/충돌 세부 구현은 각 시스템에 위임
 class ServerWorld
 {
 public:
@@ -44,8 +44,7 @@ public:
 
     void EnqueueCommand(WorldCommand command);
 
-    // 기존 공개 API 호환을 위해 유지한다.
-    // 실제 월드 상태 변경이므로 월드 스레드에서 호출하는 것을 전제로 한다.
+
     void EnsureWorldInitialization();
 
     void Run();
@@ -70,7 +69,7 @@ private:
     void HandleCommand(const AttackCommand& command);
 
 private:
-    // 선언 순서가 생성 순서다. 모든 시스템은 동일한 월드 상태를 참조한다.
+
     ServerWorldState mState;
     ServerWorldReplicator mReplicator;
     ServerPlayerSystem mPlayerSystem;

@@ -3,14 +3,12 @@
 #include "ServerWorldReplicator.h"
 #include "ServerWorldState.h"
 
-// 플레이어의 입장/퇴장/이동/상태/무기 변경만 담당한다.
-// 공격과 데미지는 ServerCombatSystem이 담당한다.
+// 플레이어의 입장/퇴장/이동/상태/무기 변경만 담당
+// 공격과 데미지는 ServerCombatSystem이 담당
 class ServerPlayerSystem
 {
 public:
-    ServerPlayerSystem(
-        ServerWorldState& state,
-        ServerWorldReplicator& replicator);
+    ServerPlayerSystem(ServerWorldState& state, ServerWorldReplicator& replicator);
 
     bool CanEnter(const EnterCommand& command) const;
 
