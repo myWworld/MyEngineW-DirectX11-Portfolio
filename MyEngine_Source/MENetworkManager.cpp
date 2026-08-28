@@ -104,6 +104,8 @@ namespace ME
 
 			localPackets.pop();
 
+
+
 			if (packetData.size() < sizeof(PacketHeader))
 			{
 				continue;
@@ -112,6 +114,7 @@ namespace ME
 
 			PacketHeader header = {};
 			std::memcpy(&header, packetData.data(), sizeof(PacketHeader));
+
 
 			auto it = mPacketHandlers.find(header.type);
 

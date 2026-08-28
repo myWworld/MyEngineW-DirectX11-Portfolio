@@ -47,7 +47,6 @@ void ServerWorld::EnsureWorldInitialization()
     if (!mbInitialized.compare_exchange_strong(expected, true))
         return;
 
-    // 기존 코드와 같은 시점에 초기 몬스터를 생성
     // 첫 플레이어의 EntityId가 배정된 뒤 C_ENTER 처리 중 실행
     SpawnMonster(eModelType::Mutant, eWeaponType::Gauntlet, { 1500.0f, 0.0f, 0.0f },0.0f,true);
 }

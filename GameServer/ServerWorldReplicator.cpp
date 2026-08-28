@@ -174,6 +174,9 @@ void ServerWorldReplicator::SendInitialSnapshot(EntityId targetPlayerId, const S
 {
     for (const auto& [existingId, existingPlayer] : state.players)
     {
+        if (existingId == targetPlayerId)
+            continue;
+
         SendTo(targetPlayerId, MakeEnterPacket(existingPlayer));
     }
 

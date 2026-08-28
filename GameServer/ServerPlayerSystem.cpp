@@ -54,17 +54,22 @@ void ServerPlayerSystem::Handle(const EnterCommand& command)
     newPlayer.position = command.position;
     newPlayer.yaw = command.yaw;
 
-    // 현재 월드 상태를 먼저 전송한 뒤 새 플레이어를 등록한
-    // 따라서 본인에 대한 S_ENTER가 스냅샷에 중복 포함되지 않는다
+
+
+    auto [playerIter, inserted] =  mState.players.emplace(newPlayer.entityId, newPlayer);
+
+    if (!inserted)
+        return;
+
+
+    mReplicator.MarkEntered(newPlayer.entityId, true);
+
     mReplicator.SendInitialSnapshot(newPlayer.entityId, mState);
 
     VideoLog::Print("[SNAPSHOT] To=", newPlayer.entityId, " | ExistingPlayers=", mState.players.size(), " | Monsters=", mState.monsters.size());
 
-    mState.players.emplace(newPlayer.entityId, newPlayer);
 
     VideoLog::Print("[WORLD] Player Enter | Id=", newPlayer.entityId, " | TotalPlayers=", mState.players.size());
-
-    mReplicator.MarkEntered(newPlayer.entityId, true);
     mReplicator.BroadcastPlayerEntered(newPlayer);
 }
 
