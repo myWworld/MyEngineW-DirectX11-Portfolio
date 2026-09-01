@@ -114,10 +114,7 @@ namespace ME
             return (std::numeric_limits<float>::max)();
         }
 
-        return math::Vector3::DistanceSquared(
-            mOwnerTransform->GetPosition(),
-            mTargetTransform->GetPosition()
-        );
+        return math::Vector3::DistanceSquared(mOwnerTransform->GetPosition(), mTargetTransform->GetPosition());
     }
 
     void ClientFSMContext::SelectRandomPatrolTarget(float radius)
@@ -134,22 +131,14 @@ namespace ME
             mbHasPatrolOrigin = true;
         }
 
-        std::uniform_real_distribution<float>
-            distribution(-radius, radius);
+        std::uniform_real_distribution<float> distribution(-radius, radius);
 
-        mPatrolTarget =
-            mPatrolOrigin + math::Vector3(distribution(GetRandomEngine()), 0.0f, distribution(GetRandomEngine()));
+        mPatrolTarget = mPatrolOrigin + math::Vector3(distribution(GetRandomEngine()), 0.0f, distribution(GetRandomEngine()));
     }
 
-    bool ClientFSMContext::MoveToPatrolTarget(
-        float speed,
-        float stoppingDistance)
+    bool ClientFSMContext::MoveToPatrolTarget(float speed, float stoppingDistance)
     {
-        return MoveToPosition(
-            mPatrolTarget,
-            speed,
-            stoppingDistance
-        );
+        return MoveToPosition(mPatrolTarget,speed, stoppingDistance);
     }
 
     bool ClientFSMContext::MoveToTarget(
@@ -159,15 +148,10 @@ namespace ME
         if (mTargetTransform == nullptr)
             return false;
 
-        return MoveToPosition(
-            mTargetTransform->GetPosition(),
-            speed,
-            stoppingDistance
-        );
+        return MoveToPosition(mTargetTransform->GetPosition(), speed, stoppingDistance);
     }
 
-    void ClientFSMContext::PlayAnimation(
-        const std::string& animationName, bool loop)
+    void ClientFSMContext::PlayAnimation(const std::string& animationName, bool loop)
     {
         CacheComponents();
 
@@ -177,9 +161,7 @@ namespace ME
             return;
         }
 
-        const std::wstring wideName(
-            animationName.begin(),
-            animationName.end());
+        const std::wstring wideName(animationName.begin(), animationName.end());
 
         auto* targetAnimation = mAnimator->FindAnimation(wideName);
 
@@ -197,8 +179,7 @@ namespace ME
         return mAnimator != nullptr &&  mAnimator->IsAnimationComplete();
     }
 
-    void ClientFSMContext::BeginMeleeAttack(
-        const std::vector<std::string>& animationNames)
+    void ClientFSMContext::BeginMeleeAttack(const std::vector<std::string>& animationNames)
     {
         if (animationNames.empty())
             return;
@@ -252,7 +233,7 @@ namespace ME
 
         direction.y = 0.0f;
 
-        const float distanceSquared = direction.LengthSquared();
+        const float distanceSquared = direction.LengthSquared();//이동거리
 
         if (distanceSquared <= stoppingDistance * stoppingDistance)
         {
@@ -264,7 +245,7 @@ namespace ME
 
         direction.Normalize();
 
-        const float yaw = std::atan2(direction.x, direction.z) * RadToDegree + 180.0f;
+        const float yaw = std::atan2(direction.x, direction.z) * RadToDegree + 180.0f;// 목표방향으로 회전 하도록 계산
 
         math::Vector3 rotation = mOwnerTransform->GetRotation();
 
@@ -272,7 +253,7 @@ namespace ME
 
         mOwnerTransform->SetRotation(rotation);
 
-        currentPosition += direction * speed * mDeltaTime;
+        currentPosition += direction * speed * mDeltaTime;//이동
 
         mOwnerTransform->SetPosition(currentPosition);
 

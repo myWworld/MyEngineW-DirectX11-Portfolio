@@ -131,17 +131,13 @@ namespace ME
                             if (transitionJson.contains("TrueState") &&
                                 !transitionJson["TrueState"].is_null())
                             {
-                                trueState = brain->FindState(
-                                    transitionJson["TrueState"].get<std::string>()
-                                );
+                                trueState = brain->FindState(transitionJson["TrueState"].get<std::string>());
                             }
 
                             if (transitionJson.contains("FalseState") &&
                                 !transitionJson["FalseState"].is_null())
                             {
-                                falseState = brain->FindState(
-                                    transitionJson["FalseState"].get<std::string>()
-                                );
+                                falseState = brain->FindState(transitionJson["FalseState"].get<std::string>());
                             }
 
                             state->AddTransition(std::move(decision), trueState, falseState);

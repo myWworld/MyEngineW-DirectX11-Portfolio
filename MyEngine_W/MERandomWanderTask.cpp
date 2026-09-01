@@ -11,10 +11,7 @@ namespace ME
 
     void RandomWanderTask::OnExecute(FSMBrainCore* brain, IFSMContext& context)
     {
-        const bool moving = context.MoveToPatrolTarget(
-                mSpeed,
-                mStoppingDistance
-            );
+        const bool moving = context.MoveToPatrolTarget(mSpeed, mStoppingDistance);
 
         if (!moving)
         {

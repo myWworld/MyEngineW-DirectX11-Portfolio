@@ -14,10 +14,7 @@ namespace ME
         }
 
         const bool moving =
-            context.MoveToTarget(
-                mSpeed,
-                mStoppingDistance
-            );
+            context.MoveToTarget(mSpeed, mStoppingDistance);
 
         if (!moving)
         {

@@ -222,6 +222,7 @@ namespace ME
         mStateElapsedTime = 0.0f;
         mbStarted = false;
 
-        mBlackboard = std::make_unique<BlackBoard>();
+        if(mBlackboard == nullptr)
+            mBlackboard = std::make_unique<BlackBoard>();
     }
 }

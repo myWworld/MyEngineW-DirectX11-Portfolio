@@ -60,11 +60,9 @@ namespace ME
             FSMState* trueState,
             FSMState* falseState = nullptr);
 
-        void AddTask(
-            std::unique_ptr<FSMTask> task);
+        void AddTask(std::unique_ptr<FSMTask> task);
 
-        void SetStateName(
-            const std::string& name);
+        void SetStateName(const std::string& name);
 
         const std::string& GetStateName() const;
 

@@ -61,26 +61,19 @@ namespace ME
         return mCore->GetActiveState();
     }
 
-    void FSMBrain::ChangeState(
-        FSMState* nextState)
+    void FSMBrain::ChangeState(FSMState* nextState)
     {
         mCore->ChangeState(nextState);
     }
 
-    void FSMBrain::SendFSMEvent(
-        const std::string& eventName)
+    void FSMBrain::SendFSMEvent(const std::string& eventName)
     {
         mCore->SendFSMEvent(eventName);
     }
 
-    void FSMBrain::AddState(
-        const std::string& name,
-        std::unique_ptr<FSMState> state)
+    void FSMBrain::AddState(const std::string& name, std::unique_ptr<FSMState> state)
     {
-        mCore->AddState(
-            name,
-            std::move(state)
-        );
+        mCore->AddState(name, std::move(state));
     }
 
     bool FSMBrain::SetInitialState(const std::string& name)

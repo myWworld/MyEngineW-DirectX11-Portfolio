@@ -22,24 +22,17 @@ namespace ME
 
         // true: 아직 이동 중
         // false: 도착했거나 이동할 대상 없음
-        virtual bool MoveToPatrolTarget(
-            float speed,
-            float stoppingDistance) = 0;
+        virtual bool MoveToPatrolTarget(float speed, float stoppingDistance) = 0;
 
-        virtual bool MoveToTarget(
-            float speed,
-            float stoppingDistance) = 0;
+        virtual bool MoveToTarget(float speed, float stoppingDistance) = 0;
 
         // 표현 상태
-        virtual void PlayAnimation(
-            const std::string& animationName,
-            bool loop) = 0;
+        virtual void PlayAnimation(const std::string& animationName, bool loop) = 0;
 
         virtual bool IsAnimationFinished() const = 0;
 
         // 공격
-        virtual void BeginMeleeAttack(
-            const std::vector<std::string>& animationNames) = 0;
+        virtual void BeginMeleeAttack(const std::vector<std::string>& animationNames) = 0;
 
         // 제거
         virtual void DestroyOwner() = 0;

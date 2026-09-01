@@ -61,9 +61,7 @@ namespace ME
                  mEvaluationTimer = 0.0f;
              }
 
-            return CheckDecision(brain, context)
-                ? eDecisionResult::True
-                : eDecisionResult::False;
+            return CheckDecision(brain, context) ? eDecisionResult::True : eDecisionResult::False;
         }
 
         void ResetRuntime()

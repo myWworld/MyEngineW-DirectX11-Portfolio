@@ -35,6 +35,8 @@ namespace ME
         TrueState = other.TrueState;
         FalseState = other.FalseState;
 
+        other.Decision = nullptr;
+
         return *this;
     }
 

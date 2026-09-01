@@ -335,8 +335,7 @@ namespace ME
 
         Vector3 positionDelta = position - mLastSentPosition;
 
-        bool positionChanged =
-            positionDelta.LengthSquared() > 0.25f;
+        bool positionChanged = positionDelta.LengthSquared() > 0.25f;
 
         float yawDelta = yaw - mLastSentYaw;
 

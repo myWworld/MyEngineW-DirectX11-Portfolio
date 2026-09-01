@@ -39,7 +39,7 @@ namespace ME
         void Clear();
 
     private:
-        // 반드시 유효한 Context를 전달받은 상태에서만 호출 context가 먼저 사라지는 문제발생
+        // 반드시 유효한 Context를 전달받은 상태에서만, 호출 context가 먼저 사라지는 문제발생
         void ApplyStateChange(FSMState* nextState, IFSMContext& context);
 
     private:

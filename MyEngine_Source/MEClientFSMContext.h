@@ -60,11 +60,9 @@ namespace ME
 
         Animator3D* mAnimator = nullptr;
 
-        math::Vector3 mPatrolOrigin =
-            math::Vector3::Zero;
+        math::Vector3 mPatrolOrigin = math::Vector3::Zero;
 
-        math::Vector3 mPatrolTarget =
-            math::Vector3::Zero;
+        math::Vector3 mPatrolTarget = math::Vector3::Zero;
 
         float mDeltaTime = 0.0f;
         bool mbHasPatrolOrigin = false;

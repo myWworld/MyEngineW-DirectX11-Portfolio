@@ -148,8 +148,7 @@ namespace ME
 		animator->PlayAnimation(mComboAnimNames[mComboCount], false);
 
 
-		outAttackInfo.attackIndex =
-			static_cast<std::uint8_t>(selectedAttackIndex);
+		outAttackInfo.attackIndex = static_cast<std::uint8_t>(selectedAttackIndex);
 
 		return true;
 

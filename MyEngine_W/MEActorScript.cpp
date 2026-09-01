@@ -134,9 +134,7 @@ namespace ME
 		if (mHp <= 0.0f &&
 			mHpBar != nullptr)
 		{
-			UIManager::RemoveAttachedUI(
-				mHpBar
-			);
+			UIManager::RemoveAttachedUI(mHpBar);
 
 			mHpBar = nullptr;
 		}

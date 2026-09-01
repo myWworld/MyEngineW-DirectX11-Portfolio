@@ -103,10 +103,6 @@ namespace ME
 			//tr->SetScale(Vector3(0.2f, 0.2f, 0.2f));
 			renderer::mainCamera->SetTarget(mPlayer);
 
-			//SpriteRenderer* sr = mPlayer->AddComponent<SpriteRenderer>();
-			//sr->SetMaterial(Resources::Find<Material>(L"SpriteMaterial"));
-			//sr->SetSprite(Resources::Find<graphics::Texture>(L"TITLE"));
-			//
 
 			MakeCharacter(mPlayer, L"CharacterModel");
 			mPlayer->AddComponent<PlayerScript>();

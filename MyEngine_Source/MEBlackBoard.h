@@ -31,7 +31,6 @@ namespace ME
 			if (itr != mData.end())
 			{
 				//  값(Value) 대신 포인터(Pointer) 주소를 넣어 캐스팅
-				// 타입이 다르면 예외를 던지지 않고 nullptr을 반환
 				T* valuePtr = std::any_cast<T>(&itr->second);
 
 				if (valuePtr != nullptr)
