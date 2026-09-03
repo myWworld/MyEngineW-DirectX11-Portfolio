@@ -70,10 +70,10 @@ namespace ME
 
 		auto& remotePlayers = activeScene->GetRemotePlayers();
 
-		if (enterPkt.entityId == NetworkManager::GetMyEntityId())
+		if (enterPkt.entityId == NetworkManager::GetMyEntityId())//나일 경우 생략
 			return;
 
-		if (remotePlayers.find(enterPkt.entityId) != remotePlayers.end())
+		if (remotePlayers.find(enterPkt.entityId) != remotePlayers.end()) //이미 등록돼 있을 경우 생략
 			return;
 
 		auto dummyPlayer = std::make_unique<GameObject>();
@@ -107,11 +107,9 @@ namespace ME
 
 		remoteScript->ApplyState(enterPkt.state);
 
-		remoteScript->ApplyMove(
-			enterPkt.x, enterPkt.y, enterPkt.z, enterPkt.yaw
-		);
+		remoteScript->ApplyMove(enterPkt.x, enterPkt.y, enterPkt.z, enterPkt.yaw);
 
-		activeScene->AddRemotePlayer(enterPkt.entityId, std::move(dummyPlayer));
+		activeScene->AddRemotePlayer(enterPkt.entityId, std::move(dummyPlayer));//본인 월드에서 다른 플레이어 더미를 관리
 
 	}
 	void ClientPacketHandler::Handle_S_Move(const std::vector<char>& packetData)
@@ -234,7 +232,7 @@ namespace ME
 
 		auto& remoteMonsters = activeScene->GetRemoteMonsters();
 
-		if (remoteMonsters.find(pkt.entityId) != remoteMonsters.end())
+		if (remoteMonsters.find(pkt.entityId) != remoteMonsters.end())//같은 몬스터가 이미 존재 시 생략
 		{
 			return;
 		}
@@ -290,7 +288,7 @@ namespace ME
 
 		remoteScript->ApplyState(pkt.state);
 
-		activeScene->AddRemoteMonster(pkt.entityId, std::move(enemyDummy));
+		activeScene->AddRemoteMonster(pkt.entityId, std::move(enemyDummy));//몬스터 더미 등록
 	}
 
 	void ClientPacketHandler::Handle_S_MonsterMove(const std::vector<char>& packetData)
@@ -404,7 +402,7 @@ namespace ME
 			pkt.projectileId, pkt.ownerEntityId,
 			math::Vector3(pkt.start_x, pkt.start_y, pkt.start_z),
 			math::Vector3(pkt.velocity_x, pkt.velocity_y, pkt.velocity_z),
-			pkt.lifeTime);
+			pkt.lifeTime);//비쥬얼만 렌더링 용 관리자 투사체 풀에서 꺼내와 생성
 	}
 
 	void ClientPacketHandler::Handle_S_ProjectileEnd(const std::vector<char>& packetData)
@@ -418,7 +416,7 @@ namespace ME
 			pkt.projectileId,
 			math::Vector3(pkt.end_x, pkt.end_y, pkt.end_z),
 			pkt.reason
-		);
+		);//풀에 재반환
 	}
 
 	void ClientPacketHandler::Handle_S_Damage(const std::vector<char>& packetData)
@@ -466,7 +464,7 @@ namespace ME
 
 		auto playerIter = remotePlayers.find(packet.victimId);
 
-		if (playerIter != remotePlayers.end())
+		if (playerIter != remotePlayers.end())//다른 플레이어일 경우
 		{
 			RemotePlayerScript* script = playerIter->second->GetComponent<RemotePlayerScript>();
 
@@ -480,7 +478,7 @@ namespace ME
 
 		auto monsterIter = remoteMonsters.find(packet.victimId);
 
-		if (monsterIter != remoteMonsters.end())
+		if (monsterIter != remoteMonsters.end())// 몬스터일 경우
 		{
 			RemoteMonsterScript* script = monsterIter->second->GetComponent<RemoteMonsterScript>();
 

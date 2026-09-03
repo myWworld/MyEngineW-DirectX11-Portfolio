@@ -58,13 +58,13 @@ namespace ME
 
     void RemotePlayerScript::OnPrimaryAction()
     {
-        // 원격 플레이어는 내 입력으로 공격하지 않음.
+        // 원격 플레이어는 내 입력으로 공격하지 않음
     }
 
     void RemotePlayerScript::OnToggleWeapon()
     {
-        // 원격 플레이어는 내 입력으로 무기 전환하지 않음.
-        // 무기 전환도 나중에 S_WEAPON_CHANGE 같은 패킷으로 처리.
+        // 원격 플레이어는 내 입력으로 무기 전환하지 않음
+        // 무기 전환도 나중에 S_WEAPON_CHANGE 같은 패킷으로 처리
     }
 
     void RemotePlayerScript::OnDeath()
@@ -74,8 +74,8 @@ namespace ME
 
     void RemotePlayerScript::DamageProcess(DamageInfo damageInfo)
     {
-        // 원격 플레이어의 HP/데미지는 로컬 충돌로 계산하지 않는 게 좋음.
-        // 나중에 서버가 S_DAMAGE 또는 S_STATE로 알려주는 값만 반영.
+        // 원격 플레이어의 HP/데미지는 로컬 충돌로 계산하지 않는 게 좋음
+        // 나중에 서버가 S_DAMAGE 또는 S_STATE로 알려주는 값만 반영
     }
 
     Bone* RemotePlayerScript::GetWeaponSocketBone()
@@ -92,9 +92,8 @@ namespace ME
 
     Vector3 RemotePlayerScript::GetAimDirection()
     {
-        // 원격 플레이어는 renderer::mainCamera를 쓰면 안 됨.
-        // 일단 기본 전방값 반환.
-        // 엔진에 Transform::GetForward()가 있으면 그걸 쓰는 게 더 좋음.
+        // 원격 플레이어는 renderer::mainCamera를 쓰면 안 됨
+        // 일단 기본 전방값 반환
         return Vector3::Forward;
     }
 
@@ -117,8 +116,8 @@ namespace ME
     void RemotePlayerScript::ApplyAttack(
         eWeaponType weaponType, std::uint8_t attackIndex, const Vector3& direction)
     {
-        // IDLE/WALK는 같은 상태면 계속 PlayAnimation 호출하지 않기.
-        // 계속 호출하면 애니메이션이 매 프레임 첫 프레임으로 리셋될 수 있음.
+        // IDLE/WALK는 같은 상태면 계속 PlayAnimation 호출하지 않기
+        // 계속 호출하면 애니메이션이 매 프레임 첫 프레임으로 리셋될 수 있음
 
         if (weaponType == eWeaponType::Sword)
         {
@@ -174,7 +173,7 @@ namespace ME
 
         WeaponScript* nextWeapon = iter->second;
 
-        for (auto& [type, weapon] : mWeaponMap)
+        for (auto& [type, weapon] : mWeaponMap)//바뀔 무기 제외하고 비활성화
         {
             if (weapon != nullptr)
             {
@@ -187,7 +186,7 @@ namespace ME
 
         if (!mbPlayingAction)
         {
-            ApplyState(mCurrentRemoteState, true);
+            ApplyState(mCurrentRemoteState, true);//무기에 맞는 애니메이션 동기화
         }
     }
 
@@ -235,7 +234,7 @@ namespace ME
     void RemotePlayerScript::ApplyServerDamage(
         float remainingHp,
         bool isDead,
-        const Vector3& hitPosition)
+        const Vector3& hitPosition)//서버 데미지 처리
     {
         SetCurrentHP(remainingHp);
 

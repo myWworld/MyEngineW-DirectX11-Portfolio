@@ -70,11 +70,11 @@ namespace ME
         mVelocity = velocity;
         mRemainingLife = lifeTime;
 
-        mbLaunched = true;
+        mbLaunched = true;//발사 시작 플래그
         mbReturnRequested = false;
     }
 
-    void NetworkProjectileScript::ResetForPool()
+    void NetworkProjectileScript::ResetForPool()//풀 반환전 발사체 객체에서 초기화 담당하여 책임 나눔
     {
         mProjectileId = 0;
         mOwnerEntityId = 0;

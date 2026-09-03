@@ -126,11 +126,7 @@ namespace ME
         }
     }
 
-    void RemoteMonsterScript::ApplyMove(
-        float x,
-        float y,
-        float z,
-        float yaw)
+    void RemoteMonsterScript::ApplyMove(float x, float y, float z, float yaw)
     {
         CacheComponents();
 
@@ -147,9 +143,7 @@ namespace ME
         mTransform->SetRotation(rotation);
     }
 
-    void RemoteMonsterScript::ApplyState(
-        eMonsterState state,
-        bool forced)
+    void RemoteMonsterScript::ApplyState(eMonsterState state, bool forced)
     {
         CacheComponents();
 
@@ -235,7 +229,7 @@ namespace ME
         }
     }
 
-    void RemoteMonsterScript::PlayPersistentState()
+    void RemoteMonsterScript::PlayPersistentState()//상태에 따라 계속 실행해 줘야하는 애니메이션 다룸
     {
         if (mAnimator == nullptr)
             return;

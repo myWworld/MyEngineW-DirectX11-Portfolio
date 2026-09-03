@@ -54,7 +54,7 @@ namespace ME
         if (projectile == nullptr)
             return nullptr;
 
-        projectile->AddComponent<NetworkProjectileScript>();
+        projectile->AddComponent<NetworkProjectileScript>();//로컬에서 사용되는 렌더링 전용 컴포넌트
 
         Transform* transform = projectile->GetComponent<Transform>();
 
@@ -110,7 +110,7 @@ namespace ME
 
         Transform* transform = projectile->GetComponent<Transform>();
 
-        if (transform != nullptr)
+        if (transform != nullptr)//시작 위치 발사 방향(회전) 결정
         {
             transform->SetPosition(startPosition);
 
@@ -134,7 +134,7 @@ namespace ME
             return;
         }
 
-        script->Launch(projectileId, ownerEntityId, velocity, lifeTime);
+        script->Launch(projectileId, ownerEntityId, velocity, lifeTime);//실제 로컬에서 발사체 렌더링 시작
 
         mActiveProjectiles[projectileId] = projectile;
     }
@@ -148,7 +148,7 @@ namespace ME
         // 벽/플레이어/몬스터 피격 이펙트를
         // 추가할 수 있음
 
-        ReturnInternal(projectileId, &endPosition);
+        ReturnInternal(projectileId, &endPosition);//풀 반환
     }
 
     void ProjectileVisualManager::ReturnByLifetime(ProjectileId projectileId)
@@ -185,7 +185,7 @@ namespace ME
 
         NetworkProjectileScript* script = projectile->GetComponent<NetworkProjectileScript>();
 
-        if (script != nullptr)
+        if (script != nullptr)//풀반환전용 초기화
         {
             script->ResetForPool();
         }
