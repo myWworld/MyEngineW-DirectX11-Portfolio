@@ -377,6 +377,7 @@ FodyWeavers.xsd
 !/Resources/BoneMap.json
 !/Resources/EnemyFSMJson.json
 !/Resources/ResourceList.json
+!/Resources/README.md
 
 # Local demonstration videos
 /PlayVideo/
