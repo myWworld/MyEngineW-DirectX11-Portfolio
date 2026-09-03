@@ -22,10 +22,10 @@ namespace
         }
 
         const float inverseDelta = 1.0f / delta;
-        float t1 = (boxMin - start) * inverseDelta;
-        float t2 = (boxMax - start) * inverseDelta;
+        float t1 = (boxMin - start) * inverseDelta;//처음 박스입장 시간
+        float t2 = (boxMax - start) * inverseDelta;//처음 박스 퇴장 시간
 
-        if (t1 > t2)
+        if (t1 > t2)//반대로 됐을 경우 계산의 편의를 위해 교체
         {
             std::swap(t1, t2);
         }

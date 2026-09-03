@@ -13,7 +13,7 @@ namespace ME
 
 	void UIManager::Initailize()
 	{
-		// HP Bar는 액터마다 여러 개 생기는 UI이므로 mUIs에 싱글 인스턴스로 넣지 않는다.
+	
 
 	}
 

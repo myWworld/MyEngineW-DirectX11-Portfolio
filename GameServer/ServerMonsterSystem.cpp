@@ -103,7 +103,7 @@ void ServerMonsterSystem::TickActions(float deltaTime, ServerCombatSystem& comba
         monster.actionElapsedTime =
             (std::min)(monster.actionElapsedTime + deltaTime, monster.actionDuration);
 
-        const float normalizedTime =monster.actionElapsedTime / monster.actionDuration;
+        const float normalizedTime = monster.actionElapsedTime / monster.actionDuration;
 
         if (monster.alive &&
             monster.actionIsAttack &&

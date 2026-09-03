@@ -42,9 +42,7 @@ public:
         float yaw,
         bool broadcast);
 
-    void TickActions(
-        float deltaTime,
-        ServerCombatSystem& combatSystem);
+    void TickActions(float deltaTime, ServerCombatSystem& combatSystem);
 
     void TickAI(float deltaTime);
 

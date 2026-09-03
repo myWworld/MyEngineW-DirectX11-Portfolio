@@ -197,7 +197,7 @@ void HandleClient(SOCKET clientSocket, EntityId clientId, ServerWorld& world)
                 pendingBuffer.begin() + consumedBytes,
                 pendingBuffer.begin() + consumedBytes + header.size);
 
-            if (!DispatchClientPacket(clientId, packetData, world))
+            if (!DispatchClientPacket(clientId, packetData, world))//패킷 내용 커맨드로 변환해서 서버 월드 커맨드 큐에 넣음
             {
                 protocolError = true;
                 break;

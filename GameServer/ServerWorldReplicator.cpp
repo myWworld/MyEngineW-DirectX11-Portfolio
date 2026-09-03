@@ -170,7 +170,7 @@ void ServerWorldReplicator::MarkEntered(EntityId entityId, bool entered)
     }
 }
 
-void ServerWorldReplicator::SendInitialSnapshot(EntityId targetPlayerId, const ServerWorldState& state)
+void ServerWorldReplicator::SendInitialSnapshot(EntityId targetPlayerId, const ServerWorldState& state)//이미 서버에 있는 정보를 타겟에 전송
 {
     for (const auto& [existingId, existingPlayer] : state.players)
     {

@@ -26,8 +26,8 @@ namespace ME
 			if (mNodes[i] != nullptr)
 			{
 				mNodes[i]->Clear();
-				/*delete mNodes[i];
-				mNodes[i] = nullptr;*/
+				//delete mNodes[i];
+				//mNodes[i] = nullptr;
 			}
 		}
 	}
