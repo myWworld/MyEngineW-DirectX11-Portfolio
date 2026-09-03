@@ -31,6 +31,64 @@
 
 ---
 
+## 빠른 코드 리뷰 가이드
+
+> 이 저장소는 **DirectX 11 기반 3D 엔진**, **클라이언트 게임플레이·표현**, **TCP Dedicated Server**를 하나의 솔루션에서 연결한 개인 프로젝트입니다.  
+> 모든 파일을 순서대로 읽기보다 아래 진입점을 따라가면 핵심 설계와 데이터 흐름을 빠르게 확인할 수 있습니다.
+
+### 30초 구조 요약
+
+| 영역 | 책임 | 폴더 안내 |
+|---|---|---|
+| Engine Core | 게임 루프, Scene/Object 구조, 렌더링, 애니메이션, 충돌, 공통 FSM, 네트워크 수신 | [`MyEngine_Source`](./MyEngine_Source/README.md) |
+| Client Gameplay | 로컬 플레이어, 무기, Scene 구성, 원격 개체와 투사체 표현 | [`MyEngine_W`](./MyEngine_W/README.md) |
+| Dedicated Server | 세션 수신, Command Queue, 60Hz World Tick, 전투·몬스터 판정, 결과 복제 | [`GameServer`](./GameServer/README.md) |
+| Shaders | 정적·스키닝 모델, Sprite, 공통 Buffer·Texture·Sampler 정의 | [`Shaders_SOURCE`](./Shaders_SOURCE/README.md) |
+| Data | Resource 목록, Bone 이름 매핑, JSON FSM 상태 그래프 | [`Resources`](./Resources/README.md) |
+
+전체 저장소를 처음 검토하는 경우 [`docs/REVIEW_GUIDE.md`](./docs/REVIEW_GUIDE.md)부터 읽는 것을 권장합니다.
+
+### 5분 추천 검토 순서
+
+1. **프레임과 객체 구조**  
+   [`MEApplication.cpp`](./MyEngine_Source/MEApplication.cpp) → [`MESceneManager.cpp`](./MyEngine_Source/MESceneManager.cpp) → [`MEGameObject.h`](./MyEngine_Source/MEGameObject.h)
+
+2. **DirectX 11 렌더링**  
+   [`MEGraphicDevice_DX11.cpp`](./MyEngine_Source/MEGraphicDevice_DX11.cpp) → [`MERenderer.cpp`](./MyEngine_Source/MERenderer.cpp) → [`MEModel.cpp`](./MyEngine_Source/MEModel.cpp)
+
+3. **TCP 수신과 Main Thread 적용**  
+   [`Protocol.h`](./MyEngine_Source/Protocol.h) → [`MENetworkManager.cpp`](./MyEngine_Source/MENetworkManager.cpp) → [`MEClientPacketHandler.cpp`](./MyEngine_Source/MEClientPacketHandler.cpp)
+
+4. **서버 World와 전투 판정**  
+   [`GameServer/main.cpp`](./GameServer/main.cpp) → [`ServerWorld.cpp`](./GameServer/ServerWorld.cpp) → [`ServerCombatSystem.cpp`](./GameServer/ServerCombatSystem.cpp) → [`ServerWorldReplicator.cpp`](./GameServer/ServerWorldReplicator.cpp)
+
+5. **공통 FSM을 Client와 Server에서 재사용한 구조**  
+   [`FSMBrainCore.cpp`](./MyEngine_Source/FSMBrainCore.cpp) → [`IFSMContext.h`](./MyEngine_Source/IFSMContext.h) → [`MEClientFSMContext.cpp`](./MyEngine_Source/MEClientFSMContext.cpp) / [`MEServerMonsterFSMContext.cpp`](./GameServer/MEServerMonsterFSMContext.cpp)
+
+### 핵심 데이터 흐름
+
+```mermaid
+flowchart LR
+    Input["Client Input / Weapon"] -->|"C_* Request"| ClientNet["MENetworkManager"]
+    ClientNet -->|"TCP Stream"| ServerRecv["Per-Client Recv Thread"]
+    ServerRecv --> Command["WorldCommand Queue"]
+    Command --> World["ServerWorld · 60Hz"]
+    World --> Systems["Player / Combat / Monster Systems"]
+    Systems --> State["ServerWorldState"]
+    Systems --> Replicator["ServerWorldReplicator"]
+    Replicator -->|"S_* Result"| ClientRecv["Client Recv Thread"]
+    ClientRecv --> PacketQueue["Packet Queue"]
+    PacketQueue --> Handler["MEClientPacketHandler"]
+    Handler --> Presentation["Remote Objects / Projectile Visual / UI"]
+```
+
+### 범위와 권한 경계
+
+- **전투 결과**: 공격 가능 여부, 쿨다운, 투사체 이동, Sweep 충돌, HP와 사망은 서버가 확정합니다.
+- **이동 동기화**: 현재 프로토타입은 Client가 보고한 위치를 서버가 최소 검증 후 복제하는 구조입니다.
+- **Thread 경계**: Recv Thread는 패킷·Command를 Queue에 넣고, Client Scene과 Server World 상태 변경은 각 소유 Thread에서 수행합니다.
+
+
 ## 프로젝트 개요
 
 | 구분 | 내용 |
