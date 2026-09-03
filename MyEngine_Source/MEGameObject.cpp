@@ -17,22 +17,15 @@ namespace ME {
 		initializeTransform();
 	}
 
-	GameObject::~GameObject() {
+	GameObject::~GameObject() 
+	{
 
-		for (Component* comp : mComponents)
-		{
-			if (comp == nullptr)
-				continue;
-
-			delete comp;
-			comp = nullptr;
-		}
 	}
 
 
 	void GameObject::Initialize()
 	{
-		for (Component* comp : mComponents)
+		for (auto& comp : mComponents)
 		{
 
 			if (comp == nullptr)
@@ -44,12 +37,10 @@ namespace ME {
 
 	void GameObject::Update()
 	{
-		for (Component* comp : mComponents)
+		for (auto& comp : mComponents)
 		{
 			if (comp == nullptr)
 				continue;
-
-
 
 			comp->Update();
 		}
@@ -57,7 +48,7 @@ namespace ME {
 
 	void GameObject::LateUpdate()
 	{
-		for (Component* comp : mComponents)
+		for (auto& comp : mComponents)
 		{
 			if (comp == nullptr)
 				continue;
@@ -71,7 +62,7 @@ namespace ME {
 	void GameObject::Render()
 	{
 
- 		for (Component* comp : mComponents)
+		for (auto& comp : mComponents)
 		{
 			if (comp == nullptr)
 				continue;

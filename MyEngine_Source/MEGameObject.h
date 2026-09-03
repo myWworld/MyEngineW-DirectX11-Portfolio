@@ -28,16 +28,33 @@ namespace ME {
 		virtual void LateUpdate();
 		virtual void Render();
 
-		template <typename T>
-		T* AddComponent()
+		template <typename T, typename... Args>
+		T* AddComponent(Args&&... args)
 		{
-			T* comp = new T();
-			comp->SetOwner(this);
-			comp->Initialize();
+			static_assert(std::is_base_of_v<Component, T>, "T must derive from Component");
 
-			mComponents[(UINT)comp->GetType()] = comp;
-			
-			return comp;
+			auto component = std::make_unique<T>(std::forward<Args>(args)...);
+
+			component->SetOwner(this);
+			component->Initialize();
+
+			const auto index = static_cast<std::size_t>(component->GetType());
+
+			if (index >= mComponents.size())
+			{
+				throw std::out_of_range("Invalid component type");
+			}
+
+			if (mComponents[index] != nullptr)
+			{
+				throw std::logic_error("Component type already exists");
+			}
+
+			T* componentPtr = component.get();
+
+			mComponents[index] = std::move(component);
+
+			return componentPtr;
 		}
 
 		template <typename T>
@@ -45,14 +62,14 @@ namespace ME {
 		{
 			T* component = nullptr;
 			
-			for (Component* comp : mComponents)
-				{
-					component = dynamic_cast<T*>(comp);
+			for (const auto& comp : mComponents)
+			{
+					component = dynamic_cast<T*>(comp.get());
 					if (component)
 					{
 						break;
 					}
-				}
+			}
 
 				return component;
 		}
@@ -107,7 +124,7 @@ namespace ME {
 	
 	private:
 
-		std::vector<Component*> mComponents;
+		std::vector<std::unique_ptr<Component>> mComponents;
 		Model* model;
 
 		eState mState;

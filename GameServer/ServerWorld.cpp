@@ -51,7 +51,7 @@ void ServerWorld::EnsureWorldInitialization()
 	SpawnMonster(eModelType::Mutant, eWeaponType::Gauntlet, { 1500.0f, 0.0f, 0.0f }, 0.0f, true);
 }
 
-void ServerWorld::Run()//백그라운드 쓰레드에서 계속 실행됨
+void ServerWorld::Run()
 {
 	if (mbRunning.exchange(true))
 	{
@@ -74,7 +74,7 @@ void ServerWorld::Run()//백그라운드 쓰레드에서 계속 실행됨
 
 		const auto now = Clock::now();
 
-		if (now < nextTick)//고정 주기 이내일 경우 대기
+		if (now < nextTick)
 		{
 			std::this_thread::sleep_until(nextTick);
 		}

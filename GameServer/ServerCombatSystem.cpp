@@ -153,7 +153,7 @@ void ServerCombatSystem::TickPlayerCombat(float deltaTime)
 	for (auto& [playerId, player] : mState.players)
 	{
 		player.attackCooldown =
-			(std::max)(0.0f, player.attackCooldown - deltaTime);//쿨타임 초기화
+			(std::max)(0.0f, player.attackCooldown - deltaTime);
 	}
 
 	UpdatePlayerMeleeAttacks(deltaTime);
