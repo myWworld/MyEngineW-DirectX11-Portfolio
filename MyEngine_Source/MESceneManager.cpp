@@ -27,14 +27,26 @@ namespace ME
 
 	Scene* SceneManager::LoadScene(const std::wstring& name)
 	{
-		if (mActiveScene)
-			mActiveScene->OnExit();
+		std::unordered_map<std::wstring, std::unique_ptr<Scene>>::iterator iter = mScene.find(name);
 
-		if (!(SetActiveScene(name)))
-		{
+		if (iter == mScene.end())
 			return nullptr;
-		}
 
+		Scene* newScene = iter->second.get();
+
+		if (newScene == nullptr)
+			return nullptr;
+
+		if (mActiveScene)
+		{
+			if (mActiveScene == newScene)
+				return mActiveScene;
+			
+			mActiveScene->OnExit();
+		}
+	
+
+		mActiveScene = newScene;
 
 		mActiveScene->OnEnter();
 

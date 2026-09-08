@@ -114,12 +114,9 @@ namespace ME
 		if (!monster)
 			return;
 
-		mRemoteMonsters[id] =
-			monster.get();
+		mRemoteMonsters[id] = monster.get();
 
-		mLayers[static_cast<UINT>(enums::eLayerType::Monster)]->AddGameObject(
-			std::move(monster)
-		);
+		mLayers[static_cast<UINT>(enums::eLayerType::Monster)]->AddGameObject(std::move(monster));
 	}
 
 	void Scene::EraseRemoteMonster(UINT id)
@@ -130,8 +127,7 @@ namespace ME
 		if (iter == mRemoteMonsters.end())
 			return;
 
-		GameObject* monster =
-			iter->second;
+		GameObject* monster = iter->second;
 
 		EraseGameObject(monster);
 

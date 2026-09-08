@@ -9,7 +9,7 @@ namespace ME
 
 	void FrustumCulling::ConstructFrustum(const math::Matrix& vp)
 	{
-		//클립 스페이스 = 월드 Mat * View Mat
+		//클립 스페이스
         // Left Plane
         mPlanes[0].normal.x = vp._14 + vp._11;
         mPlanes[0].normal.y = vp._24 + vp._21;

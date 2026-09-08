@@ -90,7 +90,7 @@ namespace ME
 		//	Resources::Load<graphics::Texture>(L"Character", L"..\\Resources\\characterBase.fbx");
 
 
-			renderer::Initialize();
+			//renderer::Initialize();
 			FSMFactory::Initialize();
 			std::ifstream file("..\\Resources\\ResourceList.json");
 			json datas = json::parse(file);
@@ -105,7 +105,7 @@ namespace ME
 		
 		}
 
-		SceneManager::SetActiveScene(L"LoadingScene");
+		//SceneManager::SetActiveScene(L"LoadingScene");
 
 		mbLoadCompleted = true;
 
