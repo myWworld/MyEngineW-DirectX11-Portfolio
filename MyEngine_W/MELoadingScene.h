@@ -27,7 +27,7 @@ namespace ME
 
 	private:
 
-		bool mbLoadCompleted;
+		std::atomic<bool> mbLoadCompleted;
 		std::thread* mResourcesLoadThread;
 		std::mutex mMutualExclusion;
 

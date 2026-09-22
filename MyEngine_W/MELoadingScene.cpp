@@ -55,7 +55,7 @@ namespace ME
 	}
 	void LoadingScene::Render()
 	{
-		if (mbLoadCompleted)
+		if (mbLoadCompleted.load(std::memory_order_acquire))
 		{
 			mResourcesLoadThread->join();
 
@@ -107,7 +107,7 @@ namespace ME
 
 		//SceneManager::SetActiveScene(L"LoadingScene");
 
-		mbLoadCompleted = true;
+		mbLoadCompleted.store(true, std::memory_order_release);
 
 	}
 
