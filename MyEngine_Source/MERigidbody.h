@@ -12,10 +12,10 @@ namespace ME
 
 		enum class eForceMode
 		{
-			Force,      // F = ma ¡æ ¸Å ÇÁ·¹ÀÓ ÈûÀ¸·Î ´©Àû (dt ¹İ¿µ)
-			Impulse,    // ¼ø°£ ÀÓÆŞ½º ¡æ ¼Óµµ¿¡ Áï½Ã ¹İ¿µ (dt ¹«°ü)
-			VelocityChange, // Áú·® ¹«½ÃÇÏ°í ¹Ù·Î ¼Óµµ¿¡ ¹İ¿µ
-			Acceleration,   // Áú·® ¹«½Ã, °¡¼Óµµ·Î ´©Àû
+			Force,      // F = ma â†’ ë§¤ í”„ë ˆì„ í˜ìœ¼ë¡œ ëˆ„ì  (dt ë°˜ì˜)
+			Impulse,    // ìˆœê°„ ì„í„ìŠ¤ â†’ ì†ë„ì— ì¦‰ì‹œ ë°˜ì˜ (dt ë¬´ê´€)
+			VelocityChange, // ì§ˆëŸ‰ ë¬´ì‹œí•˜ê³  ë°”ë¡œ ì†ë„ì— ë°˜ì˜
+			Acceleration,   // ì§ˆëŸ‰ ë¬´ì‹œ, ê°€ì†ë„ë¡œ ëˆ„ì 
 		};
 
 		Rigidbody();
@@ -30,14 +30,14 @@ namespace ME
 			
 			mMass = mass; 
 		}
-		void AddForce(Vector3 force) { sumAccel += force; }
+		void AddForce(Vector3 force) { sumForce += force; }
 
 		void AddForce(const Vector3& v, eForceMode mode)
 		{
 			switch (mode) {
 			case eForceMode::Force:          sumForce += v;      break; // N
 			case eForceMode::Acceleration:   sumAccel += v;      break; // m/s^2
-			case eForceMode::Impulse:        sumImpulse += v;      break; // N¡¤s
+			case eForceMode::Impulse:        sumImpulse += v;      break; // NÂ·s
 			case eForceMode::VelocityChange: sumVelChange += v;    break; // m/s
 			}
 		}
