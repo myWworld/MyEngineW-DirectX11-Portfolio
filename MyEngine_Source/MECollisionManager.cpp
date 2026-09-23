@@ -17,8 +17,8 @@ namespace ME
 		 if (mQuadTree == nullptr)
 		 {
 
-			 math::Vector2 worldMin(-10000.0f, -10000.0f); // ¸Ê ÃÖ¼Ò ÁÂÇ¥
-			 math::Vector2 worldMax(10000.0f, 10000.0f);   // ¸Ê ÃÖ´ë ÁÂÇ¥
+			 math::Vector2 worldMin(-10000.0f, -10000.0f); // ë§µ ìµœì†Œ ì¢Œí‘œ
+			 math::Vector2 worldMax(10000.0f, 10000.0f);   // ë§µ ìµœëŒ€ ì¢Œí‘œ
 
 			 mQuadTree = new QuadTree(0, worldMin, worldMax);
 		 }
@@ -40,13 +40,13 @@ namespace ME
 			}
 		}
 
-		//¸ÊÀ» ¼øÈ¸ÇÏ¸ç Àú¹ø ÇÁ·¹ÀÓ±îÁö´Â Ãæµ¹ ÁßÀÌ¾ú´Âµ¥(true), ÀÌ¹ø ÇÁ·¹ÀÓ ÄõµåÆ®¸® °Ë»ç¸Á¿¡¼­´Â ¾Æ¿¹ ´©¶ôµÈ(¼¼Æ®¿¡ ¾ø´Â) ½ÖÀ» »öÃâ
+		//ë§µì„ ìˆœíšŒí•˜ë©° ì €ë²ˆ í”„ë ˆì„ê¹Œì§€ëŠ” ì¶©ëŒ ì¤‘ì´ì—ˆëŠ”ë°(true), ì´ë²ˆ í”„ë ˆì„ ì¿¼ë“œíŠ¸ë¦¬ ê²€ì‚¬ë§ì—ì„œëŠ” ì•„ì˜ˆ ëˆ„ë½ëœ(ì„¸íŠ¸ì— ì—†ëŠ”) ìŒì„ ìƒ‰ì¶œ
 		for (auto& pair : mCollisionMap)
 		{
 			UINT64 id = pair.first;
 			CollisionInfo& info = pair.second;
 
-			// Ãæµ¹ »óÅÂ¿´´Âµ¥ ÀÌ¹ø ÇÁ·¹ÀÓ¿¡ °Ë»çÁ¶Â÷ µÇÁö ¾Ê¾Ò´Ù¸é ¸Ö¾îÁø °ÍÀÓ
+			// ì¶©ëŒ ìƒíƒœì˜€ëŠ”ë° ì´ë²ˆ í”„ë ˆì„ì— ê²€ì‚¬ì¡°ì°¨ ë˜ì§€ ì•Šì•˜ë‹¤ë©´ ë©€ì–´ì§„ ê²ƒì„
 			if (info.isColliding && mCheckedThisFrame.find(id) == mCheckedThisFrame.end())
 			{
 				if (info.left != nullptr && info.right != nullptr)
@@ -54,7 +54,7 @@ namespace ME
 					info.left->OnCollisionExit(info.right);
 					info.right->OnCollisionExit(info.left);
 				}
-				info.isColliding = false; // »óÅÂ µ¿±âÈ­
+				info.isColliding = false; // ìƒíƒœ ë™ê¸°í™”
 			}
 		}
 	}
@@ -129,7 +129,12 @@ namespace ME
 
 	void CollisionManager::ColliderCollision(Collider* left, Collider* right)
 	{
-		//µÎ Ãæµ¹Ã¼ ¹øÈ£¸¦ °¡Á®¿Â ID¸¦ È®ÀÎÇØ¼­ CollisionId °ªÀ» ¼¼ÆÃ
+		if (left == nullptr || right == nullptr || left == right)
+	    {
+	        return;
+	    }
+
+		//ë‘ ì¶©ëŒì²´ ë²ˆí˜¸ë¥¼ ê°€ì ¸ì˜¨ IDë¥¼ í™•ì¸í•´ì„œ CollisionId ê°’ì„ ì„¸íŒ…
 		CollisionID id = {  };
 
 		if (left->GetID() < right->GetID())
@@ -142,10 +147,16 @@ namespace ME
 			id.left = right->GetID();
 			id.right = left->GetID();
 		}
-		//ÇØ´ç id·Î Ãæµ¹Ã¼ Á¤º¸¸¦ °Ë»öÇØÁØ´Ù.
-		//¸¸¾à¿¡ Ãæµ¹Ã¼ Á¤º¸°¡ ¾ø´Ù¸é Ãæµ¹Á¤º¸¸¦ »ı¼º
+		//í•´ë‹¹ idë¡œ ì¶©ëŒì²´ ì •ë³´ë¥¼ ê²€ìƒ‰í•´ì¤€ë‹¤.
+		//ë§Œì•½ì— ì¶©ëŒì²´ ì •ë³´ê°€ ì—†ë‹¤ë©´ ì¶©ëŒì •ë³´ë¥¼ ìƒì„±
 
-		mCheckedThisFrame.insert(id.id);
+		const auto [checkedIter, inserted] = mCheckedThisFrame.insert(pairKey);
+
+		if (!inserted)
+		{
+		    // ì´ë²ˆ í”„ë ˆì„ì— ì´ë¯¸ Narrow Phaseê¹Œì§€ ê²€ì‚¬í•œ Pair
+		    return;
+		}
 
 		auto iter = mCollisionMap.find(id.id);
 		
@@ -158,12 +169,12 @@ namespace ME
 		}
 		else
 		{
-			// Æ÷ÀÎÅÍ °»½Å (¿ÀºêÁ§Æ® Àç»ı¼º µîÀ¸·Î ÁÖ¼Ò°¡ ¹Ù²ğ °Í¿¡ ´ëºñ)
+			// í¬ì¸í„° ê°±ì‹  (ì˜¤ë¸Œì íŠ¸ ì¬ìƒì„± ë“±ìœ¼ë¡œ ì£¼ì†Œê°€ ë°”ë€” ê²ƒì— ëŒ€ë¹„)
 			iter->second.left = left;
 			iter->second.right = right;
 		}
 
-		//Ãæµ¹Ã¼Å©¸¦ ÇØÁÖ¸éµÈ´Ù.
+		//ì¶©ëŒì²´í¬ë¥¼ í•´ì£¼ë©´ëœë‹¤.
 
 		if (Intersect(left, right))
 		{
