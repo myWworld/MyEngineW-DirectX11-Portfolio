@@ -150,7 +150,7 @@ namespace ME
 		//해당 id로 충돌체 정보를 검색해준다.
 		//만약에 충돌체 정보가 없다면 충돌정보를 생성
 
-		const auto [checkedIter, inserted] = mCheckedThisFrame.insert(pairKey);
+		const auto [checkedIter, inserted] = mCheckedThisFrame.insert(id.id);
 
 		if (!inserted)
 		{

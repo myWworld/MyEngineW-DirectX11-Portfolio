@@ -58,44 +58,61 @@ namespace ME
 	{
 		std::vector<GameObject*> outList;
 
-
-		const auto& activeObjs = mActiveScene->GetLayer(layer)->GetGameObject();
-		for (auto& uPtr : activeObjs)
+		if (mActiveScene != nullptr)
 		{
-			outList.push_back(uPtr); 
+			const auto& activeObjs = mActiveScene->GetLayer(layer)->GetGameObject();
+			for (auto& uPtr : activeObjs)
+			{
+				outList.push_back(uPtr);
+			}
 		}
 
-		const auto& dontDestroyObjs = mDontDestroyOnLoad->GetLayer(layer)->GetGameObject();
-		for (auto& uPtr : dontDestroyObjs)
+		if (mDontDestroyOnLoad != nullptr)
 		{
-			outList.push_back(uPtr);
+			const auto& dontDestroyObjs = mDontDestroyOnLoad->GetLayer(layer)->GetGameObject();
+			for (auto& uPtr : dontDestroyObjs)
+			{
+				outList.push_back(uPtr);
+			}
 		}
 
 		return outList;
-
 	}
 
-	 
 	void SceneManager::Update()
 	{
-		mActiveScene->Update();
-		mDontDestroyOnLoad->Update();
+		if (mActiveScene)
+			mActiveScene->Update();
+
+		if (mDontDestroyOnLoad)
+			mDontDestroyOnLoad->Update();
 	}
+
 	void SceneManager::LateUpdate()
 	{
-		mActiveScene->LateUpdate();
-		mDontDestroyOnLoad->LateUpdate();
+		if (mActiveScene)
+			mActiveScene->LateUpdate();
+
+		if (mDontDestroyOnLoad)
+			mDontDestroyOnLoad->LateUpdate();
 	}
+
 	void SceneManager::Render()
 	{
-		mActiveScene->Render();
-		mDontDestroyOnLoad->Render();
+		if (mActiveScene)
+			mActiveScene->Render();
+
+		if (mDontDestroyOnLoad)
+			mDontDestroyOnLoad->Render();
 	}
 
 	void SceneManager::Destroy()
 	{
-		mActiveScene->Destroy();
-		mDontDestroyOnLoad->Destroy();
+		if (mActiveScene)
+			mActiveScene->Destroy();
+
+		if (mDontDestroyOnLoad)
+			mDontDestroyOnLoad->Destroy();
 	}
 
 	void SceneManager::Release()

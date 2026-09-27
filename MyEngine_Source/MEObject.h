@@ -17,7 +17,18 @@ namespace ME::object
 		T* gameObjectPtr = gameObject.get();
 
 		Scene* activeScene = SceneManager::GetActiveScene();
+
+		if (activeScene == nullptr)
+		{
+			throw std::runtime_error("No active scene found. Cannot instantiate GameObject.");
+		}
+
 		Layer* layer = activeScene->GetLayer(type);
+
+		if (layer == nullptr)
+		{
+			throw std::runtime_error("Layer not found in the active scene. Cannot instantiate GameObject.");
+		}
 		
 		layer->AddGameObject(std::move(gameObject));
 
@@ -29,6 +40,11 @@ namespace ME::object
 	 T* Instantiate(ME::enums::eLayerType type, math::Vector3 position)
 	{
 		T* gameObjectPtr = Instantiate<T>(type);
+
+		if (gameObjectPtr == nullptr)
+		{
+			throw std::runtime_error("Failed to instantiate GameObject.");
+		}
 
 		Transform* tr = gameObjectPtr->GetComponent<Transform>();
 		tr->SetPosition(position);
@@ -51,6 +67,10 @@ namespace ME::object
 	{
 		Scene* activeScene = SceneManager::GetActiveScene();
 
+		if (activeScene == nullptr)
+		{
+			throw std::runtime_error("No active scene found. Cannot move GameObject to DontDestroyOnLoad.");
+		}
 		enums::eLayerType layerType = gameObject->GetLayerType();
 
 		//현재 씬의 레이어에서 해당 객체의 소유권을 찾아옴
