@@ -73,7 +73,7 @@ namespace ME
 
 	
 
-	void Skeleton::RegisterBone(aiNode* node, std::unordered_map<std::string, math::Matrix>& preRot)//스켈레톤의 뼈배열 등록 및 해시맵에 등록
+	void Skeleton::RegisterBone(aiNode* node, std::unordered_map<std::string, math::Matrix>& baseLoc)//스켈레톤의 뼈배열 등록 및 해시맵에 등록
 	{
 		std::string nodeName = node->mName.C_Str();
 		size_t nodeHash = 0;

@@ -15,10 +15,7 @@ namespace ME
 {
     std::unique_ptr<ObjectPool<GameObject>> ProjectileVisualManager::mPool = nullptr;
 
-    std::unordered_map<
-        ProjectileId,
-        GameObject*>
-        ProjectileVisualManager::mActiveProjectiles;
+    std::unordered_map<ProjectileId, GameObject*> ProjectileVisualManager::mActiveProjectiles;
 
     void ProjectileVisualManager::Initialize(std::size_t poolSize)
     {

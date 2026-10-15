@@ -48,7 +48,7 @@ namespace ME
 	}
 	void LoadingScene::Update()
 	{
-
+		
 	}
 	void LoadingScene::LateUpdate()
 	{

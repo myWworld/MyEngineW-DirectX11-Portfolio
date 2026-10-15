@@ -150,6 +150,67 @@ namespace
 
         return packet;
     }
+
+    Pkt_S_ProjectileSpawn MakeProjectileSpawnPacket(const ServerProjectile& projectile)
+    {
+        Pkt_S_ProjectileSpawn packet = {};
+        packet.header.type = ePacketType::S_PROJECTILE_SPAWN;
+        packet.header.size = static_cast<std::uint16_t>(sizeof(Pkt_S_ProjectileSpawn));
+        packet.projectileId = projectile.projectileId;
+        packet.ownerEntityId = projectile.ownerEntityId;
+        packet.start_x = projectile.position.x;
+        packet.start_y = projectile.position.y;
+        packet.start_z = projectile.position.z;
+        packet.velocity_x = projectile.velocity.x;
+        packet.velocity_y = projectile.velocity.y;
+        packet.velocity_z = projectile.velocity.z;
+        packet.lifeTime = projectile.remainingLife;
+
+        return packet;
+    }
+
+    Pkt_S_ProjectileEnd MakeProjectileEndPacket(const ServerProjectile& projectile, 
+        const ProjectileHitResult& hit, eProjectileEndReason reason)
+    {
+        Pkt_S_ProjectileEnd packet = {};
+        packet.header.type = ePacketType::S_PROJECTILE_END;
+        packet.header.size = static_cast<std::uint16_t>(sizeof(Pkt_S_ProjectileEnd));
+        packet.projectileId = projectile.projectileId;
+        packet.reason = reason;
+        packet.hitEntityId = hit.entityId;
+        packet.end_x = hit.hitPosition.x;
+        packet.end_y = hit.hitPosition.y;
+        packet.end_z = hit.hitPosition.z;
+
+        return packet;
+    }
+
+    Pkt_S_Damage MakeDamagePacket(
+        eDamageCause cause,
+        EntityId attackerId,
+        EntityId victimId,
+        ProjectileId projectileId,
+        float appliedDamage,
+        float remainingHp,
+        bool isDead,
+        const ServerVec3& hitPosition)
+    {
+        Pkt_S_Damage packet = {};
+        packet.header.type = ePacketType::S_DAMAGE;
+        packet.header.size = static_cast<std::uint16_t>(sizeof(Pkt_S_Damage));
+        packet.cause = cause;
+        packet.projectileId = projectileId;
+        packet.attackerId = attackerId;
+        packet.victimId = victimId;
+        packet.damage = appliedDamage;
+        packet.remainingHp = remainingHp;
+        packet.isDead = isDead ? 1 : 0;
+        packet.hit_x = hitPosition.x;
+        packet.hit_y = hitPosition.y;
+        packet.hit_z = hitPosition.z;
+
+        return packet;
+    }
 }
 
 void ServerWorldReplicator::SetCallbacks(
@@ -224,21 +285,8 @@ void ServerWorldReplicator::BroadcastPlayerAttack(
 
 void ServerWorldReplicator::BroadcastProjectileSpawn(const ServerProjectile& projectile)
 {
-    Pkt_S_ProjectileSpawn packet = {};
-    packet.header.type = ePacketType::S_PROJECTILE_SPAWN;
-    packet.header.size = static_cast<std::uint16_t>(sizeof(Pkt_S_ProjectileSpawn));
-    packet.projectileId = projectile.projectileId;
-    packet.ownerEntityId = projectile.ownerEntityId;
-    packet.start_x = projectile.position.x;
-    packet.start_y = projectile.position.y;
-    packet.start_z = projectile.position.z;
-    packet.velocity_x = projectile.velocity.x;
-    packet.velocity_y = projectile.velocity.y;
-    packet.velocity_z = projectile.velocity.z;
-    packet.lifeTime = projectile.remainingLife;
-
     // exceptId = 0이면 모든 entered 클라이언트에게 전송한다.
-    BroadcastExcept(0, packet);
+    BroadcastExcept(0, MakeProjectileSpawnPacket(projectile));
 }
 
 void ServerWorldReplicator::BroadcastProjectileEnd(
@@ -246,17 +294,7 @@ void ServerWorldReplicator::BroadcastProjectileEnd(
     const ProjectileHitResult& hit,
     eProjectileEndReason reason)
 {
-    Pkt_S_ProjectileEnd packet = {};
-    packet.header.type = ePacketType::S_PROJECTILE_END;
-    packet.header.size = static_cast<std::uint16_t>(sizeof(Pkt_S_ProjectileEnd));
-    packet.projectileId = projectile.projectileId;
-    packet.reason = reason;
-    packet.hitEntityId = hit.entityId;
-    packet.end_x = hit.hitPosition.x;
-    packet.end_y = hit.hitPosition.y;
-    packet.end_z = hit.hitPosition.z;
-
-    BroadcastExcept(0, packet);
+    BroadcastExcept(0, MakeProjectileEndPacket(projectile, hit , reason));
 }
 
 void ServerWorldReplicator::BroadcastDamage(
@@ -269,21 +307,10 @@ void ServerWorldReplicator::BroadcastDamage(
     bool isDead,
     const ServerVec3& hitPosition)
 {
-    Pkt_S_Damage packet = {};
-    packet.header.type = ePacketType::S_DAMAGE;
-    packet.header.size = static_cast<std::uint16_t>(sizeof(Pkt_S_Damage));
-    packet.cause = cause;
-    packet.projectileId = projectileId;
-    packet.attackerId = attackerId;
-    packet.victimId = victimId;
-    packet.damage = appliedDamage;
-    packet.remainingHp = remainingHp;
-    packet.isDead = isDead ? 1 : 0;
-    packet.hit_x = hitPosition.x;
-    packet.hit_y = hitPosition.y;
-    packet.hit_z = hitPosition.z;
 
-    BroadcastExcept(0, packet);
+    BroadcastExcept(0, MakeDamagePacket(cause, attackerId, victimId,
+                projectileId, appliedDamage, remainingHp
+                 , isDead, hitPosition));
 }
 
 void ServerWorldReplicator::BroadcastMonsterSpawn(const ServerMonster& monster)

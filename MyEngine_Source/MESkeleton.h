@@ -46,7 +46,7 @@ namespace ME
 		Bone* GetBone(const std::wstring& boneName);
 
 		void CalculateFinalTransform();
-		void RegisterBone(aiNode* node, std::unordered_map<std::string, math::Matrix>& preRot);
+		void RegisterBone(aiNode* node, std::unordered_map<std::string, math::Matrix>& baseLoc);
 		void RegisterSkinData(const aiScene* scene);
 
 		void SetModelType( enums::eModelType type) { mModelType = type; }

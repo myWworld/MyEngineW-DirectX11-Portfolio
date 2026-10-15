@@ -37,7 +37,7 @@ namespace ME
         Mesh* ProcessMesh(aiMesh* mesh, const aiScene* scene);
         std::vector<std::shared_ptr<graphics::Texture>> LoadMaterialTextures(aiMaterial* mat, aiTextureType type, const std::wstring& typeName);
 
-        std::unordered_map<std::string, math::Matrix> LoadPreRotationsWithFBXSDK(const std::wstring& wpath);
+        std::unordered_map<std::string, math::Matrix> LoadBaseLocalWithFBXSDK(const std::wstring& wpath);
 
 
     

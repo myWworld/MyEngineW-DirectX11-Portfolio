@@ -35,7 +35,7 @@ namespace ME
         std::string path_str = std::string(path.begin(), path.end());
         importer.SetPropertyBool(AI_CONFIG_IMPORT_FBX_PRESERVE_PIVOTS, false);
 
-        auto preRot = LoadPreRotationsWithFBXSDK(path);
+        auto baseLoc = LoadBaseLocalWithFBXSDK(path);
 
         const aiScene* scene = importer.ReadFile(path_str,
             aiProcess_Triangulate |
@@ -62,7 +62,7 @@ namespace ME
 
         std::wstring directory = path.substr(0, path.find_last_of('/') + 1);
 
-        mSkeleton.RegisterBone(scene->mRootNode, preRot);
+        mSkeleton.RegisterBone(scene->mRootNode, baseLoc);
         mSkeleton.BuildSkeleton(scene->mRootNode);
         mSkeleton.SetBoneProfile(profile);
         ProcessNode(scene->mRootNode, scene);
@@ -317,9 +317,9 @@ namespace ME
          return textures;
     }
 
-     std::unordered_map<std::string, math::Matrix> Model::LoadPreRotationsWithFBXSDK(const std::wstring& wpath)
+     std::unordered_map<std::string, math::Matrix> Model::LoadBaseLocalWithFBXSDK(const std::wstring& wpath)
      {
-         std::unordered_map<std::string, math::Matrix> bonePreRotations;
+         std::unordered_map<std::string, math::Matrix> boneBaseLocal;
 
          FbxManager* pManager = FbxManager::Create();
          FbxIOSettings* ios = FbxIOSettings::Create(pManager, IOSROOT);
@@ -332,7 +332,7 @@ namespace ME
 
          if (!pImporter->Initialize(path.c_str(), -1, pManager->GetIOSettings()) || !pImporter->Import(pScene)) {
              std::cerr << "FBX SDK Load Error: " << pImporter->GetStatus().GetErrorString() << std::endl;
-             return bonePreRotations;
+             return boneBaseLocal;
          }
 
          pImporter->Destroy();
@@ -341,9 +341,8 @@ namespace ME
          Traverse = [&](FbxNode* node) {
 
              std::string nodeName = node->GetName();
-             
-             FbxVector4 preRot = node->GetPreRotation(FbxNode::eSourcePivot);
-             
+            
+         
              FbxAMatrix localMat = node->EvaluateLocalTransform();
 
              Matrix local;
@@ -358,7 +357,7 @@ namespace ME
              local._34 = -local._34;
              local._43 = -local._43; // Z축 이동(Translation) 반전
 
-             bonePreRotations[nodeName] = local;
+             boneBaseLocal[nodeName] = local;
 
              for (int i = 0; i < node->GetChildCount(); ++i)
                  Traverse(node->GetChild(i));
@@ -367,7 +366,7 @@ namespace ME
          Traverse(pScene->GetRootNode());
 
          pManager->Destroy();
-         return bonePreRotations;
+         return boneBaseLocal;
      }
 
      math::Matrix Model::ConvertAIMatrixToMatrix(aiMatrix4x4& aiMat)
