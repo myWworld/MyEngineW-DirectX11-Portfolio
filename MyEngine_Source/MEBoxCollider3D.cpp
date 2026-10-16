@@ -45,25 +45,25 @@ namespace ME
 
 		//graphics::GetDevice()->BindRasterizerState(renderer::rasterizerStates[(UINT)eRasterizerState::WireFrame].Get());
 			
-			Transform debugTransform; //ÇöÀç ±¸Á¶´Â ÃÖ»óÀ§ ºÎ¸ğ¿¡´ëÇÑ Æ®·£½ºÆû¸¸ ÀÖ¾î¼­ ±×°Å¸¦ Äİ¶óÀÌ´õ À§Ä¡·Î ¸ÂÃç¹ö¸®¸é ºÎ¸ğ À§Ä¡±îÁö ¿Ö°îµÇ¹Ç·Î ÀÓ½Ã °´Ã¼»ı¼º
+			Transform debugTransform; //í˜„ì¬ êµ¬ì¡°ëŠ” ìµœìƒìœ„ ë¶€ëª¨ì—ëŒ€í•œ íŠ¸ëœìŠ¤í¼ë§Œ ìˆì–´ì„œ ê·¸ê±°ë¥¼ ì½œë¼ì´ë” ìœ„ì¹˜ë¡œ ë§ì¶°ë²„ë¦¬ë©´ ë¶€ëª¨ ìœ„ì¹˜ê¹Œì§€ ì™œê³¡ë˜ë¯€ë¡œ ì„ì‹œ ê°ì²´ìƒì„±
 
 			// ==========================================
-		// ¿ÀÇÁ¼Â º¤ÅÍ¸¦ ºÎ¸ğÀÇ È¸Àü ¹æÇâ¿¡ ¸Â°Ô È¸Àü -> ±âÁ¸Àº È¸Àü ¹İ¿µÀ» ¾ÈÇØ¼­ Á¤ÇØÁø Ãà¿¡ ´ëÇÑ ¿ÀÇÁ¼ÂÀ» ±×´ë·Î »ç¿ëÇØ ¹ö·È±â ¶§¹®¿¡
-			// ¾îµğ¸¦ °¡µç °°Àº ÀÚ¸®¿¡ °íÁ¤ÀÌ µÆ´øÁ¡À» °³¼±ÇÏ±âÀ§ÇØ ºÎ¸ğÀÇ ÄõÅÍ´Ï¿ÂÀ» °¡Á®¿Í ¿ÀÇÁ¼Â¿¡ Àû¿ëÇÏµµ·Ï º¯°æ
+		// ì˜¤í”„ì…‹ ë²¡í„°ë¥¼ ë¶€ëª¨ì˜ íšŒì „ ë°©í–¥ì— ë§ê²Œ íšŒì „ -> ê¸°ì¡´ì€ íšŒì „ ë°˜ì˜ì„ ì•ˆí•´ì„œ ì •í•´ì§„ ì¶•ì— ëŒ€í•œ ì˜¤í”„ì…‹ì„ ê·¸ëŒ€ë¡œ ì‚¬ìš©í•´ ë²„ë ¸ê¸° ë•Œë¬¸ì—
+			// ì–´ë””ë¥¼ ê°€ë“  ê°™ì€ ìë¦¬ì— ê³ ì •ì´ ëë˜ì ì„ ê°œì„ í•˜ê¸°ìœ„í•´ ë¶€ëª¨ì˜ ì¿¼í„°ë‹ˆì˜¨ì„ ê°€ì ¸ì™€ ì˜¤í”„ì…‹ì— ì ìš©í•˜ë„ë¡ ë³€ê²½
 		
 			Vector3 rotatedOffset = math::Vector3::Transform(mOffset, rot);
 
-			// ºÎ¸ğ À§Ä¡ + È¸ÀüµÈ ¿ÀÇÁ¼Â
+			// ë¶€ëª¨ ìœ„ì¹˜ + íšŒì „ëœ ì˜¤í”„ì…‹
 			debugTransform.SetPosition(pos + rotatedOffset);
 			debugTransform.SetScale(mSize);
 
-			// ¹Ú½º ÀÚÃ¼µµ ºÎ¸ğÀÇ È¸Àü°ú ¶È°°ÀÌ (OBB)
+			// ë°•ìŠ¤ ìì²´ë„ ë¶€ëª¨ì˜ íšŒì „ê³¼ ë˜‘ê°™ì´ (OBB)
 			debugTransform.SetRotation(rot);
 
 			debugTransform.LateUpdate();
 			debugTransform.Bind();
 
-			// ¸Ş½¬ ·»´õ¸µ
+			// ë©”ì‰¬ ë Œë”ë§
 		/*	std::shared_ptr<Mesh> cubeMesh = ME::Resources::Find<Mesh>(L"CubeMesh");
 			if (cubeMesh)
 			{
@@ -74,7 +74,7 @@ namespace ME
 			}*/
 
 
-			// »óÅÂ º¹±¸
+			// ìƒíƒœ ë³µêµ¬
 
 		//	graphics::GetDevice()->BindRasterizerState(renderer::rasterizerStates[(UINT)eRasterizerState::SolidBack].Get());
 		}
@@ -92,19 +92,19 @@ namespace ME
 		//points[0].x = x;
 		//points[0].y = y;
 
-		//// ¿À¸¥ÂÊ À§ ²ÀÁşÁ¡
+		//// ì˜¤ë¥¸ìª½ ìœ„ ê¼­ì§“ì 
 		//points[1].x = x + (int)(width * cos(radian));
 		//points[1].y = y + (int)(width * sin(radian));
 
-		//// ¿À¸¥ÂÊ ¾Æ·¡ ²ÀÁşÁ¡
+		//// ì˜¤ë¥¸ìª½ ì•„ë˜ ê¼­ì§“ì 
 		//points[2].x = x + (int)(width * cos(radian) - height * sin(radian));
 		//points[2].y = y + (int)(width * sin(radian) + height * cos(radian));
 
-		//// ¿ŞÂÊ ¾Æ·¡ ²ÀÁşÁ¡
+		//// ì™¼ìª½ ì•„ë˜ ê¼­ì§“ì 
 		//points[3].x = x - (int)(height * sin(radian));
 		//points[3].y = y + (int)(height * cos(radian));
 
-		//// È¸ÀüµÈ »ç°¢Çü ±×¸®±â
+		//// íšŒì „ëœ ì‚¬ê°í˜• ê·¸ë¦¬ê¸°
 		////Polygon(hdc, points, 4);
 
 
@@ -151,7 +151,7 @@ namespace ME
 		Vector3 rightExtents = other->GetSize()  / 2.0f;
 
 
-			//AABB Ãæµ¹ rect-rect
+			//AABB ì¶©ëŒ rect-rect
 		/*	if (fabs(leftCenterPos.x - rightCenterPos.x) < fabs(leftSize.x / 2.0f + rightSize.x / 2.0f)
 				&& fabs(leftCenterPos.y - rightCenterPos.y) < fabs(leftSize.y / 2.0f + rightSize.y / 2.0f)
 				&& fabs(leftCenterPos.z - rightCenterPos.z) < fabs(leftSize.z / 2.0f + rightSize.z / 2.0f))
@@ -167,48 +167,48 @@ namespace ME
 		const Vector3& centerB, const Vector3& extentsB, const Quaternion& rotB)
 	{
 		math::Matrix matA = math::Matrix::CreateFromQuaternion(rotA);
-		math::Matrix matB = math::Matrix::CreateFromQuaternion(rotB); //È¸Àü Çà·Ä »ı¼º
+		math::Matrix matB = math::Matrix::CreateFromQuaternion(rotB); //íšŒì „ í–‰ë ¬ ìƒì„±
 
-		math::Vector3 A[3] = { matA.Right(), matA.Up(), matA.Forward() };  //°Ë»ç¸¦ ÁøÇàÇÒ AÀÇ Ãà -> ¸éÀº ¼­·Î ÆòÇàÀÌ¹Ç·Î AÀÇ Ãà 3°³¿Í BÀÇ Ãà 3°³¸¦ ¿ÜÀûÇÏ¿© ³ª¿Â 9°³ÀÇ ÃàÀ» °Ë»çÇÏ¸é µÈ´Ù 
-		math::Vector3 B[3] = { matB.Right(), matB.Up(), matB.Forward() }; //°Ë»ç¸¦ ÁøÇàÇÒ BÀÇ Ãà
+		math::Vector3 A[3] = { matA.Right(), matA.Up(), matA.Forward() };  //ê²€ì‚¬ë¥¼ ì§„í–‰í•  Aì˜ ì¶• -> ë©´ì€ ì„œë¡œ í‰í–‰ì´ë¯€ë¡œ Aì˜ ì¶• 3ê°œì™€ Bì˜ ì¶• 3ê°œë¥¼ ì™¸ì í•˜ì—¬ ë‚˜ì˜¨ 9ê°œì˜ ì¶•ì„ ê²€ì‚¬í•˜ë©´ ëœë‹¤ 
+		math::Vector3 B[3] = { matB.Right(), matB.Up(), matB.Forward() }; //ê²€ì‚¬ë¥¼ ì§„í–‰í•  Bì˜ ì¶•
 
-		Vector3 distBetweenCenters = centerB - centerA; //µÎ OBBÀÇ Áß½É »çÀÌÀÇ °Å¸®
+		Vector3 distBetweenCenters = centerB - centerA; //ë‘ OBBì˜ ì¤‘ì‹¬ ì‚¬ì´ì˜ ê±°ë¦¬
 
 		auto SATTest = [&](const math::Vector3 axis) -> bool
 			{
-				if (axis.LengthSquared() < 1e-6f) return true; //ÃàÀÌ °ÅÀÇ 0ÀÌ¸é Ãæµ¹ÇÏÁö ¾ÊÀ½
+				if (axis.LengthSquared() < 1e-6f) return true; 
 
 				Vector3 nAxis = axis;
-				nAxis.Normalize(); //³»ÀûÀ» À§ÇØ Á¤±ÔÈ­ -> SAT¿¡¼­ ±âÁØÀÌ µÇ´Â ÃàÀÌ°í ÀÌ ÃàÀ» ±âÁØÀ¸·Î µÎ Ãæµ¹Ã¼ A,BÀÇ ·ÎÄÃ ÃàÀ» Åõ¿µÇÏ¿© Ãæµ¹ ¿©ºÎ¸¦ ÆÇ´ÜÇÏ±â ¶§¹®¿¡ Á¤±ÔÈ­ ÇÊ¿ä
+				nAxis.Normalize(); //ë‚´ì ì„ ìœ„í•´ ì •ê·œí™” -> SATì—ì„œ ê¸°ì¤€ì´ ë˜ëŠ” ì¶•ì´ê³  ì´ ì¶•ì„ ê¸°ì¤€ìœ¼ë¡œ ë‘ ì¶©ëŒì²´ A,Bì˜ ë¡œì»¬ ì¶•ì„ íˆ¬ì˜í•˜ì—¬ ì¶©ëŒ ì—¬ë¶€ë¥¼ íŒë‹¨í•˜ê¸° ë•Œë¬¸ì— ì •ê·œí™” í•„ìš”
 
-				// A ¹Ú½º¸¦ Ãà¿¡ Åõ¿µÇÑ ¹İÁö¸§
-				float rA = extentsA.x * fabs(A[0].Dot(nAxis)) + //-> °Ë»ç ±âÁØÀÎ Ãà À§¿¡ °¢ ¹Ú½º ±æÀÌÀÇ ¹İÀ» Åõ¿µÇÏ°í ´õÇØ¼­ ÁßÁ¡±îÁö°Å¸®(¹İÁö¸§)À» ¸¸µé¾î³½´Ù
+				// A ë°•ìŠ¤ë¥¼ ì¶•ì— íˆ¬ì˜í•œ ë°˜ì§€ë¦„
+				float rA = extentsA.x * fabs(A[0].Dot(nAxis)) + //-> ê²€ì‚¬ ê¸°ì¤€ì¸ ì¶• ìœ„ì— ê° ë°•ìŠ¤ ê¸¸ì´ì˜ ë°˜ì„ íˆ¬ì˜í•˜ê³  ë”í•´ì„œ ì¤‘ì ê¹Œì§€ê±°ë¦¬(ë°˜ì§€ë¦„)ì„ ë§Œë“¤ì–´ë‚¸ë‹¤
 					extentsA.y * fabs(A[1].Dot(nAxis)) +
 					extentsA.z * fabs(A[2].Dot(nAxis));
 
-				// B ¹Ú½º¸¦ Ãà¿¡ Åõ¿µÇÑ ¹İÁö¸§
+				// B ë°•ìŠ¤ë¥¼ ì¶•ì— íˆ¬ì˜í•œ ë°˜ì§€ë¦„
 				float rB = extentsB.x * fabs(B[0].Dot(nAxis)) +
 					extentsB.y * fabs(B[1].Dot(nAxis)) +
 					extentsB.z * fabs(B[2].Dot(nAxis));
 				
-				return fabs(distBetweenCenters.Dot(nAxis)) <= (rA + rB); //Åõ¿µµÈ °Å¸®¿Í ¹İÁö¸§ ÇÕÀ» ºñ±³ÇÏ¿© Ãæµ¹ ¿©ºÎ ÆÇ´Ü
+				return fabs(distBetweenCenters.Dot(nAxis)) <= (rA + rB); //íˆ¬ì˜ëœ ê±°ë¦¬ì™€ ë°˜ì§€ë¦„ í•©ì„ ë¹„êµí•˜ì—¬ ì¶©ëŒ ì—¬ë¶€ íŒë‹¨
 			
 			};
 
-		for (int i = 0; i < 3; i++)//°Ë»ç½Ã ÇÏ³ª¶óµµ Ãæµ¹ÀÌ ¹ß»ıÇÏÁö ¾ÊÀ¸¸é false¸¦ ¹İÈ¯ÇÏ°í Á¾·á
+		for (int i = 0; i < 3; i++)//ê²€ì‚¬ì‹œ í•˜ë‚˜ë¼ë„ ì¶©ëŒì´ ë°œìƒí•˜ì§€ ì•Šìœ¼ë©´ falseë¥¼ ë°˜í™˜í•˜ê³  ì¢…ë£Œ
 		{
-			if (SATTest(A[i]) == false) return false; //AÀÇ Ãà 3°³ °Ë»ç 
-			if (SATTest(B[i]) == false) return false; //BÀÇ Ãà 3°³ °Ë»ç
+			if (SATTest(A[i]) == false) return false; //Aì˜ ì¶• 3ê°œ ê²€ì‚¬ 
+			if (SATTest(B[i]) == false) return false; //Bì˜ ì¶• 3ê°œ ê²€ì‚¬
 		}
 
 		for (int i = 0; i < 3; i++)
 		{
 			for (int j = 0; j < 3; j++)
 			{
-				if (SATTest(A[i].Cross(B[j])) == false) return false; //AÀÇ Ãà°ú BÀÇ ÃàÀ» ¿ÜÀûÇÏ¿© ³ª¿Â 9°³ÀÇ Ãà °Ë»ç
+				if (SATTest(A[i].Cross(B[j])) == false) return false; //Aì˜ ì¶•ê³¼ Bì˜ ì¶•ì„ ì™¸ì í•˜ì—¬ ë‚˜ì˜¨ 9ê°œì˜ ì¶• ê²€ì‚¬
 			}
 		}
 
-		return true; //¸ğµç Ãà¿¡¼­ Ãæµ¹ÀÌ ¹ß»ıÇßÀ¸¹Ç·Î true ¹İÈ¯
+		return true; //ëª¨ë“  ì¶•ì—ì„œ ì¶©ëŒì´ ë°œìƒí–ˆìœ¼ë¯€ë¡œ true ë°˜í™˜
 	}
 }
