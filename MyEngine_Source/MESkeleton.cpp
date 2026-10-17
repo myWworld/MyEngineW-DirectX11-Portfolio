@@ -98,9 +98,9 @@ namespace ME
 			Bone newBone;
 			newBone.mName = pureName;
 		
-			auto it = preRot.find(nodeName);
+			auto it = baseLoc.find(nodeName);
 			Matrix pureRotation = Matrix::Identity;
-			if (it != preRot.end())
+			if (it != baseLoc.end())
 				pureRotation = it->second;
 
 			mBonesTransform.push_back(pureRotation);
@@ -118,7 +118,7 @@ namespace ME
 
 		for (unsigned int i = 0; i < node->mNumChildren; i++)
 		{
-			RegisterBone(node->mChildren[i],preRot);
+			RegisterBone(node->mChildren[i], baseLoc);
 		}
 
 
