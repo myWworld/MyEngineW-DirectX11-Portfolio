@@ -80,8 +80,6 @@ namespace ME
 			{
 				break;
 			}
-			std::this_thread::yield();
-	
 		}
 
 		
